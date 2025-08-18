@@ -77,7 +77,7 @@
     df,
     metric,
     prob_threshold,
-    rope_rule = c("\u2265"),
+    rope_rule = c(">="),
     direction_p = 0.5,
     effect_cols = NULL
 ) {
