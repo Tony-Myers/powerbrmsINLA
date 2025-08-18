@@ -1,0 +1,10 @@
+.Rhistory
+.RData
+.Ruserdata
+.DS_Store
+.Rproj.user/
+*.Rproj
+*.tar.gz
+.Rcheck/
+man/*.Rd
+NAMESPACE

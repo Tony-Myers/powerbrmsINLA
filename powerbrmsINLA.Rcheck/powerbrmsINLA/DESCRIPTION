@@ -1,0 +1,26 @@
+Package: powerbrmsINLA
+Title: Bayesian Power Analysis Using 'brms' and 'INLA'
+Version: 1.0.0
+Author: Tony Myers
+Maintainer: Tony Myers <admyers@aol.com>
+Description: Provides tools for Bayesian power analysis and assurance 
+    calculations using the statistical frameworks of 'brms' and 'INLA'. 
+    Includes simulation-based approaches, support for multiple decision 
+    rules (direction, threshold, ROPE), sequential designs, and 
+    visualisation helpers.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Depends: R (>= 4.0.0)
+Imports: brms (>= 2.19.0), dplyr (>= 1.1.0), ggplot2 (>= 3.4.0), rlang
+        (>= 1.1.0), tibble (>= 3.2.0), scales (>= 1.2.0), viridisLite
+        (>= 0.4.0), stats, utils, magrittr (>= 2.0.0)
+Suggests: INLA (>= 22.05.07), testthat (>= 3.0.0), rmarkdown, MASS,
+        circular, sn
+URL: https://github.com/Tony-Myers/powerbrmsINLA
+BugReports: https://github.com/Tony-Myers/powerbrmsINLA/issues
+Additional_repositories: https://inla.r-inla-download.org/R/stable
+NeedsCompilation: no
+Packaged: 2025-08-18 15:38:32 UTC; user
+Built: R 4.4.3; ; 2025-08-18 15:38:46 UTC; unix
