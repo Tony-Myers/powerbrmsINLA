@@ -1,11 +1,5 @@
-^README\.Rmd$
-^README\.html$
-^_pkgdown\.yml$
-^docs$
-^pkgdown$
-^\.github$
-^\.gitignore$
-^\.Rproj\.user$
 ^.*\.Rproj$
-^LICENSE\.md$
-^LICENSE\.txt$
+^\.Rproj\.user$
+^\.DS_Store$
+^\.git$
+^\.gitignore$
