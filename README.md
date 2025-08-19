@@ -15,9 +15,6 @@ multiple decision rules (`direction`, `threshold`, `rope`), sequential
 and two-stage designs, and visualisation helpers for power curves,
 precision, Bayes factors, and robustness.
 
-<!-- badges: start -->
-  [![R-CMD-check](https://github.com/Tony-Myers/powerbrmsINLA/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Tony-Myers/powerbrmsINLA/actions/workflows/R-CMD-check.yaml)
-  <!-- badges: end -->
 
 ## Installation
 
@@ -61,6 +58,16 @@ res$summary
 # Plot a power heatmap
 plot_power_heatmap(res)
 ```
+
+## Model Complexity Considerations
+
+For optimal performance:
+
+- **Simple to moderate models**: All sample sizes supported
+- **Complex random effects** (e.g., `(1 + time | subject)`): Recommend n ≥ 50 subjects
+- **Large effect grids**: Consider starting with fewer simulations (nsims = 50-100) for initial exploration
+
+The package handles the vast majority of Bayesian power analysis scenarios. For computationally demanding models, standard Bayesian modeling best practices apply (adequate sample sizes, model complexity appropriate to data).
 
 ## Package documentation
 
