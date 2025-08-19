@@ -70,8 +70,6 @@
 </h2>
 <p><strong>powerbrmsINLA</strong> provides tools for <strong>Bayesian power analysis</strong> and <strong>assurance calculations</strong> using the statistical frameworks of <a href="https://cran.r-project.org/package=brms" class="external-link"><code>brms</code></a> and <a href="https://www.r-inla.org/" class="external-link"><code>INLA</code></a>.</p>
 <p>It includes simulation-based and analytical approaches, support for multiple decision rules (<code>direction</code>, <code>threshold</code>, <code>rope</code>), sequential and two-stage designs, and visualisation helpers for power curves, precision, Bayes factors, and robustness.</p>
-<!-- badges: start -->
-
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -112,6 +110,20 @@
 <span></span>
 <span><span class="co"># Plot a power heatmap</span></span>
 <span><span class="fu">plot_power_heatmap</span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="model-complexity-considerations">Model Complexity Considerations<a class="anchor" aria-label="anchor" href="#model-complexity-considerations"></a>
+</h2>
+<p>For optimal performance:</p>
+<ul>
+<li>
+<strong>Simple to moderate models</strong>: All sample sizes supported</li>
+<li>
+<strong>Complex random effects</strong> (e.g., <code>(1 + time | subject)</code>): Recommend n ≥ 50 subjects</li>
+<li>
+<strong>Large effect grids</strong>: Consider starting with fewer simulations (nsims = 50-100) for initial exploration</li>
+</ul>
+<p>The package handles the vast majority of Bayesian power analysis scenarios. For computationally demanding models, standard Bayesian modeling best practices apply (adequate sample sizes, model complexity appropriate to data).</p>
 </div>
 <div class="section level2">
 <h2 id="package-documentation">Package documentation<a class="anchor" aria-label="anchor" href="#package-documentation"></a>
@@ -163,12 +175,7 @@ See the <a href="LICENSE">LICENSE</a> file for details.</p>
 </ul>
 </div>
 
-<div class="dev-status">
-<h2 data-toc-skip>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://github.com/Tony-Myers/powerbrmsINLA/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/Tony-Myers/powerbrmsINLA/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
-</ul>
-</div>
+
 
   </div>
 </div>
