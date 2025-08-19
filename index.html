@@ -98,7 +98,7 @@
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Run Bayesian power analysis with reduced settings for speed</span></span>
-<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/brms_inla_power.html">brms_inla_power</a></span><span class="op">(</span></span>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">brms_inla_power</span><span class="op">(</span></span>
 <span>  formula        <span class="op">=</span> <span class="va">y</span> <span class="op">~</span> <span class="va">x</span>,</span>
 <span>  effect_name    <span class="op">=</span> <span class="st">"x"</span>,</span>
 <span>  effect_grid    <span class="op">=</span> <span class="fl">0.5</span>,</span>
@@ -111,7 +111,7 @@
 <span><span class="va">res</span><span class="op">$</span><span class="va">summary</span></span>
 <span></span>
 <span><span class="co"># Plot a power heatmap</span></span>
-<span><span class="fu"><a href="reference/plot_power_heatmap.html">plot_power_heatmap</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">plot_power_heatmap</span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="package-documentation">Package documentation<a class="anchor" aria-label="anchor" href="#package-documentation"></a>
@@ -159,7 +159,7 @@ See the <a href="LICENSE">LICENSE</a> file for details.</p>
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Tony Myers <br><small class="roles"> Author, maintainer </small>   </li>
+<li>Tony Myers <br><small class="roles"> Maintainer </small>   </li>
 </ul>
 </div>
 
