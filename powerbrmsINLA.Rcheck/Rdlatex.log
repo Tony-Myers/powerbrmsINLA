@@ -1,0 +1,161 @@
+Hmm ... looks like a package
+Converting parsed Rd's to LaTeX ...
+Creating pdf output from LaTeX ...
+Error in texi2dvi(file = file, pdf = TRUE, clean = clean, quiet = quiet,  : 
+  Running 'texi2dvi' on 'Rd2.tex' failed.
+Messages:
+/opt/R/arm64/bin/texi2dvi: makeindex failed
+Output:
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+LaTeX2e <2025-06-01> patch level 1
+L3 programming layer <2025-08-13>
+(./Rd2.tex
+(/Users/user/Library/TinyTeX/texmf-dist/tex/latex/base/book.cls
+Document Class: book 2025/01/22 v1.4n Standard LaTeX document class
+(/Users/user/Library/TinyTeX/texmf-dist/tex/latex/base/bk10.clo)) (/Library/Frameworks/R.framework/Resources/share/texmf/tex/latex/Rd.sty (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/base/ifthen.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/generic/iftex/iftex.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/tools/longtable.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/tools/bm.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/base/alltt.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/tools/verbatim.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/url/url.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/base/textcomp.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/Users/user/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amstext.sty (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsgen.sty)) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsbsy.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsopn.sty)) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/amsfonts.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/amssymb.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/eucal.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/base/fontenc.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/psnfss/times.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/inconsolata/zi4.sty `inconsolata-zi4' v1.12, 2019/05/17 Text macros for Inconsolata (msharpe) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/xkeyval/xkeyval.sty (/Users/user/Library/TinyTeX/texmf-dist/tex/generic/xkeyval/xkeyval.tex (/Users/user/Library/TinyTeX/texmf-dist/tex/generic/xkeyval/xkvutils.tex (/Users/user/Library/TinyTeX/texmf-dist/tex/generic/xkeyval/keyval.tex))))) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/graphics/color.sty (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/graphics-cfg/color.cfg) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/graphics-def/pdftex.def) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/graphics/mathcolor.ltx)) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/generic/pdfescape/pdfescape.sty (/Users/user/Library/TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty (/Users/user/Library/TinyTeX/texmf-dist/tex/generic/infwarerr/infwarerr.sty))) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/hycolor/hycolor.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/kvoptions/kvoptions.sty))) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/generic/stringenc/stringenc.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def) (/Users/user/Library/TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def) (/Users/user/Library/TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty (/Users/user/Library/TinyTeX/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/hyperref/hpdftex.def (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty (/Users/user/Library/TinyTeX/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/base/makeidx.sty)
+Writing index file Rd2.idx
+(/Users/user/Library/TinyTeX/texmf-dist/tex/latex/psnfss/t1ptm.fd) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def) (/private/var/folders/7w/bkhm9nfs5739dg76sn8gc4z40000gn/T/RtmpnwgYsy/Rd2pdf9c5462f8b50/Rd2.aux) (/private/var/folders/7w/bkhm9nfs5739dg76sn8gc4z40000gn/T/RtmpnwgYsy/Rd2pdf9c5462f8b50/Rd2.out) (/private/var/folders/7w/bkhm9nfs5739dg76sn8gc4z40000gn/T/RtmpnwgYsy/Rd2pdf9c5462f8b50/Rd2.out) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/psnfss/ts1ptm.fd) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/inconsolata/t1zi4.fd)
+Overfull \hbox (54.15816pt too wide) in paragraph at lines 21--22
+\T1/ptm/m/n/10 rial with R, JAGS, and Stan\TS1/ptm/m/n/10 ''\T1/ptm/m/n/10 , O\TS1/ptm/m/n/10 '\T1/ptm/m/n/10 Hagan & Stevens (2001) <[][]doi:10.1177/0272989X0102100307[][]> \TS1/cmr/m/n/10 ``\T1/ptm/m/n/10 Bayesian As- 
+(/Users/user/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd) (/private/var/folders/7w/bkhm9nfs5739dg76sn8gc4z40000gn/T/RtmpnwgYsy/Rd2pdf9c5462f8b50/Rd2.toc
+[1{/Users/user/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/Users/user/Library/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}{/Users/user/Library/TinyTeX/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-0.enc}])
+[2]
+[3]
+[4]
+[5]
+[6]
+Overfull \hbox (14.84749pt too wide) in paragraph at lines 289--291
+[]\T1/ptm/m/n/10 Returns the cor-rect ar-gu-ment name for line width in gg-plot2, de-pend-ing on pack-age ver-sion ("linewidth"
+
+[7]
+[8]
+[9]
+[10]
+[11]
+[12]
+[13]
+[14]
+[15]
+Underfull \hbox (badness 3942) in paragraph at lines 830--830
+[]\T1/ptm/m/it/10 Two-Stage Bayesian As-sur-ance Sim-u-la-tion (Multi-Effect, User-
+
+[16]
+[17]
+[18]
+[19]
+[20]
+Overfull \hbox (7.27669pt too wide) in paragraph at lines 1121--1122
+[]\T1/ptm/m/n/10 Optional named list to re-strict/show only se-lected grid rows, e.g. list(treatment=0). 
+
+[21]
+Underfull \hbox (badness 2617) in paragraph at lines 1132--1132
+[]\T1/ptm/m/it/10 Plot Ex-pected Ev-i-dence (mean log10 BF10, Multi-Effect Grid
+
+Overfull \hbox (20.34903pt too wide) in paragraph at lines 1154--1155
+[]\T1/ptm/m/n/10 Simulation re-sults from a \T1/zi4/m/n/10 brms_inla_power* \T1/ptm/m/n/10 func-tion with []\T1/zi4/m/n/10 compute_bayes_factor
+
+[22]
+Overfull \hbox (20.34903pt too wide) in paragraph at lines 1194--1195
+[]\T1/ptm/m/n/10 Simulation re-sults from a \T1/zi4/m/n/10 brms_inla_power* \T1/ptm/m/n/10 func-tion with []\T1/zi4/m/n/10 compute_bayes_factor
+
+[23]
+[24]
+Overfull \hbox (5.88815pt too wide) in paragraph at lines 1334--1335
+[]\T1/ptm/m/n/10 Name of the sum-mary col-umn to plot, e.g. "power_direction", "power_threshold". 
+
+[25]
+Underfull \hbox (badness 2762) in paragraph at lines 1402--1402
+[]\T1/ptm/m/it/10 Plot Bayesian Power / As-sur-ance Heatmap (Multi-Effect Grid
+
+[26]
+[27]
+[28]
+No file Rd2.ind.
+
+[29] (/private/var/folders/7w/bkhm9nfs5739dg76sn8gc4z40000gn/T/RtmpnwgYsy/Rd2pdf9c5462f8b50/Rd2.aux) )
+(see the transcript file for additional information) </Users/user/Library/TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.600pk></Users/user/Library/TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></Users/user/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></Users/user/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/user/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/user/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on Rd2.pdf (29 pages, 128695 bytes).
+Transcript written on Rd2.log.
+/opt/R/arm64/bin/texi2dvi: line 366: makeindex: command not found
+
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+LaTeX2e <2025-06-01> patch level 1
+L3 programming layer <2025-08-13>
+(./Rd2.tex
+(/Users/user/Library/TinyTeX/texmf-dist/tex/latex/base/book.cls
+Document Class: book 2025/01/22 v1.4n Standard LaTeX document class
+(/Users/user/Library/TinyTeX/texmf-dist/tex/latex/base/bk10.clo)) (/Library/Frameworks/R.framework/Resources/share/texmf/tex/latex/Rd.sty (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/base/ifthen.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/generic/iftex/iftex.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/tools/longtable.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/tools/bm.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/base/alltt.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/tools/verbatim.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/url/url.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/base/textcomp.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/Users/user/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amstext.sty (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsgen.sty)) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsbsy.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsopn.sty)) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/amsfonts.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/amssymb.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/eucal.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/base/fontenc.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/psnfss/times.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/inconsolata/zi4.sty `inconsolata-zi4' v1.12, 2019/05/17 Text macros for Inconsolata (msharpe) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/xkeyval/xkeyval.sty (/Users/user/Library/TinyTeX/texmf-dist/tex/generic/xkeyval/xkeyval.tex (/Users/user/Library/TinyTeX/texmf-dist/tex/generic/xkeyval/xkvutils.tex (/Users/user/Library/TinyTeX/texmf-dist/tex/generic/xkeyval/keyval.tex))))) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/graphics/color.sty (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/graphics-cfg/color.cfg) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/graphics-def/pdftex.def) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/graphics/mathcolor.ltx)) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/generic/pdfescape/pdfescape.sty (/Users/user/Library/TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty (/Users/user/Library/TinyTeX/texmf-dist/tex/generic/infwarerr/infwarerr.sty))) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/hycolor/hycolor.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/kvoptions/kvoptions.sty))) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/generic/stringenc/stringenc.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def) (/Users/user/Library/TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def) (/Users/user/Library/TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty (/Users/user/Library/TinyTeX/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/hyperref/hpdftex.def (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty (/Users/user/Library/TinyTeX/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/base/makeidx.sty)
+Writing index file Rd2.idx
+(/Users/user/Library/TinyTeX/texmf-dist/tex/latex/psnfss/t1ptm.fd) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def) (/private/var/folders/7w/bkhm9nfs5739dg76sn8gc4z40000gn/T/RtmpnwgYsy/Rd2pdf9c5462f8b50/Rd2.aux) (/private/var/folders/7w/bkhm9nfs5739dg76sn8gc4z40000gn/T/RtmpnwgYsy/Rd2pdf9c5462f8b50/Rd2.out) (/private/var/folders/7w/bkhm9nfs5739dg76sn8gc4z40000gn/T/RtmpnwgYsy/Rd2pdf9c5462f8b50/Rd2.out) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/psnfss/ts1ptm.fd) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/inconsolata/t1zi4.fd)
+Overfull \hbox (54.15816pt too wide) in paragraph at lines 21--22
+\T1/ptm/m/n/10 rial with R, JAGS, and Stan\TS1/ptm/m/n/10 ''\T1/ptm/m/n/10 , O\TS1/ptm/m/n/10 '\T1/ptm/m/n/10 Hagan & Stevens (2001) <[][]doi:10.1177/0272989X0102100307[][]> \TS1/cmr/m/n/10 ``\T1/ptm/m/n/10 Bayesian As- 
+(/Users/user/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd) (/Users/user/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd) (/private/var/folders/7w/bkhm9nfs5739dg76sn8gc4z40000gn/T/RtmpnwgYsy/Rd2pdf9c5462f8b50/Rd2.toc
+[1{/Users/user/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/Users/user/Library/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}{/Users/user/Library/TinyTeX/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-0.enc}])
+[2]
+[3]
+[4]
+[5]
+[6]
+Overfull \hbox (14.84749pt too wide) in paragraph at lines 289--291
+[]\T1/ptm/m/n/10 Returns the cor-rect ar-gu-ment name for line width in gg-plot2, de-pend-ing on pack-age ver-sion ("linewidth"
+
+[7]
+[8]
+[9]
+[10]
+[11]
+[12]
+[13]
+[14]
+[15]
+Underfull \hbox (badness 3942) in paragraph at lines 830--830
+[]\T1/ptm/m/it/10 Two-Stage Bayesian As-sur-ance Sim-u-la-tion (Multi-Effect, User-
+
+[16]
+[17]
+[18]
+[19]
+[20]
+Overfull \hbox (7.27669pt too wide) in paragraph at lines 1121--1122
+[]\T1/ptm/m/n/10 Optional named list to re-strict/show only se-lected grid rows, e.g. list(treatment=0). 
+
+[21]
+Underfull \hbox (badness 2617) in paragraph at lines 1132--1132
+[]\T1/ptm/m/it/10 Plot Ex-pected Ev-i-dence (mean log10 BF10, Multi-Effect Grid
+
+Overfull \hbox (20.34903pt too wide) in paragraph at lines 1154--1155
+[]\T1/ptm/m/n/10 Simulation re-sults from a \T1/zi4/m/n/10 brms_inla_power* \T1/ptm/m/n/10 func-tion with []\T1/zi4/m/n/10 compute_bayes_factor
+
+[22]
+Overfull \hbox (20.34903pt too wide) in paragraph at lines 1194--1195
+[]\T1/ptm/m/n/10 Simulation re-sults from a \T1/zi4/m/n/10 brms_inla_power* \T1/ptm/m/n/10 func-tion with []\T1/zi4/m/n/10 compute_bayes_factor
+
+[23]
+[24]
+Overfull \hbox (5.88815pt too wide) in paragraph at lines 1334--1335
+[]\T1/ptm/m/n/10 Name of the sum-mary col-umn to plot, e.g. "power_direction", "power_threshold". 
+
+[25]
+Underfull \hbox (badness 2762) in paragraph at lines 1402--1402
+[]\T1/ptm/m/it/10 Plot Bayesian Power / As-sur-ance Heatmap (Multi-Effect Grid
+
+[26]
+[27]
+[28]
+No file Rd2.ind.
+
+[29] (/private/var/folders/7w/bkhm9nfs5739dg76sn8gc4z40000gn/T/RtmpnwgYsy/Rd2pdf9c5462f8b50/Rd2.aux) )
+(see the transcript file for additional information) </Users/user/Library/TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.600pk></Users/user/Library/TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></Users/user/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></Users/user/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/user/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/user/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on Rd2.pdf (29 pages, 128709 bytes).
+Transcript written on Rd2.log.
+Saving output to ‘powerbrmsINLA-manual.pdf’ ...
+Done
+You may want to clean up by 'rm -Rf /var/folders/7w/bkhm9nfs5739dg76sn8gc4z40000gn/T//RtmpnwgYsy/Rd2pdf9c5462f8b50'

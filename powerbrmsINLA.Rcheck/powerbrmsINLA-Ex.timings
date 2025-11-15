@@ -1,0 +1,4 @@
+name	user	system	elapsed
+brms_inla_power	 62.731	 53.919	134.719	
+brms_inla_power_sequential	 559.577	 474.958	1210.007	
+brms_inla_power_two_stage	146.042	124.238	315.058	

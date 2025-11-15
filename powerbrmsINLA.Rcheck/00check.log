@@ -1,0 +1,331 @@
+* using log directory ‘/Users/user/Desktop/powerbrmsINLA/powerbrmsINLA.Rcheck’
+* using R version 4.4.3 (2025-02-28)
+* using platform: aarch64-apple-darwin20
+* R was compiled by
+    Apple clang version 14.0.0 (clang-1400.0.29.202)
+    GNU Fortran (GCC) 12.2.0
+* running under: macOS Sequoia 15.4
+* using session charset: UTF-8
+* using option ‘--as-cran’
+* checking for file ‘powerbrmsINLA/DESCRIPTION’ ... OK
+* this is package ‘powerbrmsINLA’ version ‘1.0.0’
+* package encoding: UTF-8
+* checking CRAN incoming feasibility ... [3s/22s] NOTE
+Maintainer: ‘Tony Myers <admyers@aol.com>’
+
+New submission
+
+Suggests or Enhances not in mainstream repositories:
+  INLA
+Availability using Additional_repositories specification:
+  INLA   yes   https://inla.r-inla-download.org/R/stable
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘powerbrmsINLA’ can be installed ... OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking for future file timestamps ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking code files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... OK
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... OK
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... OK
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking examples ... OK
+* checking examples with --run-donttest ... [24m/28m] OK
+* checking for unstated dependencies in ‘tests’ ... OK
+* checking tests ... OK
+  Running ‘testthat.R’
+* checking PDF version of manual ... OK
+* checking HTML version of manual ... NOTE
+Found the following HTML validation problems:
+beta_binom_power.html:15:44 (beta_binom_power.Rd:5): Error: <main> is not recognized!
+beta_binom_power.html:15:44 (beta_binom_power.Rd:5): Warning: discarding unexpected <main>
+beta_binom_power.html:78:1 (beta_binom_power.Rd:32): Warning: discarding unexpected </main>
+beta_binom_power.html:4:1 (beta_binom_power.Rd:5): Warning: <link> inserting "type" attribute
+beta_binom_power.html:12:1 (beta_binom_power.Rd:5): Warning: <script> proprietary attribute "onload"
+beta_binom_power.html:12:1 (beta_binom_power.Rd:5): Warning: <script> inserting "type" attribute
+beta_binom_power.html:17:1 (beta_binom_power.Rd:5): Warning: <table> lacks "summary" attribute
+beta_binom_power.html:45:1 (beta_binom_power.Rd:19): Warning: <table> lacks "summary" attribute
+beta_weights_on_grid.html:15:44 (beta_weights_on_grid.Rd:5): Error: <main> is not recognized!
+beta_weights_on_grid.html:15:44 (beta_weights_on_grid.Rd:5): Warning: discarding unexpected <main>
+beta_weights_on_grid.html:57:1 (beta_weights_on_grid.Rd:17): Warning: discarding unexpected </main>
+beta_weights_on_grid.html:4:1 (beta_weights_on_grid.Rd:5): Warning: <link> inserting "type" attribute
+beta_weights_on_grid.html:12:1 (beta_weights_on_grid.Rd:5): Warning: <script> proprietary attribute "onload"
+beta_weights_on_grid.html:12:1 (beta_weights_on_grid.Rd:5): Warning: <script> inserting "type" attribute
+beta_weights_on_grid.html:17:1 (beta_weights_on_grid.Rd:5): Warning: <table> lacks "summary" attribute
+beta_weights_on_grid.html:36:1 (beta_weights_on_grid.Rd:10): Warning: <table> lacks "summary" attribute
+brms_inla_power.html:15:44 (brms_inla_power.Rd:5): Error: <main> is not recognized!
+brms_inla_power.html:15:44 (brms_inla_power.Rd:5): Warning: discarding unexpected <main>
+brms_inla_power.html:239:1 (brms_inla_power.Rd:148): Warning: discarding unexpected </main>
+brms_inla_power.html:4:1 (brms_inla_power.Rd:5): Warning: <link> inserting "type" attribute
+brms_inla_power.html:12:1 (brms_inla_power.Rd:5): Warning: <script> proprietary attribute "onload"
+brms_inla_power.html:12:1 (brms_inla_power.Rd:5): Warning: <script> inserting "type" attribute
+brms_inla_power.html:17:1 (brms_inla_power.Rd:5): Warning: <table> lacks "summary" attribute
+brms_inla_power.html:68:1 (brms_inla_power.Rd:40): Warning: <table> lacks "summary" attribute
+brms_inla_power_sequential.html:15:44 (brms_inla_power_sequential.Rd:5): Error: <main> is not recognized!
+brms_inla_power_sequential.html:15:44 (brms_inla_power_sequential.Rd:5): Warning: discarding unexpected <main>
+brms_inla_power_sequential.html:231:1 (brms_inla_power_sequential.Rd:131): Warning: discarding unexpected </main>
+brms_inla_power_sequential.html:4:1 (brms_inla_power_sequential.Rd:5): Warning: <link> inserting "type" attribute
+brms_inla_power_sequential.html:12:1 (brms_inla_power_sequential.Rd:5): Warning: <script> proprietary attribute "onload"
+brms_inla_power_sequential.html:12:1 (brms_inla_power_sequential.Rd:5): Warning: <script> inserting "type" attribute
+brms_inla_power_sequential.html:17:1 (brms_inla_power_sequential.Rd:5): Warning: <table> lacks "summary" attribute
+brms_inla_power_sequential.html:68:1 (brms_inla_power_sequential.Rd:43): Warning: <table> lacks "summary" attribute
+brms_inla_power_two_stage.html:15:44 (brms_inla_power_two_stage.Rd:5): Error: <main> is not recognized!
+brms_inla_power_two_stage.html:15:44 (brms_inla_power_two_stage.Rd:5): Warning: discarding unexpected <main>
+brms_inla_power_two_stage.html:158:1 (brms_inla_power_two_stage.Rd:89): Warning: discarding unexpected </main>
+brms_inla_power_two_stage.html:4:1 (brms_inla_power_two_stage.Rd:5): Warning: <link> inserting "type" attribute
+brms_inla_power_two_stage.html:12:1 (brms_inla_power_two_stage.Rd:5): Warning: <script> proprietary attribute "onload"
+brms_inla_power_two_stage.html:12:1 (brms_inla_power_two_stage.Rd:5): Warning: <script> inserting "type" attribute
+brms_inla_power_two_stage.html:17:1 (brms_inla_power_two_stage.Rd:5): Warning: <table> lacks "summary" attribute
+brms_inla_power_two_stage.html:54:1 (brms_inla_power_two_stage.Rd:29): Warning: <table> lacks "summary" attribute
+brms_inla_power_two_stage.html:124:14 (brms_inla_power_two_stage.Rd:64): Warning: <code> attribute "id" has invalid value "..."
+dot-add_contour_lines.html:15:44 (dot-add_contour_lines.Rd:5): Error: <main> is not recognized!
+dot-add_contour_lines.html:15:44 (dot-add_contour_lines.Rd:5): Warning: discarding unexpected <main>
+dot-add_contour_lines.html:93:1 (dot-add_contour_lines.Rd:45): Warning: discarding unexpected </main>
+dot-add_contour_lines.html:4:1 (dot-add_contour_lines.Rd:5): Warning: <link> inserting "type" attribute
+dot-add_contour_lines.html:12:1 (dot-add_contour_lines.Rd:5): Warning: <script> proprietary attribute "onload"
+dot-add_contour_lines.html:12:1 (dot-add_contour_lines.Rd:5): Warning: <script> inserting "type" attribute
+dot-add_contour_lines.html:17:1 (dot-add_contour_lines.Rd:5): Warning: <table> lacks "summary" attribute
+dot-add_contour_lines.html:54:1 (dot-add_contour_lines.Rd:28): Warning: <table> lacks "summary" attribute
+dot-auto_data_generator.html:15:44 (dot-auto_data_generator.Rd:5): Error: <main> is not recognized!
+dot-auto_data_generator.html:15:44 (dot-auto_data_generator.Rd:5): Warning: discarding unexpected <main>
+dot-auto_data_generator.html:91:1 (dot-auto_data_generator.Rd:39): Warning: discarding unexpected </main>
+dot-auto_data_generator.html:4:1 (dot-auto_data_generator.Rd:5): Warning: <link> inserting "type" attribute
+dot-auto_data_generator.html:12:1 (dot-auto_data_generator.Rd:5): Warning: <script> proprietary attribute "onload"
+dot-auto_data_generator.html:12:1 (dot-auto_data_generator.Rd:5): Warning: <script> inserting "type" attribute
+dot-auto_data_generator.html:17:1 (dot-auto_data_generator.Rd:5): Warning: <table> lacks "summary" attribute
+dot-auto_data_generator.html:46:1 (dot-auto_data_generator.Rd:20): Warning: <table> lacks "summary" attribute
+dot-brms_to_inla_formula2.html:15:44 (dot-brms_to_inla_formula2.Rd:5): Error: <main> is not recognized!
+dot-brms_to_inla_formula2.html:15:44 (dot-brms_to_inla_formula2.Rd:5): Warning: discarding unexpected <main>
+dot-brms_to_inla_formula2.html:52:1 (dot-brms_to_inla_formula2.Rd:15): Warning: discarding unexpected </main>
+dot-brms_to_inla_formula2.html:4:1 (dot-brms_to_inla_formula2.Rd:5): Warning: <link> inserting "type" attribute
+dot-brms_to_inla_formula2.html:12:1 (dot-brms_to_inla_formula2.Rd:5): Warning: <script> proprietary attribute "onload"
+dot-brms_to_inla_formula2.html:12:1 (dot-brms_to_inla_formula2.Rd:5): Warning: <script> inserting "type" attribute
+dot-brms_to_inla_formula2.html:17:1 (dot-brms_to_inla_formula2.Rd:5): Warning: <table> lacks "summary" attribute
+dot-brms_to_inla_formula2.html:35:1 (dot-brms_to_inla_formula2.Rd:10): Warning: <table> lacks "summary" attribute
+dot-compute_assurance.html:15:44 (dot-compute_assurance.Rd:5): Error: <main> is not recognized!
+dot-compute_assurance.html:15:44 (dot-compute_assurance.Rd:5): Warning: discarding unexpected <main>
+dot-compute_assurance.html:77:1 (dot-compute_assurance.Rd:31): Warning: discarding unexpected </main>
+dot-compute_assurance.html:4:1 (dot-compute_assurance.Rd:5): Warning: <link> inserting "type" attribute
+dot-compute_assurance.html:12:1 (dot-compute_assurance.Rd:5): Warning: <script> proprietary attribute "onload"
+dot-compute_assurance.html:12:1 (dot-compute_assurance.Rd:5): Warning: <script> inserting "type" attribute
+dot-compute_assurance.html:17:1 (dot-compute_assurance.Rd:5): Warning: <table> lacks "summary" attribute
+dot-compute_assurance.html:44:1 (dot-compute_assurance.Rd:18): Warning: <table> lacks "summary" attribute
+dot-geom_line_lw.html:15:44 (dot-geom_line_lw.Rd:5): Error: <main> is not recognized!
+dot-geom_line_lw.html:15:44 (dot-geom_line_lw.Rd:5): Warning: discarding unexpected <main>
+dot-geom_line_lw.html:64:1 (dot-geom_line_lw.Rd:23): Warning: discarding unexpected </main>
+dot-geom_line_lw.html:4:1 (dot-geom_line_lw.Rd:5): Warning: <link> inserting "type" attribute
+dot-geom_line_lw.html:12:1 (dot-geom_line_lw.Rd:5): Warning: <script> proprietary attribute "onload"
+dot-geom_line_lw.html:12:1 (dot-geom_line_lw.Rd:5): Warning: <script> inserting "type" attribute
+dot-geom_line_lw.html:17:1 (dot-geom_line_lw.Rd:5): Warning: <table> lacks "summary" attribute
+dot-geom_line_lw.html:37:1 (dot-geom_line_lw.Rd:12): Warning: <table> lacks "summary" attribute
+dot-geom_line_lw.html:46:14 (dot-geom_line_lw.Rd:16): Warning: <code> attribute "id" has invalid value "..."
+dot-geom_point_lw.html:15:44 (dot-geom_point_lw.Rd:5): Error: <main> is not recognized!
+dot-geom_point_lw.html:15:44 (dot-geom_point_lw.Rd:5): Warning: discarding unexpected <main>
+dot-geom_point_lw.html:64:1 (dot-geom_point_lw.Rd:23): Warning: discarding unexpected </main>
+dot-geom_point_lw.html:4:1 (dot-geom_point_lw.Rd:5): Warning: <link> inserting "type" attribute
+dot-geom_point_lw.html:12:1 (dot-geom_point_lw.Rd:5): Warning: <script> proprietary attribute "onload"
+dot-geom_point_lw.html:12:1 (dot-geom_point_lw.Rd:5): Warning: <script> inserting "type" attribute
+dot-geom_point_lw.html:17:1 (dot-geom_point_lw.Rd:5): Warning: <table> lacks "summary" attribute
+dot-geom_point_lw.html:37:1 (dot-geom_point_lw.Rd:12): Warning: <table> lacks "summary" attribute
+dot-geom_point_lw.html:46:14 (dot-geom_point_lw.Rd:16): Warning: <code> attribute "id" has invalid value "..."
+dot-gg_line_arg.html:15:44 (dot-gg_line_arg.Rd:5): Error: <main> is not recognized!
+dot-gg_line_arg.html:15:44 (dot-gg_line_arg.Rd:5): Warning: discarding unexpected <main>
+dot-gg_line_arg.html:51:1 (dot-gg_line_arg.Rd:14): Warning: discarding unexpected </main>
+dot-gg_line_arg.html:4:1 (dot-gg_line_arg.Rd:5): Warning: <link> inserting "type" attribute
+dot-gg_line_arg.html:12:1 (dot-gg_line_arg.Rd:5): Warning: <script> proprietary attribute "onload"
+dot-gg_line_arg.html:12:1 (dot-gg_line_arg.Rd:5): Warning: <script> inserting "type" attribute
+dot-gg_line_arg.html:17:1 (dot-gg_line_arg.Rd:5): Warning: <table> lacks "summary" attribute
+dot-map_brms_priors_to_inla.html:15:44 (dot-map_brms_priors_to_inla.Rd:5): Error: <main> is not recognized!
+dot-map_brms_priors_to_inla.html:15:44 (dot-map_brms_priors_to_inla.Rd:5): Warning: discarding unexpected <main>
+dot-map_brms_priors_to_inla.html:53:1 (dot-map_brms_priors_to_inla.Rd:15): Warning: discarding unexpected </main>
+dot-map_brms_priors_to_inla.html:4:1 (dot-map_brms_priors_to_inla.Rd:5): Warning: <link> inserting "type" attribute
+dot-map_brms_priors_to_inla.html:12:1 (dot-map_brms_priors_to_inla.Rd:5): Warning: <script> proprietary attribute "onload"
+dot-map_brms_priors_to_inla.html:12:1 (dot-map_brms_priors_to_inla.Rd:5): Warning: <script> inserting "type" attribute
+dot-map_brms_priors_to_inla.html:17:1 (dot-map_brms_priors_to_inla.Rd:5): Warning: <table> lacks "summary" attribute
+dot-map_brms_priors_to_inla.html:36:1 (dot-map_brms_priors_to_inla.Rd:10): Warning: <table> lacks "summary" attribute
+dot-parse_re_terms.html:15:44 (dot-parse_re_terms.Rd:5): Error: <main> is not recognized!
+dot-parse_re_terms.html:15:44 (dot-parse_re_terms.Rd:5): Warning: discarding unexpected <main>
+dot-parse_re_terms.html:49:1 (dot-parse_re_terms.Rd:13): Warning: discarding unexpected </main>
+dot-parse_re_terms.html:4:1 (dot-parse_re_terms.Rd:5): Warning: <link> inserting "type" attribute
+dot-parse_re_terms.html:12:1 (dot-parse_re_terms.Rd:5): Warning: <script> proprietary attribute "onload"
+dot-parse_re_terms.html:12:1 (dot-parse_re_terms.Rd:5): Warning: <script> inserting "type" attribute
+dot-parse_re_terms.html:17:1 (dot-parse_re_terms.Rd:5): Warning: <table> lacks "summary" attribute
+dot-parse_re_terms.html:36:1 (dot-parse_re_terms.Rd:10): Warning: <table> lacks "summary" attribute
+dot-scale_fill_viridis_continuous.html:15:44 (dot-scale_fill_viridis_continuous.Rd:5): Error: <main> is not recognized!
+dot-scale_fill_viridis_continuous.html:15:44 (dot-scale_fill_viridis_continuous.Rd:5): Warning: discarding unexpected <main>
+dot-scale_fill_viridis_continuous.html:65:1 (dot-scale_fill_viridis_continuous.Rd:24): Warning: discarding unexpected </main>
+dot-scale_fill_viridis_continuous.html:4:1 (dot-scale_fill_viridis_continuous.Rd:5): Warning: <link> inserting "type" attribute
+dot-scale_fill_viridis_continuous.html:12:1 (dot-scale_fill_viridis_continuous.Rd:5): Warning: <script> proprietary attribute "onload"
+dot-scale_fill_viridis_continuous.html:12:1 (dot-scale_fill_viridis_continuous.Rd:5): Warning: <script> inserting "type" attribute
+dot-scale_fill_viridis_continuous.html:17:1 (dot-scale_fill_viridis_continuous.Rd:5): Warning: <table> lacks "summary" attribute
+dot-scale_fill_viridis_continuous.html:40:1 (dot-scale_fill_viridis_continuous.Rd:15): Warning: <table> lacks "summary" attribute
+dot-scale_fill_viridis_discrete.html:15:44 (dot-scale_fill_viridis_discrete.Rd:5): Error: <main> is not recognized!
+dot-scale_fill_viridis_discrete.html:15:44 (dot-scale_fill_viridis_discrete.Rd:5): Warning: discarding unexpected <main>
+dot-scale_fill_viridis_discrete.html:54:1 (dot-scale_fill_viridis_discrete.Rd:17): Warning: discarding unexpected </main>
+dot-scale_fill_viridis_discrete.html:4:1 (dot-scale_fill_viridis_discrete.Rd:5): Warning: <link> inserting "type" attribute
+dot-scale_fill_viridis_discrete.html:12:1 (dot-scale_fill_viridis_discrete.Rd:5): Warning: <script> proprietary attribute "onload"
+dot-scale_fill_viridis_discrete.html:12:1 (dot-scale_fill_viridis_discrete.Rd:5): Warning: <script> inserting "type" attribute
+dot-scale_fill_viridis_discrete.html:17:1 (dot-scale_fill_viridis_discrete.Rd:5): Warning: <table> lacks "summary" attribute
+dot-scale_fill_viridis_discrete.html:39:1 (dot-scale_fill_viridis_discrete.Rd:12): Warning: <table> lacks "summary" attribute
+dot-should_stop_binom.html:15:44 (dot-should_stop_binom.Rd:5): Error: <main> is not recognized!
+dot-should_stop_binom.html:15:44 (dot-should_stop_binom.Rd:5): Warning: discarding unexpected <main>
+dot-should_stop_binom.html:66:1 (dot-should_stop_binom.Rd:22): Warning: discarding unexpected </main>
+dot-should_stop_binom.html:4:1 (dot-should_stop_binom.Rd:5): Warning: <link> inserting "type" attribute
+dot-should_stop_binom.html:12:1 (dot-should_stop_binom.Rd:5): Warning: <script> proprietary attribute "onload"
+dot-should_stop_binom.html:12:1 (dot-should_stop_binom.Rd:5): Warning: <script> inserting "type" attribute
+dot-should_stop_binom.html:17:1 (dot-should_stop_binom.Rd:5): Warning: <table> lacks "summary" attribute
+dot-should_stop_binom.html:37:1 (dot-should_stop_binom.Rd:11): Warning: <table> lacks "summary" attribute
+dot-to_inla_family.html:15:44 (dot-to_inla_family.Rd:5): Error: <main> is not recognized!
+dot-to_inla_family.html:15:44 (dot-to_inla_family.Rd:5): Warning: discarding unexpected <main>
+dot-to_inla_family.html:55:1 (dot-to_inla_family.Rd:17): Warning: discarding unexpected </main>
+dot-to_inla_family.html:4:1 (dot-to_inla_family.Rd:5): Warning: <link> inserting "type" attribute
+dot-to_inla_family.html:12:1 (dot-to_inla_family.Rd:5): Warning: <script> proprietary attribute "onload"
+dot-to_inla_family.html:12:1 (dot-to_inla_family.Rd:5): Warning: <script> inserting "type" attribute
+dot-to_inla_family.html:17:1 (dot-to_inla_family.Rd:5): Warning: <table> lacks "summary" attribute
+dot-to_inla_family.html:40:1 (dot-to_inla_family.Rd:12): Warning: <table> lacks "summary" attribute
+hdi_of_icdf.html:15:44 (hdi_of_icdf.Rd:5): Error: <main> is not recognized!
+hdi_of_icdf.html:15:44 (hdi_of_icdf.Rd:5): Warning: discarding unexpected <main>
+hdi_of_icdf.html:61:1 (hdi_of_icdf.Rd:19): Warning: discarding unexpected </main>
+hdi_of_icdf.html:4:1 (hdi_of_icdf.Rd:5): Warning: <link> inserting "type" attribute
+hdi_of_icdf.html:12:1 (hdi_of_icdf.Rd:5): Warning: <script> proprietary attribute "onload"
+hdi_of_icdf.html:12:1 (hdi_of_icdf.Rd:5): Warning: <script> inserting "type" attribute
+hdi_of_icdf.html:17:1 (hdi_of_icdf.Rd:5): Warning: <table> lacks "summary" attribute
+hdi_of_icdf.html:36:1 (hdi_of_icdf.Rd:10): Warning: <table> lacks "summary" attribute
+hdi_of_icdf.html:49:14 (hdi_of_icdf.Rd:16): Warning: <code> attribute "id" has invalid value "..."
+min_n_beta_binom.html:15:44 (min_n_beta_binom.Rd:5): Error: <main> is not recognized!
+min_n_beta_binom.html:15:44 (min_n_beta_binom.Rd:5): Warning: discarding unexpected <main>
+min_n_beta_binom.html:100:1 (min_n_beta_binom.Rd:45): Warning: discarding unexpected </main>
+min_n_beta_binom.html:4:1 (min_n_beta_binom.Rd:5): Warning: <link> inserting "type" attribute
+min_n_beta_binom.html:12:1 (min_n_beta_binom.Rd:5): Warning: <script> proprietary attribute "onload"
+min_n_beta_binom.html:12:1 (min_n_beta_binom.Rd:5): Warning: <script> inserting "type" attribute
+min_n_beta_binom.html:17:1 (min_n_beta_binom.Rd:5): Warning: <table> lacks "summary" attribute
+min_n_beta_binom.html:47:1 (min_n_beta_binom.Rd:22): Warning: <table> lacks "summary" attribute
+or_or.html:15:44 (or_or.Rd:6): Error: <main> is not recognized!
+or_or.html:15:44 (or_or.Rd:6): Warning: discarding unexpected <main>
+or_or.html:54:1 (or_or.Rd:17): Warning: discarding unexpected </main>
+or_or.html:4:1 (or_or.Rd:6): Warning: <link> inserting "type" attribute
+or_or.html:12:1 (or_or.Rd:6): Warning: <script> proprietary attribute "onload"
+or_or.html:12:1 (or_or.Rd:6): Warning: <script> inserting "type" attribute
+or_or.html:17:1 (or_or.Rd:6): Warning: <table> lacks "summary" attribute
+or_or.html:37:1 (or_or.Rd:12): Warning: <table> lacks "summary" attribute
+plot_assurance_with_robustness.html:15:44 (plot_assurance_with_robustness.Rd:5): Error: <main> is not recognized!
+plot_assurance_with_robustness.html:15:44 (plot_assurance_with_robustness.Rd:5): Warning: discarding unexpected <main>
+plot_assurance_with_robustness.html:102:1 (plot_assurance_with_robustness.Rd:46): Warning: discarding unexpected </main>
+plot_assurance_with_robustness.html:4:1 (plot_assurance_with_robustness.Rd:5): Warning: <link> inserting "type" attribute
+plot_assurance_with_robustness.html:12:1 (plot_assurance_with_robustness.Rd:5): Warning: <script> proprietary attribute "onload"
+plot_assurance_with_robustness.html:12:1 (plot_assurance_with_robustness.Rd:5): Warning: <script> inserting "type" attribute
+plot_assurance_with_robustness.html:17:1 (plot_assurance_with_robustness.Rd:5): Warning: <table> lacks "summary" attribute
+plot_assurance_with_robustness.html:49:1 (plot_assurance_with_robustness.Rd:23): Warning: <table> lacks "summary" attribute
+plot_bf_assurance_curve.html:15:44 (plot_bf_assurance_curve.Rd:5): Error: <main> is not recognized!
+plot_bf_assurance_curve.html:15:44 (plot_bf_assurance_curve.Rd:5): Warning: discarding unexpected <main>
+plot_bf_assurance_curve.html:82:1 (plot_bf_assurance_curve.Rd:34): Warning: discarding unexpected </main>
+plot_bf_assurance_curve.html:4:1 (plot_bf_assurance_curve.Rd:5): Warning: <link> inserting "type" attribute
+plot_bf_assurance_curve.html:12:1 (plot_bf_assurance_curve.Rd:5): Warning: <script> proprietary attribute "onload"
+plot_bf_assurance_curve.html:12:1 (plot_bf_assurance_curve.Rd:5): Warning: <script> inserting "type" attribute
+plot_bf_assurance_curve.html:17:1 (plot_bf_assurance_curve.Rd:5): Warning: <table> lacks "summary" attribute
+plot_bf_assurance_curve.html:45:1 (plot_bf_assurance_curve.Rd:19): Warning: <table> lacks "summary" attribute
+plot_bf_expected_evidence.html:15:44 (plot_bf_expected_evidence.Rd:5): Error: <main> is not recognized!
+plot_bf_expected_evidence.html:15:44 (plot_bf_expected_evidence.Rd:5): Warning: discarding unexpected <main>
+plot_bf_expected_evidence.html:76:1 (plot_bf_expected_evidence.Rd:31): Warning: discarding unexpected </main>
+plot_bf_expected_evidence.html:4:1 (plot_bf_expected_evidence.Rd:5): Warning: <link> inserting "type" attribute
+plot_bf_expected_evidence.html:12:1 (plot_bf_expected_evidence.Rd:5): Warning: <script> proprietary attribute "onload"
+plot_bf_expected_evidence.html:12:1 (plot_bf_expected_evidence.Rd:5): Warning: <script> inserting "type" attribute
+plot_bf_expected_evidence.html:17:1 (plot_bf_expected_evidence.Rd:5): Warning: <table> lacks "summary" attribute
+plot_bf_expected_evidence.html:43:1 (plot_bf_expected_evidence.Rd:18): Warning: <table> lacks "summary" attribute
+plot_bf_heatmap.html:15:44 (plot_bf_heatmap.Rd:5): Error: <main> is not recognized!
+plot_bf_heatmap.html:15:44 (plot_bf_heatmap.Rd:5): Warning: discarding unexpected <main>
+plot_bf_heatmap.html:81:1 (plot_bf_heatmap.Rd:34): Warning: discarding unexpected </main>
+plot_bf_heatmap.html:4:1 (plot_bf_heatmap.Rd:5): Warning: <link> inserting "type" attribute
+plot_bf_heatmap.html:12:1 (plot_bf_heatmap.Rd:5): Warning: <script> proprietary attribute "onload"
+plot_bf_heatmap.html:12:1 (plot_bf_heatmap.Rd:5): Warning: <script> inserting "type" attribute
+plot_bf_heatmap.html:17:1 (plot_bf_heatmap.Rd:5): Warning: <table> lacks "summary" attribute
+plot_bf_heatmap.html:44:1 (plot_bf_heatmap.Rd:19): Warning: <table> lacks "summary" attribute
+plot_decision_assurance_curve.html:15:44 (plot_decision_assurance_curve.Rd:5): Error: <main> is not recognized!
+plot_decision_assurance_curve.html:15:44 (plot_decision_assurance_curve.Rd:5): Warning: discarding unexpected <main>
+plot_decision_assurance_curve.html:89:1 (plot_decision_assurance_curve.Rd:37): Warning: discarding unexpected </main>
+plot_decision_assurance_curve.html:4:1 (plot_decision_assurance_curve.Rd:5): Warning: <link> inserting "type" attribute
+plot_decision_assurance_curve.html:12:1 (plot_decision_assurance_curve.Rd:5): Warning: <script> proprietary attribute "onload"
+plot_decision_assurance_curve.html:12:1 (plot_decision_assurance_curve.Rd:5): Warning: <script> inserting "type" attribute
+plot_decision_assurance_curve.html:17:1 (plot_decision_assurance_curve.Rd:5): Warning: <table> lacks "summary" attribute
+plot_decision_assurance_curve.html:48:1 (plot_decision_assurance_curve.Rd:20): Warning: <table> lacks "summary" attribute
+plot_decision_threshold_contour.html:15:44 (plot_decision_threshold_contour.Rd:5): Error: <main> is not recognized!
+plot_decision_threshold_contour.html:15:44 (plot_decision_threshold_contour.Rd:5): Warning: discarding unexpected <main>
+plot_decision_threshold_contour.html:86:1 (plot_decision_threshold_contour.Rd:37): Warning: discarding unexpected </main>
+plot_decision_threshold_contour.html:4:1 (plot_decision_threshold_contour.Rd:5): Warning: <link> inserting "type" attribute
+plot_decision_threshold_contour.html:12:1 (plot_decision_threshold_contour.Rd:5): Warning: <script> proprietary attribute "onload"
+plot_decision_threshold_contour.html:12:1 (plot_decision_threshold_contour.Rd:5): Warning: <script> inserting "type" attribute
+plot_decision_threshold_contour.html:17:1 (plot_decision_threshold_contour.Rd:5): Warning: <table> lacks "summary" attribute
+plot_decision_threshold_contour.html:45:1 (plot_decision_threshold_contour.Rd:20): Warning: <table> lacks "summary" attribute
+plot_interaction_surface.html:15:44 (plot_interaction_surface.Rd:5): Error: <main> is not recognized!
+plot_interaction_surface.html:15:44 (plot_interaction_surface.Rd:5): Warning: discarding unexpected <main>
+plot_interaction_surface.html:93:1 (plot_interaction_surface.Rd:41): Warning: discarding unexpected </main>
+plot_interaction_surface.html:4:1 (plot_interaction_surface.Rd:5): Warning: <link> inserting "type" attribute
+plot_interaction_surface.html:12:1 (plot_interaction_surface.Rd:5): Warning: <script> proprietary attribute "onload"
+plot_interaction_surface.html:12:1 (plot_interaction_surface.Rd:5): Warning: <script> inserting "type" attribute
+plot_interaction_surface.html:17:1 (plot_interaction_surface.Rd:5): Warning: <table> lacks "summary" attribute
+plot_interaction_surface.html:47:1 (plot_interaction_surface.Rd:21): Warning: <table> lacks "summary" attribute
+plot_power_contour.html:15:44 (plot_power_contour.Rd:5): Error: <main> is not recognized!
+plot_power_contour.html:15:44 (plot_power_contour.Rd:5): Warning: discarding unexpected <main>
+plot_power_contour.html:87:1 (plot_power_contour.Rd:37): Warning: discarding unexpected </main>
+plot_power_contour.html:4:1 (plot_power_contour.Rd:5): Warning: <link> inserting "type" attribute
+plot_power_contour.html:12:1 (plot_power_contour.Rd:5): Warning: <script> proprietary attribute "onload"
+plot_power_contour.html:12:1 (plot_power_contour.Rd:5): Warning: <script> inserting "type" attribute
+plot_power_contour.html:17:1 (plot_power_contour.Rd:5): Warning: <table> lacks "summary" attribute
+plot_power_contour.html:46:1 (plot_power_contour.Rd:20): Warning: <table> lacks "summary" attribute
+plot_power_heatmap.html:15:44 (plot_power_heatmap.Rd:5): Error: <main> is not recognized!
+plot_power_heatmap.html:15:44 (plot_power_heatmap.Rd:5): Warning: discarding unexpected <main>
+plot_power_heatmap.html:76:1 (plot_power_heatmap.Rd:31): Warning: discarding unexpected </main>
+plot_power_heatmap.html:4:1 (plot_power_heatmap.Rd:5): Warning: <link> inserting "type" attribute
+plot_power_heatmap.html:12:1 (plot_power_heatmap.Rd:5): Warning: <script> proprietary attribute "onload"
+plot_power_heatmap.html:12:1 (plot_power_heatmap.Rd:5): Warning: <script> inserting "type" attribute
+plot_power_heatmap.html:17:1 (plot_power_heatmap.Rd:5): Warning: <table> lacks "summary" attribute
+plot_power_heatmap.html:43:1 (plot_power_heatmap.Rd:18): Warning: <table> lacks "summary" attribute
+plot_precision_assurance_curve.html:15:44 (plot_precision_assurance_curve.Rd:5): Error: <main> is not recognized!
+plot_precision_assurance_curve.html:15:44 (plot_precision_assurance_curve.Rd:5): Warning: discarding unexpected <main>
+plot_precision_assurance_curve.html:82:1 (plot_precision_assurance_curve.Rd:34): Warning: discarding unexpected </main>
+plot_precision_assurance_curve.html:4:1 (plot_precision_assurance_curve.Rd:5): Warning: <link> inserting "type" attribute
+plot_precision_assurance_curve.html:12:1 (plot_precision_assurance_curve.Rd:5): Warning: <script> proprietary attribute "onload"
+plot_precision_assurance_curve.html:12:1 (plot_precision_assurance_curve.Rd:5): Warning: <script> inserting "type" attribute
+plot_precision_assurance_curve.html:17:1 (plot_precision_assurance_curve.Rd:5): Warning: <table> lacks "summary" attribute
+plot_precision_assurance_curve.html:45:1 (plot_precision_assurance_curve.Rd:19): Warning: <table> lacks "summary" attribute
+plot_precision_fan_chart.html:15:44 (plot_precision_fan_chart.Rd:5): Error: <main> is not recognized!
+plot_precision_fan_chart.html:15:44 (plot_precision_fan_chart.Rd:5): Warning: discarding unexpected <main>
+plot_precision_fan_chart.html:87:1 (plot_precision_fan_chart.Rd:37): Warning: discarding unexpected </main>
+plot_precision_fan_chart.html:4:1 (plot_precision_fan_chart.Rd:5): Warning: <link> inserting "type" attribute
+plot_precision_fan_chart.html:12:1 (plot_precision_fan_chart.Rd:5): Warning: <script> proprietary attribute "onload"
+plot_precision_fan_chart.html:12:1 (plot_precision_fan_chart.Rd:5): Warning: <script> inserting "type" attribute
+plot_precision_fan_chart.html:17:1 (plot_precision_fan_chart.Rd:5): Warning: <table> lacks "summary" attribute
+plot_precision_fan_chart.html:46:1 (plot_precision_fan_chart.Rd:20): Warning: <table> lacks "summary" attribute
+* checking for non-standard things in the check directory ... OK
+* checking for detritus in the temp directory ... OK
+* DONE
+Status: 2 NOTEs

@@ -1,0 +1,43 @@
+beta_binom_power        Analytic Assurance for Beta-Binomial Designs
+beta_weights_on_grid    Beta-Prior Weights Over an Effect Grid
+brms_inla_power         Core Bayesian Assurance / Power Simulation
+                        (Modern, Multi-Effect Ready)
+brms_inla_power_sequential
+                        Sequential Bayesian Assurance Simulation Engine
+                        (Modern, Multi-Effect Ready)
+brms_inla_power_two_stage
+                        Two-Stage Bayesian Assurance Simulation
+                        (Multi-Effect, User-Friendly API)
+hdi_of_icdf             Highest Density Interval from an Inverse CDF
+min_n_beta_binom        Minimum n for Target Assurance (Beta-Binomial)
+plot_assurance_with_robustness
+                        Plot Assurance with Robustness Ribbon
+                        (Multi-Effect Grid Friendly)
+plot_bf_assurance_curve
+                        Plot Bayes Factor Assurance Curve (Multi-Effect
+                        Grid Friendly)
+plot_bf_expected_evidence
+                        Plot Expected Evidence (mean log10 BF10,
+                        Multi-Effect Grid Friendly)
+plot_bf_heatmap         Plot Bayes Factor Heatmap (mean log10 BF10,
+                        Multi-Effect Grid Friendly)
+plot_decision_assurance_curve
+                        Plot Decision Assurance Curve (Multi-Effect
+                        Grid Friendly)
+plot_decision_threshold_contour
+                        Plot Decision Threshold Contour (Multi-Effect
+                        Grid Friendly)
+plot_interaction_surface
+                        Plot Interaction Assurance
+                        Surface/Heatmap/Lines (Multi-Effect Grid
+                        Friendly)
+plot_power_contour      Plot Bayesian Power / Assurance Contour
+                        (Multi-Effect Grid Friendly)
+plot_power_heatmap      Plot Bayesian Power / Assurance Heatmap
+                        (Multi-Effect Grid Friendly)
+plot_precision_assurance_curve
+                        Plot Precision Assurance Curve (Multi-Effect
+                        Grid Friendly)
+plot_precision_fan_chart
+                        Plot Precision Assurance Fan Chart
+                        (Multi-Effect Grid Friendly)
