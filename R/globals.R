@@ -10,5 +10,6 @@ utils::globalVariables(c(
   "scenario", "ymin", "ymax", "ymid", "p_star",
   "q05", "q25", "q50", "q75", "q95", "ci_width",
   "mean_", "sd_","hit", "hits", "trials", "lo", "hi", "sim", "n", "treatment", "age_effect",
-  "._ok_all","n_recommended","value"
+  "._ok_all","n_recommended","value",
+  "sample_size", ".w", "sims_used", "effect_val"
 ))
