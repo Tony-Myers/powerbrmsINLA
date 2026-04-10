@@ -11,5 +11,7 @@ utils::globalVariables(c(
   "q05", "q25", "q50", "q75", "q95", "ci_width",
   "mean_", "sd_","hit", "hits", "trials", "lo", "hi", "sim", "n", "treatment", "age_effect",
   "._ok_all","n_recommended","value",
-  "sample_size", ".w", "sims_used", "effect_val"
+  "sample_size", ".w", "sims_used", "effect_val",
+  "had_warning", "warning_msg", "log_mlik", "mode_ok",
+  "prop_warned", "n_failed", "mlik_min", "mlik_max", "mlik_median", "n_mode_ok"
 ))

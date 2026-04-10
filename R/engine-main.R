@@ -314,9 +314,19 @@ brms_inla_power <- function(
           inla_args$control.compute <- utils::modifyList(inla_args$control.compute %||% list(), list(mlik = TRUE))
         }
         
+        inla_warnings <- character(0L)
         fit <- tryCatch({
-          suppressWarnings(suppressMessages(do.call(INLA::inla, inla_args)))
+          withCallingHandlers(
+            suppressMessages(do.call(INLA::inla, inla_args)),
+            warning = function(w) {
+              inla_warnings <<- c(inla_warnings, conditionMessage(w))
+              invokeRestart("muffleWarning")
+            }
+          )
         }, error = function(e) e)
+        had_warning  <- length(inla_warnings) > 0L
+        log_mlik_val <- .first_log_mlik(fit)
+        mode_ok      <- !inherits(fit, "error") && !is.null(fit[["mode"]])
         
         # ===== EXTRACT =====
         fitnames <- if (!inherits(fit, "error") && !is.null(fit$summary.fixed))
@@ -331,7 +341,11 @@ brms_inla_power <- function(
             post_prob_threshold = NA_real_,
             post_prob_rope = NA_real_,
             ci_width = NA_real_, ci_lower = NA_real_, ci_upper = NA_real_,
-            bf10 = NA_real_, log10_bf10 = NA_real_
+            bf10 = NA_real_, log10_bf10 = NA_real_,
+            had_warning = had_warning,
+            warning_msg = paste(inla_warnings, collapse = "; "),
+            log_mlik    = NA_real_,
+            mode_ok     = mode_ok
           )
         } else {
           mean_b_vec <- sapply(target_coefs, function(nm) as.numeric(fit$summary.fixed[nm, "mean"]))
@@ -425,10 +439,14 @@ brms_inla_power <- function(
             post_prob_threshold = post_prob_threshold,
             post_prob_rope = post_prob_rope,
             ci_width = ci_width, ci_lower = ci_lower, ci_upper = ci_upper,
-            bf10 = bf10, log10_bf10 = log10_bf10
+            bf10 = bf10, log10_bf10 = log10_bf10,
+            had_warning = had_warning,
+            warning_msg = paste(inla_warnings, collapse = "; "),
+            log_mlik    = log_mlik_val,
+            mode_ok     = mode_ok
           )
         }
-        
+
         step <- step + 1L
         if (show_progress) .simple_progress_bar(step, total_steps)
       } # sim loop
@@ -457,9 +475,24 @@ brms_inla_power <- function(
       .groups = "drop"
     )
   
-  list(
-    results = res,
-    summary = summ,
+  # ===== DIAGNOSTICS SUMMARY =====
+  diag_summ <- res %>%
+    dplyr::group_by(dplyr::across(dplyr::all_of(group_vars))) %>%
+    dplyr::summarise(
+      prop_warned = mean(had_warning, na.rm = TRUE),
+      n_failed    = sum(!ok),
+      mlik_min    = if (any(is.finite(log_mlik))) min(log_mlik,  na.rm = TRUE) else NA_real_,
+      mlik_max    = if (any(is.finite(log_mlik))) max(log_mlik,  na.rm = TRUE) else NA_real_,
+      mlik_median = if (any(is.finite(log_mlik)))
+        stats::median(log_mlik[is.finite(log_mlik)]) else NA_real_,
+      n_mode_ok   = sum(mode_ok, na.rm = TRUE),
+      .groups = "drop"
+    )
+
+  out <- list(
+    results     = res,
+    summary     = summ,
+    diagnostics = diag_summ,
     settings = list(
       formula = formula,
       inla_formula = inla_formula_alt,
@@ -484,4 +517,6 @@ brms_inla_power <- function(
       )
     )
   )
+  class(out) <- "brms_inla_power"
+  out
 }
