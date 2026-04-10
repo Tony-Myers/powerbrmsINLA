@@ -1,6 +1,6 @@
 Package: powerbrmsINLA
 Title: Bayesian Power Analysis Using 'brms' and 'INLA'
-Version: 1.1.0
+Version: 1.1.1
 Maintainer: Tony Myers <admyers@aol.com>
 Authors@R: person(given = "Tony",
                   family = "Myers", 
@@ -30,9 +30,12 @@ Suggests:
     INLA (>= 22.05.07),
     testthat (>= 3.0.0),
     rmarkdown,
+    knitr,
     MASS,
     circular,
-    sn
+    sn,
+    bayesassurance
+VignetteBuilder: knitr
 URL: https://github.com/Tony-Myers/powerbrmsINLA
 BugReports: https://github.com/Tony-Myers/powerbrmsINLA/issues
 Additional_repositories: https://inla.r-inla-download.org/R/stable

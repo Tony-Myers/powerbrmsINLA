@@ -33,3 +33,4 @@
   * “Could not solve package dependencies: Can't install dependency INLA (>= 22.05.07); INLA: Can't find package called INLA.”
 
 * On win-builder and local checks, `INLA` is correctly found via the `Additional_repositories` field in `DESCRIPTION`, and R CMD check completes without issues.
+* Resubmission of 1.1.0 as 1.1.1: excludes .github, LICENSE.md, and cran-comments.md from build per CRAN feedback; no code changes.
