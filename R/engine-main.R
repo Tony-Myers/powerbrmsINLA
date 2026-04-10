@@ -25,8 +25,18 @@
 #' @param effect_threshold Effect-size threshold.
 #' @param credible_level Credible interval level (default 0.95).
 #' @param rope_bounds Optional Region of Practical Equivalence bounds (length 2 vector).
-#' @param error_sd Gaussian residual standard deviation.
-#' @param group_sd Random effects standard deviation.
+#' @param error_sd Residual standard deviation for Gaussian-like families.
+#'   Accepts either:
+#'   * A positive numeric scalar (default `1`), or
+#'   * A named list specifying a distribution from which a fresh value is drawn
+#'     at every simulation iteration:
+#'     - `list(dist = "halfnormal", sd = X, location = Y)` — draws
+#'       `|Normal(location, sd)|`; `location` defaults to 0.
+#'     - `list(dist = "lognormal", meanlog = X, sdlog = Y)`
+#'     - `list(dist = "uniform", min = X, max = Y)` — requires `min >= 0`.
+#'   See [validate_sd_spec()] for validation details.
+#' @param group_sd Random-effects standard deviation.  Accepts the same scalar
+#'   or distributional list formats as `error_sd`.
 #' @param obs_per_group Observations per group.
 #' @param predictor_means Optional named list of predictor means.
 #' @param predictor_sds Optional named list of predictor standard deviations.
@@ -42,7 +52,43 @@
 #'   "4:1" for 4+ cores, "2:1" for 2-3 cores, "1:1" otherwise.
 #' @param progress One of "auto", "text", or "none" for progress display.
 #' @param family_args List of arguments for family-specific data generators.
-#' @return List with results, summary, and settings.
+#' @details
+#' ## Variance uncertainty (distributional error_sd / group_sd)
+#'
+#' When `error_sd` or `group_sd` is supplied as a distributional list, a fresh
+#' scalar value is drawn from the specified distribution at the start of
+#' **each** simulation iteration.  The drawn value is used by the automatic
+#' data generator for that iteration and stored in the per-simulation results
+#' as `sampled_error_sd` or `sampled_group_sd`.  The per-cell summary then
+#' reports the mean and standard deviation of the drawn values.
+#'
+#' This corresponds to integrating power over variance uncertainty, analogous
+#' to the unconditional Bayesian assurance of O'Hagan & Stevens (2001) and
+#' the prior-predictive power framing of Chen et al. (2018).  It is
+#' particularly useful when the residual variance is itself uncertain (e.g.,
+#' estimated from a small pilot study).
+#'
+#' Note: distributional `error_sd` / `group_sd` specifications only affect
+#' the built-in automatic data generator.  When a custom `data_generator`
+#' function is supplied the drawn values are recorded but are **not** injected
+#' into the custom function.
+#'
+#' @examples
+#' \dontrun{
+#' # Integrate over uncertainty in the residual SD using a half-normal prior
+#' # centred at 1.0 with spread 0.3
+#' brms_inla_power(
+#'   formula      = y ~ treatment,
+#'   effect_name  = "treatment",
+#'   effect_grid  = 0.5,
+#'   sample_sizes = c(50, 100),
+#'   nsims        = 50,
+#'   error_sd     = list(dist = "halfnormal", sd = 0.3, location = 1.0),
+#'   seed         = 42
+#' )
+#' }
+#'
+#' @return List with results, summary, diagnostics, and settings.
 #' @export
 brms_inla_power <- function(
     formula,
@@ -140,7 +186,11 @@ brms_inla_power <- function(
   progress   <- match.arg(progress)
   bf_method  <- match.arg(bf_method)
   stopifnot(is.numeric(bf_cutoff), length(bf_cutoff) == 1L, is.finite(bf_cutoff), bf_cutoff > 0)
-  
+  validate_sd_spec(error_sd, "error_sd")
+  validate_sd_spec(group_sd, "group_sd")
+  error_sd_is_dist <- is.list(error_sd)
+  group_sd_is_dist <- is.list(group_sd)
+
   # ===== EFFECT GRID VALIDATION =====
   if (is.data.frame(effect_grid)) {
     grid_names <- colnames(effect_grid)
@@ -197,14 +247,17 @@ brms_inla_power <- function(
   needs_E       <- fam_inla %in% c("poisson")
   
   # ===== DATA GENERATOR =====
-  if (is.null(data_generator)) {
+  using_auto_generator <- is.null(data_generator)
+  if (using_auto_generator) {
+    # When error_sd / group_sd are distributional, pass a scalar placeholder;
+    # the real per-iteration value is injected via environment mutation in the loop.
     data_generator <- .auto_data_generator(
       formula = formula,
       effect_name = effect_name,
       family = family,
       family_args = family_args,
-      error_sd = error_sd,
-      group_sd = group_sd,
+      error_sd = if (error_sd_is_dist) 1.0 else error_sd,
+      group_sd = if (group_sd_is_dist) 0.5 else group_sd,
       obs_per_group = obs_per_group,
       predictor_means = predictor_means,
       predictor_sds = predictor_sds
@@ -273,6 +326,15 @@ brms_inla_power <- function(
     for (eff_idx in effect_rows) {
       sim_rows <- vector("list", nsims)
       for (s in seq_len(nsims)) {
+        # ===== SAMPLE SDs (distributional specs) =====
+        cur_error_sd <- if (error_sd_is_dist) .sample_sd_spec(error_sd) else as.numeric(error_sd)
+        cur_group_sd <- if (group_sd_is_dist) .sample_sd_spec(group_sd) else as.numeric(group_sd)
+        if (using_auto_generator) {
+          .gen_env <- environment(data_generator)
+          if (error_sd_is_dist) .gen_env$error_sd <- cur_error_sd
+          if (group_sd_is_dist) .gen_env$group_sd <- cur_group_sd
+        }
+
         # ===== GENERATE DATA =====
         if (is_multi) {
           eff_row <- effect_grid[eff_idx, , drop = FALSE]
@@ -345,7 +407,9 @@ brms_inla_power <- function(
             had_warning = had_warning,
             warning_msg = paste(inla_warnings, collapse = "; "),
             log_mlik    = NA_real_,
-            mode_ok     = mode_ok
+            mode_ok     = mode_ok,
+            sampled_error_sd = if (error_sd_is_dist) cur_error_sd else NA_real_,
+            sampled_group_sd = if (group_sd_is_dist) cur_group_sd else NA_real_
           )
         } else {
           mean_b_vec <- sapply(target_coefs, function(nm) as.numeric(fit$summary.fixed[nm, "mean"]))
@@ -443,7 +507,9 @@ brms_inla_power <- function(
             had_warning = had_warning,
             warning_msg = paste(inla_warnings, collapse = "; "),
             log_mlik    = log_mlik_val,
-            mode_ok     = mode_ok
+            mode_ok     = mode_ok,
+            sampled_error_sd = if (error_sd_is_dist) cur_error_sd else NA_real_,
+            sampled_group_sd = if (group_sd_is_dist) cur_group_sd else NA_real_
           )
         }
 
@@ -468,10 +534,14 @@ brms_inla_power <- function(
       power_rope      = if (!is.null(rope_bounds)) mean(post_prob_rope <= (1 - prob_threshold), na.rm = TRUE) else NA_real_,
       avg_ci_width    = mean(ci_width, na.rm = TRUE),
       ci_coverage     = if (!is.null(precision_target)) mean(ci_width <= precision_target, na.rm = TRUE) else NA_real_,
-      bf_hit_3        = mean(bf10 >= 3,  na.rm = TRUE),
-      bf_hit_10       = mean(bf10 >= bf_cutoff, na.rm = TRUE),
-      mean_log10_bf   = mean(log10_bf10, na.rm = TRUE),
-      nsims_ok        = sum(ok, na.rm = TRUE),
+      bf_hit_3              = mean(bf10 >= 3,  na.rm = TRUE),
+      bf_hit_10             = mean(bf10 >= bf_cutoff, na.rm = TRUE),
+      mean_log10_bf         = mean(log10_bf10, na.rm = TRUE),
+      nsims_ok              = sum(ok, na.rm = TRUE),
+      mean_sampled_error_sd = if (any(!is.na(sampled_error_sd))) mean(sampled_error_sd, na.rm = TRUE) else NA_real_,
+      sd_sampled_error_sd   = if (any(!is.na(sampled_error_sd))) stats::sd(sampled_error_sd, na.rm = TRUE) else NA_real_,
+      mean_sampled_group_sd = if (any(!is.na(sampled_group_sd))) mean(sampled_group_sd, na.rm = TRUE) else NA_real_,
+      sd_sampled_group_sd   = if (any(!is.na(sampled_group_sd))) stats::sd(sampled_group_sd, na.rm = TRUE) else NA_real_,
       .groups = "drop"
     )
   
@@ -514,7 +584,9 @@ brms_inla_power <- function(
         mean = prior_map$control_fixed$mean,
         sd   = lapply(prior_map$control_fixed$prec, function(p)
           if (is.numeric(p) && p > 0) sqrt(1/p) else NA_real_)
-      )
+      ),
+      error_sd = error_sd,
+      group_sd = group_sd
     )
   )
   class(out) <- "brms_inla_power"

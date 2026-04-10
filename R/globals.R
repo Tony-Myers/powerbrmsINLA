@@ -13,5 +13,8 @@ utils::globalVariables(c(
   "._ok_all","n_recommended","value",
   "sample_size", ".w", "sims_used", "effect_val",
   "had_warning", "warning_msg", "log_mlik", "mode_ok",
-  "prop_warned", "n_failed", "mlik_min", "mlik_max", "mlik_median", "n_mode_ok"
+  "prop_warned", "n_failed", "mlik_min", "mlik_max", "mlik_median", "n_mode_ok",
+  "sampled_error_sd", "sampled_group_sd",
+  "mean_sampled_error_sd", "sd_sampled_error_sd",
+  "mean_sampled_group_sd", "sd_sampled_group_sd"
 ))
