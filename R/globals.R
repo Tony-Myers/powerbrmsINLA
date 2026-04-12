@@ -16,5 +16,6 @@ utils::globalVariables(c(
   "prop_warned", "n_failed", "mlik_min", "mlik_max", "mlik_median", "n_mode_ok",
   "sampled_error_sd", "sampled_group_sd",
   "mean_sampled_error_sd", "sd_sampled_error_sd",
-  "mean_sampled_group_sd", "sd_sampled_group_sd"
+  "mean_sampled_group_sd", "sd_sampled_group_sd",
+  "prior", "eff_label", "density", "x"
 ))
