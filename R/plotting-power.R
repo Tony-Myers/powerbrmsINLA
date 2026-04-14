@@ -1,12 +1,24 @@
-#' Draw a filled contour plot of assurance for a chosen metric,
+#' Draw a filled contour plot of conditional Bayesian power for a chosen metric,
 #' as a function of two effect grid columns and sample size.
+#'
+#' @description
+#' Plots the conditional Bayesian power — the probability of meeting the
+#' decision criterion at each fixed effect size and sample size — as a filled
+#' contour surface.
+#'
+#' @details
+#' These plots display **conditional Bayesian power** — the probability of
+#' meeting the decision criterion at a fixed effect size.  For unconditional
+#' assurance (averaged over a design prior on effect size), see
+#' [plot_assurance_curve()].
 #'
 #' @param power_results Output from a `brms_inla_power` function.
 #' @param power_metric Which metric to plot: "direction", "threshold", or "rope".
 #' @param x_effect Name of effect grid column for x-axis (default = first effect).
 #' @param y_effect Name of effect grid column for y-axis (default = "n").
 #' @param facet_by Optional effect grid column(s) to facet by.
-#' @param power_threshold Optional contour line for assurance (default 0.8).
+#' @param power_threshold Optional reference contour line for conditional power
+#'   (default 0.8).
 #' @param show_threshold_line Logical; add a red contour at \code{power_threshold}.
 #' @param title,subtitle Optional plot labels.
 #' @return A ggplot object.
@@ -92,11 +104,11 @@ plot_power_contour <- function(power_results,
   p <- ggplot2::ggplot(plot_dat, do.call(ggplot2::aes, aes_args)) +
     ggplot2::geom_contour_filled(bins = 12, alpha = 0.9) +
     .add_contour_lines(colour = "white", alpha = 0.3, width = 0.2) +
-    .scale_fill_viridis_discrete(name = "Assurance") +
+    .scale_fill_viridis_discrete(name = "Conditional power") +
     ggplot2::labs(
       x        = x_effect,
       y        = y_effect,
-      title    = title %||% paste("Assurance contour (", power_metric, ")", sep = ""),
+      title    = title %||% paste0("Conditional Bayesian power contour (", power_metric, ")"),
       subtitle = subtitle
     ) +
     ggplot2::theme_minimal()
@@ -119,9 +131,20 @@ plot_power_contour <- function(power_results,
   
   p
 }
-#' Plot Bayesian Power / Assurance Heatmap (Multi-Effect Grid Friendly)
+#' Plot Conditional Bayesian Power Heatmap (Multi-Effect Grid Friendly)
 #'
-#' Heatmap of assurance for a chosen metric across two selected effect grid variables and sample sizes.
+#' Heatmap of conditional Bayesian power for a chosen metric across two
+#' selected effect grid variables and sample sizes.
+#'
+#' @description
+#' Displays the conditional Bayesian power — the probability of meeting the
+#' decision criterion at each fixed effect size — as a colour-filled heatmap.
+#'
+#' @details
+#' These plots display **conditional Bayesian power** — the probability of
+#' meeting the decision criterion at a fixed effect size.  For unconditional
+#' assurance (averaged over a design prior on effect size), see
+#' [plot_assurance_curve()].
 #'
 #' @inheritParams plot_power_contour
 #' @return A ggplot object.
@@ -156,14 +179,14 @@ plot_power_heatmap <- function(power_results,
                    fill = rlang::sym(power_col))
   p <- ggplot2::ggplot(plot_dat, do.call(ggplot2::aes, aes_args)) +
     ggplot2::geom_tile() +
-    .scale_fill_viridis_continuous(name = "Assurance",
+    .scale_fill_viridis_continuous(name = "Conditional power",
                                    limits = c(0, 1),
                                    breaks = seq(0, 1, 0.2),
                                    labels = scales::percent_format(accuracy = 1)) +
     ggplot2::labs(
       x = x_effect,
       y = y_effect,
-      title = title %||% paste("Assurance heatmap for", power_metric),
+      title = title %||% paste("Conditional Bayesian power heatmap for", power_metric),
       subtitle = subtitle
     ) +
     ggplot2::theme_minimal()

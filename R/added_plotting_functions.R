@@ -1,7 +1,8 @@
-#' Plot Interaction Assurance Surface/Heatmap/Lines (Multi-Effect Grid Friendly)
+#' Plot Interaction Conditional Power Surface/Heatmap/Lines (Multi-Effect Grid Friendly)
 #'
-#' Visualizes a metric (e.g., assurance) as a function of two effect grid variables
-#' for a fixed sample size or averaged over n. Allows line, heatmap, or contour modes.
+#' Visualizes a metric (e.g., conditional Bayesian power) as a function of two
+#' effect grid variables for a fixed sample size or averaged over n.
+#' Allows line, heatmap, or contour modes.
 #'
 #' @param data Data frame (typically power_results$summary).
 #' @param metric Name of the summary column to plot, e.g. "power_direction", "power_threshold".

@@ -1,8 +1,15 @@
 
-#' Plot Precision Assurance Curve (Multi-Effect Grid Friendly)
+#' Plot Precision Conditional Power Curve (Multi-Effect Grid Friendly)
 #'
-#' Plots the assurance (proportion of runs meeting CI width <= target) vs. a chosen effect grid variable across sample size(s).
+#' Plots the conditional power for precision (proportion of runs where CI width
+#' <= target) vs. a chosen effect grid variable across sample size(s).
 #' Supports faceting, effect filtering, and weights.
+#'
+#' @details
+#' These plots display **conditional Bayesian power** — the probability of
+#' achieving the precision criterion at a fixed effect size.  For unconditional
+#' assurance (averaged over a design prior on effect size), see
+#' [plot_assurance_curve()].
 #'
 #' @param power_results List returned by `brms_inla_power*`.
 #' @param precision_target Numeric; credible interval width threshold for success.
@@ -69,8 +76,8 @@ plot_precision_assurance_curve <- function(
     ggplot2::scale_y_continuous(limits = c(0,1), labels = scales::percent_format(accuracy = 1)) +
     ggplot2::labs(
       x = x_effect,
-      y = paste0("Assurance: P(width <=", precision_target, ")"),
-      title = title %||% "Precision assurance curve",
+      y = paste0("Conditional power: P(width <= ", precision_target, ")"),
+      title = title %||% "Precision conditional power curve",
       subtitle = subtitle
     ) +
     ggplot2::theme_minimal()
@@ -83,7 +90,7 @@ plot_precision_assurance_curve <- function(
 }
 
 
-#' Precision assurance as a function of sample size
+#' Precision conditional power as a function of sample size
 #'
 #' Plots the proportion of simulations in which the posterior credible
 #' interval width is less than or equal to a target, as a function of
@@ -93,11 +100,17 @@ plot_precision_assurance_curve <- function(
 #' This implementation works directly from the per-simulation results
 #' (column `ci_width`) and does not rely on the robustness engine.
 #'
+#' @details
+#' These plots display **conditional Bayesian power** — the probability of
+#' achieving the precision criterion at a fixed effect size.  For unconditional
+#' assurance (averaged over a design prior on effect size), see
+#' [plot_assurance_curve()].
+#'
 #' @param power_results Output from a `brms_inla_power*` function, or a
 #'   data.frame with at least columns `n` and `ci_width`, plus any
 #'   effect-grid columns (e.g. `treatment`, `age_effect`).
 #' @param ci_width_target Numeric, target width for the credible interval.
-#'   Assurance is defined as Pr(ci_width <= ci_width_target).
+#'   Conditional power is defined as Pr(ci_width <= ci_width_target).
 #' @param effect_filter Optional named list for filtering effect-grid
 #'   columns, e.g. `list(treatment = 0.3)`.
 #' @param colour_by Optional name of an effect-grid column to colour
@@ -226,13 +239,13 @@ plot_precision_fan_chart <- function(
     ) +
     ggplot2::labs(
       x        = "n",
-      y        = "Assurance P(width <= target)",
-      title    = title %||% "Precision assurance vs sample size",
+      y        = "Conditional power: P(width <= target)",
+      title    = title %||% "Precision conditional power vs sample size",
       subtitle = subtitle %||% paste0("Target CI width: ", ci_width_target)
     ) +
     ggplot2::theme_minimal()
 }
-#' Add sample-size decision overlay to an assurance contour
+#' Add sample-size decision overlay to a conditional power contour
 #'
 #' Overlays the output of `decide_sample_size()` as a step-line
 #' on a contour plot (e.g. from `plot_power_contour()`).

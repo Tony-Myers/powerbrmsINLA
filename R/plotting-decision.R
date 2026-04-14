@@ -1,9 +1,15 @@
-#' Plot Decision Assurance Curve (Multi-Effect Grid Friendly)
+#' Plot Conditional Power Curve for a Decision Rule (Multi-Effect Grid Friendly)
 #'
-#' Plots the assurance (proportion of simulation runs meeting a
+#' Plots the conditional Bayesian power (proportion of simulation runs meeting a
 #' posterior probability decision rule) versus an effect grid variable,
 #' for a given metric ("direction", "threshold", or "rope") at a fixed
 #' decision probability threshold p_star.
+#'
+#' @details
+#' These plots display **conditional Bayesian power** — the probability of
+#' meeting the decision criterion at a fixed effect size.  For unconditional
+#' assurance (averaged over a design prior on effect size), see
+#' [plot_assurance_curve()].
 #'
 #' @param power_results A list returned by `brms_inla_power*`.
 #' @param metric Decision metric: "direction", "threshold", or "rope".
@@ -79,8 +85,8 @@ plot_decision_assurance_curve <- function(
     ggplot2::scale_y_continuous(limits = c(0,1), labels = scales::percent_format(accuracy = 1)) +
     ggplot2::labs(
       x = x_effect,
-      y = paste0("Assurance: P{ post-prob >= ", p_star, " }"),
-      title = title %||% paste("Decision assurance (", metric, ")", sep = ""),
+      y = paste0("Conditional power: P(post-prob >= ", p_star, ")"),
+      title = title %||% paste0("Conditional Bayesian power (", metric, ")"),
       subtitle = subtitle
     ) +
     ggplot2::theme_minimal()
@@ -95,7 +101,7 @@ plot_decision_assurance_curve <- function(
 
 #' Plot Decision Threshold Contour (Multi-Effect Grid Friendly)
 #'
-#' Shows assurance as a function of decision threshold p* and one effect grid column, optionally faceted.
+#' Shows conditional Bayesian power as a function of decision threshold p* and one effect grid column, optionally faceted.
 #'
 #' @param power_results brms_inla_power list (or two-stage, etc.)
 #' @param metric Which metric: "direction", "threshold", "rope"
@@ -166,11 +172,11 @@ plot_decision_threshold_contour <- function(
                        ggplot2::aes(x = p_star, y = !!rlang::sym(effect_var), z = assurance)) +
     ggplot2::geom_contour_filled(bins = 12, alpha = 0.9) +
     .add_contour_lines(colour = "white", alpha = 0.3, width = 0.2) +
-    ggplot2::scale_fill_viridis_d(name = "Assurance") +
+    ggplot2::scale_fill_viridis_d(name = "Conditional power") +
     ggplot2::labs(
       x = "Decision threshold p*",
       y = effect_var,
-      title = title %||% paste("Assurance contour for", metric),
+      title = title %||% paste("Conditional power contour for", metric),
       subtitle = subtitle
     ) +
     ggplot2::theme_minimal()

@@ -1,7 +1,9 @@
-#' Bayes-factor assurance curve with Wilson CIs (multi-effect grid friendly)
+#' Conditional Bayesian power curve for the Bayes factor criterion with Wilson CIs
+#' (multi-effect grid friendly)
 #'
-#' Plots the proportion of simulations in which BF10 meets or exceeds a threshold,
-#' grouped by sample size and any effect grid variables.
+#' Plots the conditional power — the proportion of simulations in which BF10
+#' meets or exceeds a threshold at each fixed effect size — grouped by sample
+#' size and any effect grid variables.
 #'
 #' @param x Engine result (list with $results) or a data.frame with at least
 #'   columns \code{n}, \code{bf10} and any effect columns (e.g., treatment).
@@ -144,19 +146,19 @@ plot_bf_assurance_curve_smooth <- function(x, cutoff = 10, effect_filter = NULL)
   p +
     ggplot2::scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
     ggplot2::labs(
-      title = paste0("Bayes-factor assurance (Pr(BF10 >= ", cutoff, "))"),
+      title = paste0("Conditional power: Pr(BF10 >= ", cutoff, ")"),
       x     = "Sample size (n)",
-      y     = "Assurance"
+      y     = "Conditional power"
     ) +
     ggplot2::theme_minimal()
 }
 
-#' Bayes-factor assurance curve (user-facing wrapper)
+#' Bayes-factor conditional power curve (user-facing wrapper)
 #'
 #' This is the main function users should call to visualise
-#' Bayes-factor "power" / assurance. It is a thin wrapper
-#' around \code{plot_bf_assurance_curve_smooth()}, so all
-#' existing behaviour is preserved.
+#' conditional Bayesian power for the Bayes factor criterion.
+#' It is a thin wrapper around \code{plot_bf_assurance_curve_smooth()},
+#' so all existing behaviour is preserved.
 #'
 #' @param power_results Output from a brms_inla_power* function
 #'   (or a data.frame with columns n, bf10 and any effect columns).
