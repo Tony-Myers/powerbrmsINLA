@@ -12,7 +12,14 @@
 #' **Assurance mode** (recommended): supply `prior_weights` with a design prior
 #' over the effect grid.  The function calls [compute_assurance()] internally
 #' and returns the smallest sample size where *unconditional* Bayesian
-#' assurance reaches `target` for each requested metric.
+#' assurance reaches the per-metric target for each requested metric.
+#'
+#' In assurance mode the numeric value passed to `direction`, `threshold`,
+#' `rope_in`, or `bf10` is the **assurance target** for that metric.
+#' For example, `direction = 0.70` finds the smallest n where direction
+#' assurance ≥ 0.70, and `threshold = 0.60` finds the smallest n where
+#' threshold assurance ≥ 0.60.  Multiple metrics may be requested
+#' simultaneously, each with its own target.
 #'
 #' **Conditional mode** (backward compatible): when `prior_weights = NULL`, the
 #' function selects the smallest n at which the per-cell conditional power meets
@@ -22,12 +29,15 @@
 #'
 #' @param x A list with `$summary` (engine output) or a plain `data.frame`
 #'   summary.
-#' @param direction Numeric in \eqn{[0,1]}: required power for
-#'   `power_direction` (optional).
-#' @param threshold Numeric in \eqn{[0,1]}: required power for
-#'   `power_threshold` (optional).
-#' @param rope_in Numeric in \eqn{[0,1]}: maximum allowed Pr(in ROPE)
-#'   (optional).
+#' @param direction Numeric in \eqn{[0,1]}: assurance target (assurance mode)
+#'   or required conditional power (conditional mode) for `power_direction`.
+#'   Omit to exclude this metric.
+#' @param threshold Numeric in \eqn{[0,1]}: assurance target (assurance mode)
+#'   or required conditional power (conditional mode) for `power_threshold`.
+#'   Omit to exclude this metric.
+#' @param rope_in Numeric in \eqn{[0,1]}: assurance target (assurance mode) or
+#'   maximum allowed Pr(in ROPE) (conditional mode).  Omit to exclude this
+#'   metric.
 #' @param bf10 Numeric Bayes-factor cutoff (e.g., 10).  If provided the
 #'   function looks for a column `bf_hit_<bf10>`; if absent it falls back to
 #'   per-simulation bf10 in `x$results`.
@@ -40,8 +50,10 @@
 #'   effect-grid values, or a distribution list such as
 #'   `list(dist = "normal", mean = 0.5, sd = 0.2)`.  When `NULL` (default),
 #'   the function operates in conditional mode.
-#' @param target Numeric in \eqn{[0,1]}: assurance level to achieve (default
-#'   `0.80`; assurance mode only).
+#' @param target Numeric in \eqn{[0,1]}: fallback assurance level used only
+#'   when a metric is requested without a valid numeric threshold (default
+#'   `0.80`).  In normal usage the per-metric value (e.g., `direction = 0.70`)
+#'   supersedes this argument.
 #'
 #' @return An object of class `"powerbrmsINLA_sample_size"` (which inherits from
 #'   `data.frame`) with a [print.powerbrmsINLA_sample_size()] method.
@@ -89,15 +101,15 @@
 #'   settings = list(effect_name = "treatment")
 #' )
 #'
-#' # --- Assurance mode ---
+#' # --- Assurance mode: each metric value IS the assurance target ---
 #' w <- assurance_prior_weights(c(0.2, 0.5, 0.8), dist = "normal",
 #'                               mean = 0.5, sd = 0.2)
+#' # Find n where direction assurance >= 0.80 AND threshold assurance >= 0.75
 #' rec_assurance <- decide_sample_size(
 #'   syn_result,
 #'   direction     = 0.80,
 #'   threshold     = 0.75,
-#'   prior_weights = w,
-#'   target        = 0.80
+#'   prior_weights = w
 #' )
 #' print(rec_assurance)
 #'
@@ -158,6 +170,16 @@ decide_sample_size <- function(
   rows <- lapply(requested, function(tgt_name) {
     ca_metric <- metric_map[[tgt_name]]
 
+    # The numeric value the user passed for this metric IS the assurance target
+    # for that metric.  Fall back to the global `target` only when the stored
+    # value is not a valid probability (e.g. the targets-list API was used with
+    # a non-numeric placeholder).
+    metric_target <- targets[[tgt_name]]
+    if (!is.numeric(metric_target) || length(metric_target) != 1L ||
+        !is.finite(metric_target) || metric_target < 0 || metric_target > 1) {
+      metric_target <- target
+    }
+
     assur_obj <- tryCatch(
       compute_assurance(x, prior_weights = prior_weights, metric = ca_metric),
       error = function(e) {
@@ -172,7 +194,7 @@ decide_sample_size <- function(
     if (is.null(assur_obj)) {
       return(data.frame(
         metric             = tgt_name,
-        target             = target,
+        target             = metric_target,
         n_recommended      = NA_integer_,
         assurance_achieved = NA_real_,
         prior_description  = prior_desc,
@@ -182,7 +204,7 @@ decide_sample_size <- function(
 
     df <- assur_obj$assurance
     df <- df[order(df$sample_size), , drop = FALSE]
-    ok <- is.finite(df$assurance) & (df$assurance >= target)
+    ok <- is.finite(df$assurance) & (df$assurance >= metric_target)
 
     if (any(ok)) {
       n_rec <- min(df$sample_size[ok])
@@ -190,7 +212,7 @@ decide_sample_size <- function(
     } else {
       message(
         "decide_sample_size(): no sample size in the grid achieves ",
-        round(target * 100), "% assurance for metric '", tgt_name,
+        round(metric_target * 100), "% assurance for metric '", tgt_name,
         "'. Returning NA."
       )
       n_rec <- NA_integer_
@@ -199,7 +221,7 @@ decide_sample_size <- function(
 
     data.frame(
       metric             = tgt_name,
-      target             = target,
+      target             = metric_target,
       n_recommended      = as.integer(n_rec),
       assurance_achieved = a_ach,
       prior_description  = prior_desc,

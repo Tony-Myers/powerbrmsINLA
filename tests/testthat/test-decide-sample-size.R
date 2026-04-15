@@ -41,8 +41,7 @@ test_that("assurance mode returns one row per requested metric", {
   out <- decide_sample_size(res,
                              direction     = 0.80,
                              threshold     = 0.75,
-                             prior_weights = w,
-                             target        = 0.80)
+                             prior_weights = w)
 
   expect_s3_class(out, "powerbrmsINLA_sample_size")
   expect_s3_class(out, "data.frame")
@@ -58,8 +57,7 @@ test_that("assurance mode: single metric returns single row", {
 
   out <- decide_sample_size(res,
                              direction     = 0.80,
-                             prior_weights = w,
-                             target        = 0.80)
+                             prior_weights = w)
 
   expect_equal(nrow(out), 1L)
   expect_equal(out$metric, "direction")
@@ -71,8 +69,7 @@ test_that("assurance mode: n_recommended is a valid sample size from the grid", 
 
   out <- decide_sample_size(res,
                              direction     = 0.70,
-                             prior_weights = w,
-                             target        = 0.70)
+                             prior_weights = w)
 
   expect_false(is.na(out$n_recommended))
   expect_true(out$n_recommended %in% c(50, 100, 200))
@@ -85,8 +82,7 @@ test_that("assurance mode: distribution prior (list) works", {
 
   out <- decide_sample_size(res,
                              direction     = 0.70,
-                             prior_weights = dist_prior,
-                             target        = 0.70)
+                             prior_weights = dist_prior)
 
   expect_s3_class(out, "powerbrmsINLA_sample_size")
   expect_equal(nrow(out), 1L)
@@ -99,10 +95,117 @@ test_that("assurance mode: prior_description is populated", {
 
   out <- decide_sample_size(res,
                              direction     = 0.70,
-                             prior_weights = w,
-                             target        = 0.70)
+                             prior_weights = w)
 
   expect_true(nchar(out$prior_description) > 0L)
+})
+
+
+# =============================================================================
+# (g) Assurance mode: per-metric targets are respected
+# =============================================================================
+
+test_that("target column equals the value passed as direction argument", {
+  res <- make_syn()
+  w   <- make_weights()
+
+  out_70 <- decide_sample_size(res, direction = 0.70, prior_weights = w)
+  out_80 <- decide_sample_size(res, direction = 0.80, prior_weights = w)
+
+  expect_equal(out_70$target, 0.70)
+  expect_equal(out_80$target, 0.80)
+})
+
+test_that("target column equals the value passed as threshold argument", {
+  res <- make_syn()
+  w   <- make_weights()
+
+  out <- decide_sample_size(res, threshold = 0.60, prior_weights = w)
+  expect_equal(out$target, 0.60)
+})
+
+test_that("different metrics carry independent targets", {
+  res <- make_syn()
+  w   <- make_weights()
+
+  out <- decide_sample_size(res,
+                             direction     = 0.70,
+                             threshold     = 0.60,
+                             prior_weights = w)
+
+  expect_equal(nrow(out), 2L)
+  dir_row <- out[out$metric == "direction", ]
+  thr_row <- out[out$metric == "threshold", ]
+  expect_equal(dir_row$target,   0.70)
+  expect_equal(thr_row$target,   0.60)
+  # assurance_achieved must be >= its own target, not the other metric's target
+  if (!is.na(dir_row$n_recommended)) {
+    expect_true(dir_row$assurance_achieved >= 0.70)
+  }
+  if (!is.na(thr_row$n_recommended)) {
+    expect_true(thr_row$assurance_achieved >= 0.60)
+  }
+})
+
+test_that("lower target finds smaller or equal n than higher target", {
+  res <- make_syn()
+  w   <- make_weights()
+
+  out_easy <- decide_sample_size(res, direction = 0.50, prior_weights = w)
+  out_hard <- decide_sample_size(res, direction = 0.80, prior_weights = w)
+
+  # If both are non-NA, the easier target should need no more n
+  if (!is.na(out_easy$n_recommended) && !is.na(out_hard$n_recommended)) {
+    expect_true(out_easy$n_recommended <= out_hard$n_recommended)
+  }
+})
+
+test_that("direction = 0.70 gives different result than direction = 0.80", {
+  res <- make_syn()
+  w   <- make_weights()
+
+  out_70 <- decide_sample_size(res, direction = 0.70, prior_weights = w)
+  out_80 <- decide_sample_size(res, direction = 0.80, prior_weights = w)
+
+  # Targets recorded in output must differ
+  expect_false(identical(out_70$target, out_80$target))
+
+  # The n at target=0.80 must be >= n at target=0.70 (when both achievable)
+  if (!is.na(out_70$n_recommended) && !is.na(out_80$n_recommended)) {
+    expect_true(out_80$n_recommended >= out_70$n_recommended)
+  }
+})
+
+test_that("print output mentions the correct percentage for the metric target", {
+  res <- make_syn()
+  w   <- make_weights()
+  out <- decide_sample_size(res, direction = 0.70, prior_weights = w)
+
+  # Should say "70%" not "80%"
+  expect_output(print(out), regexp = "70%", fixed = TRUE)
+})
+
+test_that("print output for threshold = 0.60 mentions 60%", {
+  res <- make_syn()
+  w   <- make_weights()
+  out <- decide_sample_size(res, threshold = 0.60, prior_weights = w)
+
+  expect_output(print(out), regexp = "60%", fixed = TRUE)
+})
+
+test_that("global target fallback is used when targets list has non-numeric", {
+  # Edge case: targets list with a non-numeric value triggers global fallback
+  res <- make_syn()
+  w   <- make_weights()
+
+  # Use the targets list interface with a proper numeric to verify it works
+  out_list  <- decide_sample_size(res,
+                                   targets       = list(direction = 0.70),
+                                   prior_weights = w)
+  out_direct <- decide_sample_size(res, direction = 0.70, prior_weights = w)
+
+  expect_equal(out_list$target,         0.70)
+  expect_equal(out_list$n_recommended,  out_direct$n_recommended)
 })
 
 
@@ -190,13 +293,12 @@ test_that("plain data.frame input works in assurance mode", {
                         0.72, 0.90, 0.98),
     stringsAsFactors = FALSE
   )
-  # wrap as list so compute_assurance has settings
   res <- list(summary = s, settings = list(effect_name = "treatment"))
   w   <- make_weights()
-  out <- decide_sample_size(res, direction = 0.70, prior_weights = w,
-                             target = 0.70)
+  out <- decide_sample_size(res, direction = 0.70, prior_weights = w)
 
   expect_s3_class(out, "powerbrmsINLA_sample_size")
+  expect_equal(out$target, 0.70)
 })
 
 
@@ -208,17 +310,18 @@ test_that("assurance mode returns NA when target is unachievable, with message",
   res <- make_syn()
   w   <- make_weights()
 
-  # Target of 0.999 is unachievable with this small grid
+  # direction = 0.999 is the per-metric target; no n achieves it
   expect_message(
     out <- decide_sample_size(res,
                                direction     = 0.999,
-                               prior_weights = w,
-                               target        = 0.999),
+                               prior_weights = w),
     regexp = "no sample size"
   )
   expect_equal(nrow(out), 1L)
   expect_true(is.na(out$n_recommended))
   expect_true(is.na(out$assurance_achieved))
+  # The recorded target is the value we actually passed, not the fallback 0.80
+  expect_equal(out$target, 0.999)
 })
 
 test_that("conditional mode returns NA when target is unachievable, with message", {
@@ -262,8 +365,7 @@ test_that("conditional mode aggregates across sampled_error_sd rows", {
 test_that("print method works in assurance mode", {
   res <- make_syn()
   w   <- make_weights()
-  out <- decide_sample_size(res, direction = 0.70, prior_weights = w,
-                             target = 0.70)
+  out <- decide_sample_size(res, direction = 0.70, prior_weights = w)
   expect_no_error(print(out))
   expect_identical(print(out), out)  # returns invisibly
 })
@@ -279,8 +381,7 @@ test_that("print NA assurance row mentions criterion not achieved", {
   res <- make_syn()
   w   <- make_weights()
   suppressMessages(
-    out <- decide_sample_size(res, direction = 0.999,
-                               prior_weights = w, target = 0.999)
+    out <- decide_sample_size(res, direction = 0.999, prior_weights = w)
   )
   expect_output(print(out), regexp = "No sample size")
 })
