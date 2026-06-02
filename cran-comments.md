@@ -36,15 +36,15 @@ None (checked via `revdepcheck`).
 
   * R Under development (unstable) (2026-06-01 r90092 ucrt):
     `0 errors | 0 warnings | 1 note`
-  * The single NOTE is the expected "Suggests or Enhances not in mainstream
-    repositories: INLA, bayesassurance" (see below).
+  * The single NOTE is the expected “Suggests or Enhances not in mainstream
+    repositories: INLA” (see below).
 
 * INLA is listed in `Suggests` (not `Imports`) and is available via the
   `Additional_repositories` field in DESCRIPTION.  All INLA-dependent code
   paths are guarded by `requireNamespace(“INLA”, quietly = TRUE)`.
 
-### Note on bayesassurance
+### Resubmission note
 
-`bayesassurance` is listed in `Suggests` for an optional validation vignette
-only.  It is not required by any exported function.  The package was not
-available on the check platform but this does not affect results.
+`bayesassurance` has been removed from `Suggests` as requested.  It was only
+referenced in an optional validation vignette and test file, both of which
+already guard all calls with `requireNamespace()` / `skip_if_not_installed()`.

@@ -33,8 +33,7 @@ Suggests:
     knitr,
     MASS,
     circular,
-    sn,
-    bayesassurance
+    sn
 VignetteBuilder: knitr
 URL: https://github.com/Tony-Myers/powerbrmsINLA
 BugReports: https://github.com/Tony-Myers/powerbrmsINLA/issues
