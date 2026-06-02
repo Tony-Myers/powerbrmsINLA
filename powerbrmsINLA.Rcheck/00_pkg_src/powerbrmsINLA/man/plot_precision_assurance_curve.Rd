@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotting-precision.R
 \name{plot_precision_assurance_curve}
 \alias{plot_precision_assurance_curve}
-\title{Plot Precision Assurance Curve (Multi-Effect Grid Friendly)}
+\title{Plot Precision Conditional Power Curve (Multi-Effect Grid Friendly)}
 \usage{
 plot_precision_assurance_curve(
   power_results,
@@ -34,6 +34,13 @@ plot_precision_assurance_curve(
 A ggplot object.
 }
 \description{
-Plots the assurance (proportion of runs meeting CI width <= target) vs. a chosen effect grid variable across sample size(s).
+Plots the conditional power for precision (proportion of runs where CI width
+<= target) vs. a chosen effect grid variable across sample size(s).
 Supports faceting, effect filtering, and weights.
+}
+\details{
+These plots display \strong{conditional Bayesian power} — the probability of
+achieving the precision criterion at a fixed effect size.  For unconditional
+assurance (averaged over a design prior on effect size), see
+\code{\link[=plot_assurance_curve]{plot_assurance_curve()}}.
 }

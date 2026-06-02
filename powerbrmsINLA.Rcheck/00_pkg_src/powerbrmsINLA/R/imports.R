@@ -11,7 +11,7 @@
 #' @importFrom stats gaussian binomial poisson rnorm rbinom rpois
 #' @importFrom stats dnorm pnorm qnorm sd var as.formula terms
 #' @importFrom stats dbeta qbeta optimize setNames
-#' @importFrom utils packageVersion flush.console
+#' @importFrom utils packageVersion flush.console head
 #' @importFrom magrittr %>%
 NULL
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotting-robustness.R
 \name{plot_assurance_with_robustness}
 \alias{plot_assurance_with_robustness}
-\title{Plot Assurance with Robustness Ribbon (Multi-Effect Grid Friendly)}
+\title{Plot Conditional Power with Robustness Ribbon (Multi-Effect Grid Friendly)}
 \usage{
 plot_assurance_with_robustness(
   power_results_list,
@@ -22,7 +22,7 @@ plot_assurance_with_robustness(
 \arguments{
 \item{power_results_list}{Named list of results objects from \code{brms_inla_power} or sequential/two-stage variants.}
 
-\item{metric}{Which assurance metric to compute: "precision", "direction", "threshold", or "bf".}
+\item{metric}{Which conditional power metric to compute: "precision", "direction", "threshold", or "bf".}
 
 \item{x_effect}{Name of effect grid column for x-axis (default: first detected grid column).}
 
@@ -46,6 +46,7 @@ plot_assurance_with_robustness(
 A ggplot object.
 }
 \description{
-Compares assurance results from multiple scenarios by showing the range
-("ribbon") of values across scenarios for each sample size and effect grid variable.
+Compares conditional Bayesian power results from multiple scenarios by showing
+the range ("ribbon") of values across scenarios for each sample size and
+effect grid variable.
 }

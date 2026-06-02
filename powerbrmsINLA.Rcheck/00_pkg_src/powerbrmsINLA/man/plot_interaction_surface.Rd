@@ -2,7 +2,7 @@
 % Please edit documentation in R/added_plotting_functions.R
 \name{plot_interaction_surface}
 \alias{plot_interaction_surface}
-\title{Plot Interaction Assurance Surface/Heatmap/Lines (Multi-Effect Grid Friendly)}
+\title{Plot Interaction Conditional Power Surface/Heatmap/Lines (Multi-Effect Grid Friendly)}
 \usage{
 plot_interaction_surface(
   data,
@@ -41,6 +41,7 @@ If FALSE, make a heatmap or contour.}
 A ggplot object.
 }
 \description{
-Visualizes a metric (e.g., assurance) as a function of two effect grid variables
-for a fixed sample size or averaged over n. Allows line, heatmap, or contour modes.
+Visualizes a metric (e.g., conditional Bayesian power) as a function of two
+effect grid variables for a fixed sample size or averaged over n.
+Allows line, heatmap, or contour modes.
 }

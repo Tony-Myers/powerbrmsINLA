@@ -1,5 +1,5 @@
 
-R version 4.4.3 (2025-02-28) -- "Trophy Case"
+R version 4.5.0 (2025-04-11) -- "How About a Twenty-Six"
 Copyright (C) 2025 The R Foundation for Statistical Computing
 Platform: aarch64-apple-darwin20
 
@@ -20,29 +20,41 @@ Type 'q()' to quit R.
 > pkgname <- "powerbrmsINLA"
 > source(file.path(R.home("share"), "R", "examples-header.R"))
 > options(warn = 1)
-> base::assign(".ExTimings", "powerbrmsINLA-Ex.timings", pos = 'CheckExEnv')
-> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
-> base::assign(".format_ptime",
-+ function(x) {
-+   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
-+   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
-+   options(OutDec = '.')
-+   format(x[1L:3L], digits = 7L)
-+ },
-+ pos = 'CheckExEnv')
-> 
-> ### * </HEADER>
 > library('powerbrmsINLA')
 > 
 > base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
 > base::assign(".old_wd", base::getwd(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("assurance_prior_weights")
+> ### * assurance_prior_weights
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: assurance_prior_weights
+> ### Title: Create prior weights over an effect grid for use with
+> ###   compute_assurance()
+> ### Aliases: assurance_prior_weights
+> 
+> ### ** Examples
+> 
+> effects <- c(0.1, 0.3, 0.5, 0.7, 0.9)
+> # Normal prior centred on 0.5
+> assurance_prior_weights(effects, dist = "normal", mean = 0.5, sd = 0.2)
+       0.1        0.3        0.5        0.7        0.9 
+0.05448868 0.24420134 0.40261995 0.24420134 0.05448868 
+> # Uniform prior (equal weight)
+> assurance_prior_weights(effects, dist = "uniform")
+0.1 0.3 0.5 0.7 0.9 
+0.2 0.2 0.2 0.2 0.2 
+> 
+> 
+> 
 > cleanEx()
 > nameEx("brms_inla_power")
 > ### * brms_inla_power
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: brms_inla_power
 > ### Title: Core Bayesian Assurance / Power Simulation (Modern, Multi-Effect
 > ###   Ready)
@@ -50,185 +62,29 @@ Type 'q()' to quit R.
 > 
 > ### ** Examples
 > 
-> ## No test: 
-> # Basic usage with automatic INLA threading
-> results <- brms_inla_power(
-+   formula = outcome ~ treatment,
-+   effect_name = "treatment",
-+   effect_grid = c(0.2, 0.5, 0.8),
-+   sample_sizes = c(50, 100, 200),
-+   nsims = 3
-+ )
-Single effect analysis for 'treatment' with 3 effect values
-No priors specified - using brms default weakly informative priors.
-> print(results$summary)
-# A tibble: 9 × 11
-      n treatment power_direction power_threshold power_rope avg_ci_width
-  <dbl>     <dbl>           <dbl>           <dbl>      <dbl>        <dbl>
-1    50       0.2           0.333           0.333         NA        1.11 
-2    50       0.5           0.667           0.667         NA        1.06 
-3    50       0.8           1               1             NA        1.14 
-4   100       0.2           0.333           0.333         NA        0.762
-5   100       0.5           0.333           0.333         NA        0.774
-6   100       0.8           1               1             NA        0.772
-7   200       0.2           0               0             NA        0.547
-8   200       0.5           1               1             NA        0.534
-9   200       0.8           1               1             NA        0.524
-# ℹ 5 more variables: ci_coverage <dbl>, bf_hit_3 <dbl>, bf_hit_10 <dbl>,
-#   mean_log10_bf <dbl>, nsims_ok <int>
-> 
-> # Manual INLA threading control
-> results <- brms_inla_power(
-+   formula = outcome ~ treatment,
-+   effect_name = "treatment",
-+   effect_grid = c(0.2, 0.5, 0.8),
-+   sample_sizes = c(50, 100, 200),
-+   inla_num_threads = "8:1",  # Use 8 threads for faster computation
-+   nsims = 3
-+ )
-Single effect analysis for 'treatment' with 3 effect values
-No priors specified - using brms default weakly informative priors.
-> 
-> # Multi-effect design with threading
-> effect_grid <- expand.grid(
-+   treatment = c(0, 0.3, 0.6),
-+   age_effect = c(0, 0.2)
-+ )
-> results <- brms_inla_power(
-+   formula = outcome ~ treatment + age_effect,
-+   effect_name = c("treatment", "age_effect"),
-+   effect_grid = effect_grid,
-+   sample_sizes = c(100, 200, 400),
-+   nsims = 3
-+ )
-Multi-effect grid detected with 6 effect combinations
-No priors specified - using brms default weakly informative priors.
-> print(results$summary)
-# A tibble: 18 × 12
-       n treatment age_effect power_direction power_threshold power_rope
-   <dbl>     <dbl>      <dbl>           <dbl>           <dbl>      <dbl>
- 1   100       0          0             0               0             NA
- 2   100       0          0.2           0               0             NA
- 3   100       0.3        0             0.333           0.333         NA
- 4   100       0.3        0.2           0.667           0.667         NA
- 5   100       0.6        0             1               1             NA
- 6   100       0.6        0.2           0.333           0.333         NA
- 7   200       0          0             0               0             NA
- 8   200       0          0.2           0               0             NA
- 9   200       0.3        0             0.333           0.333         NA
-10   200       0.3        0.2           1               1             NA
-11   200       0.6        0             1               1             NA
-12   200       0.6        0.2           1               1             NA
-13   400       0          0             0.333           0.333         NA
-14   400       0          0.2           0               0             NA
-15   400       0.3        0             1               1             NA
-16   400       0.3        0.2           0.667           0.667         NA
-17   400       0.6        0             1               1             NA
-18   400       0.6        0.2           1               1             NA
-# ℹ 6 more variables: avg_ci_width <dbl>, ci_coverage <dbl>, bf_hit_3 <dbl>,
-#   bf_hit_10 <dbl>, mean_log10_bf <dbl>, nsims_ok <int>
-> ## End(No test)
-> # Quick parameter check (runs instantly)
-> formals(brms_inla_power)
-$formula
-
-
-$family
-gaussian()
-
-$family_control
-NULL
-
-$Ntrials
-NULL
-
-$E
-NULL
-
-$scale
-NULL
-
-$priors
-NULL
-
-$data_generator
-NULL
-
-$effect_name
-
-
-$effect_grid
-[1] 0.5
-
-$sample_sizes
-c(50, 100, 200, 400)
-
-$nsims
-[1] 200
-
-$power_threshold
-[1] 0.8
-
-$precision_target
-NULL
-
-$prob_threshold
-[1] 0.95
-
-$effect_threshold
-[1] 0
-
-$credible_level
-[1] 0.95
-
-$rope_bounds
-NULL
-
-$error_sd
-[1] 1
-
-$group_sd
-[1] 0.5
-
-$obs_per_group
-[1] 10
-
-$predictor_means
-NULL
-
-$predictor_sds
-NULL
-
-$seed
-[1] 123
-
-$inla_hyper
-NULL
-
-$compute_bayes_factor
-[1] FALSE
-
-$inla_num_threads
-NULL
-
-$progress
-c("auto", "text", "none")
-
-$family_args
-list()
-
+> ## Not run: 
+> ##D # Integrate over uncertainty in the residual SD using a half-normal prior
+> ##D # centred at 1.0 with spread 0.3
+> ##D brms_inla_power(
+> ##D   formula      = y ~ treatment,
+> ##D   effect_name  = "treatment",
+> ##D   effect_grid  = 0.5,
+> ##D   sample_sizes = c(50, 100),
+> ##D   nsims        = 50,
+> ##D   error_sd     = list(dist = "halfnormal", sd = 0.3, location = 1.0),
+> ##D   seed         = 42
+> ##D )
+> ## End(Not run)
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("brms_inla_power", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> 
 > cleanEx()
 > nameEx("brms_inla_power_sequential")
 > ### * brms_inla_power_sequential
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: brms_inla_power_sequential
 > ### Title: Sequential Bayesian Assurance Simulation Engine (Modern,
 > ###   Multi-Effect Ready)
@@ -236,51 +92,27 @@ list()
 > 
 > ### ** Examples
 > 
-> ## No test: 
-> # Sequential design with automatic threading
-> results <- brms_inla_power_sequential(
-+   formula = outcome ~ treatment,
-+   effect_name = "treatment",
-+   effect_grid = c(0.2, 0.5, 0.8),
-+   sample_sizes = c(50, 100, 200),
-+   metric = "direction",
-+   target = 0.80
-+ )
-Sequential assurance over 9 cells (…)
-> print(results$summary)
-    n effect_val power_direction power_threshold power_rope bf_hit_10 nsims_ok
-1  50        0.2           0.175              NA         NA        NA       40
-2  50        0.5           0.525              NA         NA        NA       40
-3  50        0.8           0.900              NA         NA        NA      100
-4 100        0.2           0.350              NA         NA        NA       40
-5 100        0.5           0.785              NA         NA        NA      600
-6 100        0.8           1.000              NA         NA        NA       40
-7 200        0.2           0.475              NA         NA        NA       40
-8 200        0.5           0.975              NA         NA        NA       40
-9 200        0.8           1.000              NA         NA        NA       40
-  assurance sims_used
-1     0.175        40
-2     0.525        40
-3     0.900       100
-4     0.350        40
-5     0.785       600
-6     1.000        40
-7     0.475        40
-8     0.975        40
-9     1.000        40
-> ## End(No test)
+> ## Not run: 
+> ##D # Sequential design with automatic threading
+> ##D results <- brms_inla_power_sequential(
+> ##D   formula = outcome ~ treatment,
+> ##D   effect_name = "treatment",
+> ##D   effect_grid = c(0.2, 0.5, 0.8),
+> ##D   sample_sizes = c(50, 100, 200),
+> ##D   metric = "direction",
+> ##D   target = 0.80
+> ##D )
+> ##D print(results$summary)
+> ## End(Not run)
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("brms_inla_power_sequential", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
 > nameEx("brms_inla_power_two_stage")
 > ### * brms_inla_power_two_stage
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: brms_inla_power_two_stage
 > ### Title: Two-Stage Bayesian Assurance Simulation (Multi-Effect,
 > ###   User-Friendly API)
@@ -288,54 +120,235 @@ Sequential assurance over 9 cells (…)
 > 
 > ### ** Examples
 > 
-> ## No test: 
-> # Two-stage design with threading
-> effect_grid <- expand.grid(
-+   treatment = c(0.2, 0.5, 0.8),
-+   covariate = c(0.1, 0.3)
+> ## Not run: 
+> ##D # Two-stage design with threading
+> ##D effect_grid <- expand.grid(
+> ##D   treatment = c(0.2, 0.5, 0.8),
+> ##D   covariate = c(0.1, 0.3)
+> ##D )
+> ##D results <- brms_inla_power_two_stage(
+> ##D   formula = outcome ~ treatment + covariate,
+> ##D   effect_name = c("treatment", "covariate"),
+> ##D   effect_grid = effect_grid,
+> ##D   n_range = c(50, 200),
+> ##D   stage1_nsims = 3,
+> ##D   stage2_nsims = 3,
+> ##D    error_sd = 1 
+> ##D )
+> ##D print(results$summary)
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("compute_assurance")
+> ### * compute_assurance
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: compute_assurance
+> ### Title: Compute unconditional Bayesian assurance from simulation results
+> ### Aliases: compute_assurance
+> 
+> ### ** Examples
+> 
+> # Build a small synthetic power_result without running INLA
+> syn_summary <- data.frame(
++   n               = rep(c(50, 100, 200), each = 3),
++   treatment       = rep(c(0.2, 0.5, 0.8), 3),
++   power_direction = c(0.40, 0.65, 0.85,
++                       0.60, 0.82, 0.95,
++                       0.72, 0.90, 0.98),
++   stringsAsFactors = FALSE
 + )
-> results <- brms_inla_power_two_stage(
-+   formula = outcome ~ treatment + covariate,
-+   effect_name = c("treatment", "covariate"),
-+   effect_grid = effect_grid,
-+   n_range = c(50, 200),
-+   stage1_nsims = 3,
-+   stage2_nsims = 3,
-+    error_sd = 1 
+> syn_result <- list(
++   summary  = syn_summary,
++   settings = list(effect_name = "treatment")
 + )
-Multi-effect grid detected with 6 effect combinations
-No priors specified - using brms default weakly informative priors.
-Multi-effect grid detected with 6 effect combinations
-No priors specified - using brms default weakly informative priors.
-> print(results$summary)
-# A tibble: 84 × 12
-       n treatment covariate power_direction power_threshold power_rope
-   <dbl>     <dbl>     <dbl>           <dbl>           <dbl>      <dbl>
- 1    50       0.2       0.1           0.333           0.333         NA
- 2    50       0.2       0.3           0.333           0.333         NA
- 3    50       0.5       0.1           0.333           0.333         NA
- 4    50       0.5       0.3           0.667           0.667         NA
- 5    50       0.8       0.1           0.667           0.667         NA
- 6    50       0.8       0.3           0.667           0.667         NA
- 7    71       0.2       0.1           0.667           0.667         NA
- 8    71       0.2       0.3           0.667           0.667         NA
- 9    71       0.5       0.1           0.333           0.333         NA
-10    71       0.5       0.3           1               1             NA
-# ℹ 74 more rows
-# ℹ 6 more variables: avg_ci_width <dbl>, ci_coverage <dbl>, bf_hit_3 <dbl>,
-#   bf_hit_10 <dbl>, mean_log10_bf <dbl>, nsims_ok <int>
-> ## End(No test)
+> 
+> # (a) Uniform weights — assurance is the simple mean of per-cell powers
+> w_uniform <- c("0.2" = 1/3, "0.5" = 1/3, "0.8" = 1/3)
+> out <- compute_assurance(syn_result, prior_weights = w_uniform)
+> print(out)
+Bayesian assurance (unconditional probability)
+==============================================
+Decision metric : direction (column: power_direction )
+Effect column(s): treatment 
+Design prior    : user-supplied weights over 3 effect value(s)
+  Weights       : 0.2 = 0.3333, 0.5 = 0.3333, 0.8 = 0.3333 
+
+Assurance by sample size:
+ sample_size assurance
+          50    0.6333
+         100    0.7900
+         200    0.8667
+> 
+> # (b) Normal design prior centred on a medium-sized effect
+> out2 <- compute_assurance(
++   syn_result,
++   prior_weights = list(dist = "normal", mean = 0.5, sd = 0.2)
++ )
+> print(out2)
+Bayesian assurance (unconditional probability)
+==============================================
+Decision metric : direction (column: power_direction )
+Effect column(s): treatment 
+Design prior    : normal ( mean = 0.5, sd = 0.2 )
+
+Assurance by sample size:
+ sample_size assurance
+          50    0.6402
+         100    0.8023
+         200    0.8803
+> 
+> # (c) Using assurance_prior_weights() to build the weight vector explicitly
+> w_norm <- assurance_prior_weights(c(0.2, 0.5, 0.8), dist = "normal",
++                                   mean = 0.5, sd = 0.2)
+> out3 <- compute_assurance(syn_result, prior_weights = w_norm)
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("brms_inla_power_two_stage", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("decide_sample_size")
+> ### * decide_sample_size
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: decide_sample_size
+> ### Title: Decide recommended sample size from power/assurance results
+> ### Aliases: decide_sample_size
+> 
+> ### ** Examples
+> 
+> # Build a small synthetic power_result without running INLA
+> syn_summary <- data.frame(
++   n               = rep(c(50, 100, 200), each = 3),
++   treatment       = rep(c(0.2, 0.5, 0.8), 3),
++   power_direction = c(0.40, 0.65, 0.85,
++                       0.60, 0.82, 0.95,
++                       0.72, 0.90, 0.98),
++   power_threshold = c(0.30, 0.55, 0.75,
++                       0.50, 0.72, 0.88,
++                       0.62, 0.80, 0.92),
++   stringsAsFactors = FALSE
++ )
+> syn_result <- list(
++   summary  = syn_summary,
++   settings = list(effect_name = "treatment")
++ )
+> 
+> # --- Assurance mode: each metric value IS the assurance target ---
+> w <- assurance_prior_weights(c(0.2, 0.5, 0.8), dist = "normal",
++                               mean = 0.5, sd = 0.2)
+> # Find n where direction assurance >= 0.80 AND threshold assurance >= 0.75
+> rec_assurance <- decide_sample_size(
++   syn_result,
++   direction     = 0.80,
++   threshold     = 0.75,
++   prior_weights = w
++ )
+> print(rec_assurance)
+Based on user weights [0.2=0.197, 0.5=0.606, 0.8=0.197], the recommended sample size for 80% assurance using the direction criterion is 100 per group (assurance = 0.8023).
+Based on user weights [0.2=0.197, 0.5=0.606, 0.8=0.197], the recommended sample size for 75% assurance using the threshold criterion is 200 per group (assurance = 0.7882).
+> 
+> # --- Conditional mode (backward compatible) ---
+> rec_cond <- decide_sample_size(syn_result, direction = 0.80)
+decide_sample_size(): no sample size met all targets for 1 effect-size group(s). Returning NA.
+> print(rec_cond)
+Conditional power-based sample size recommendations
+===================================================
+ treatment n_recommended cond_power_direction
+       0.2            NA                   NA
+       0.5           100                 0.82
+       0.8            50                 0.85
+> 
+> 
+> 
+> cleanEx()
+> nameEx("plot_assurance_curve")
+> ### * plot_assurance_curve
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: plot_assurance_curve
+> ### Title: Plot Assurance Curve(s) vs Sample Size
+> ### Aliases: plot_assurance_curve
+> 
+> ### ** Examples
+> 
+> syn_summary <- data.frame(
++   n               = rep(c(50, 100, 200), each = 3),
++   treatment       = rep(c(0.2, 0.5, 0.8), 3),
++   power_direction = c(0.40, 0.65, 0.85, 0.60, 0.82, 0.95, 0.72, 0.90, 0.98)
++ )
+> pr <- list(summary = syn_summary, settings = list(effect_name = "treatment"))
+> a1 <- compute_assurance(pr, list(dist = "normal", mean = 0.5, sd = 0.15))
+> a2 <- compute_assurance(pr, list(dist = "normal", mean = 0.5, sd = 0.30))
+> plot_assurance_curve(list(a1, a2), labels = c("Informative", "Diffuse"))
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("plot_design_prior")
+> ### * plot_design_prior
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: plot_design_prior
+> ### Title: Plot Design Prior Density over the Effect Grid
+> ### Aliases: plot_design_prior
+> 
+> ### ** Examples
+> 
+> plot_design_prior(
++   prior_spec  = list(dist = "normal", mean = 0.5, sd = 0.15),
++   effect_grid = c(0.2, 0.5, 0.8)
++ )
+> 
+> # Multiple priors
+> plot_design_prior(
++   prior_spec  = list(
++     list(dist = "normal", mean = 0.5, sd = 0.10),
++     list(dist = "normal", mean = 0.5, sd = 0.30)
++   ),
++   effect_grid = c(0.2, 0.5, 0.8),
++   labels      = c("Informative", "Diffuse")
++ )
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("plot_power_assurance_overlay")
+> ### * plot_power_assurance_overlay
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: plot_power_assurance_overlay
+> ### Title: Plot Conditional Power Curves with Assurance Overlay
+> ### Aliases: plot_power_assurance_overlay
+> 
+> ### ** Examples
+> 
+> syn_summary <- data.frame(
++   n               = rep(c(50, 100, 200), each = 3),
++   treatment       = rep(c(0.2, 0.5, 0.8), 3),
++   power_direction = c(0.40, 0.65, 0.85, 0.60, 0.82, 0.95, 0.72, 0.90, 0.98)
++ )
+> pr <- list(summary = syn_summary, settings = list(effect_name = "treatment"))
+> a  <- compute_assurance(pr, list(dist = "normal", mean = 0.5, sd = 0.15))
+> plot_power_assurance_overlay(pr, a)
+> 
+> 
+> 
+> 
 > ### * <FOOTER>
 > ###
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  96.997 66.582 1661.27 672.654 586.676 
+Time elapsed:  1.462 0.079 1.548 0 0 
 > grDevices::dev.off()
 null device 
           1 

@@ -2,38 +2,25 @@
 % Please edit documentation in R/plotting-bf.R
 \name{plot_bf_assurance_curve}
 \alias{plot_bf_assurance_curve}
-\title{Plot Bayes Factor Assurance Curve (Multi-Effect Grid Friendly)}
+\title{Bayes-factor conditional power curve (user-facing wrapper)}
 \usage{
-plot_bf_assurance_curve(
-  power_results,
-  bf_threshold = 3,
-  x_effect = NULL,
-  facet_by = NULL,
-  effect_filters = NULL,
-  effect_weights = NULL,
-  title = NULL,
-  subtitle = NULL
-)
+plot_bf_assurance_curve(power_results, bf_threshold = 10, effect_filter = NULL)
 }
 \arguments{
-\item{power_results}{List returned by \verb{brms_inla_power*} or two-stage variant.}
+\item{power_results}{Output from a brms_inla_power* function
+(or a data.frame with columns n, bf10 and any effect columns).}
 
-\item{bf_threshold}{Numeric; BF10 threshold to count as a "success" (default: 3).}
+\item{bf_threshold}{Numeric Bayes factor cutoff (default 10).}
 
-\item{x_effect}{Name of effect grid column for x-axis (default: first detected grid column).}
-
-\item{facet_by}{Optional grid column(s) for faceting.}
-
-\item{effect_filters}{Optional named list to restrict/show only selected grid rows, e.g. list(treatment=0).}
-
-\item{effect_weights}{Optional named numeric vector of weights for selected x_effect values.}
-
-\item{title, subtitle}{Optional plot labels.}
+\item{effect_filter}{Optional named list to filter effect-grid
+columns, e.g. \code{list(treatment = 0.3)}.}
 }
 \value{
-ggplot object.
+A ggplot object.
 }
 \description{
-Plots the proportion of simulations in which BF10 meets or exceeds a threshold,
-grouped by any effect grid variable(s) and sample size.
+This is the main function users should call to visualise
+conditional Bayesian power for the Bayes factor criterion.
+It is a thin wrapper around \code{plot_bf_assurance_curve_smooth()},
+so all existing behaviour is preserved.
 }

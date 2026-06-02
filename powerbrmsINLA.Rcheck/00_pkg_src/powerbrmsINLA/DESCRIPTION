@@ -1,6 +1,6 @@
 Package: powerbrmsINLA
 Title: Bayesian Power Analysis Using 'brms' and 'INLA'
-Version: 1.0.0
+Version: 1.1.1
 Maintainer: Tony Myers <admyers@aol.com>
 Authors@R: person(given = "Tony",
                   family = "Myers", 
@@ -12,15 +12,17 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
-Depends: R (>= 4.0.0)
-Imports: brms (>= 2.19.0), dplyr (>= 1.1.0), ggplot2 (>= 3.4.0), rlang
-        (>= 1.1.0), tibble (>= 3.2.0), scales (>= 1.2.0), viridisLite
-        (>= 0.4.0), stats, utils, magrittr (>= 2.0.0)
-Suggests: INLA (>= 22.05.07), testthat (>= 3.0.0), rmarkdown, MASS,
-        circular, sn
+Depends: R (>= 4.1.0)
+Imports: brms (>= 2.19.0), dplyr (>= 1.1.0), ggplot2 (>= 3.4.0),
+        pbapply, rlang (>= 1.1.0), tibble (>= 3.2.0), scales (>=
+        1.2.0), viridisLite (>= 0.4.0), stats, utils, magrittr (>=
+        2.0.0)
+Suggests: INLA (>= 22.05.07), testthat (>= 3.0.0), rmarkdown, knitr,
+        MASS, circular, sn, bayesassurance
+VignetteBuilder: knitr
 URL: https://github.com/Tony-Myers/powerbrmsINLA
 BugReports: https://github.com/Tony-Myers/powerbrmsINLA/issues
 Additional_repositories: https://inla.r-inla-download.org/R/stable
 NeedsCompilation: no
-Packaged: 2025-08-26 05:27:37 UTC; user
-Author: Tony Myers [aut, cre] (<https://orcid.org/0000-0003-4516-4829>)
+Packaged: 2026-04-15 09:21:35 UTC; tonymyers
+Author: Tony Myers [aut, cre] (ORCID: <https://orcid.org/0000-0003-4516-4829>)

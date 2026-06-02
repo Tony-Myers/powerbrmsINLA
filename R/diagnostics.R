@@ -76,6 +76,8 @@ print.brms_inla_power <- function(x, n_rows = 10L, ...) {
 #' @param formula Model formula (same as [brms_inla_power()]).
 #' @param family GLM family object (default `gaussian()`).
 #' @param priors A `brms::prior()` specification or `NULL` for defaults.
+#'   Supported priors are translated to INLA controls where possible and audited
+#'   in the returned settings.
 #' @param data_generator Optional function `f(n, effect)` returning a
 #'   data frame.  If `NULL`, the automatic generator is used.
 #' @param effect_name Character vector of fixed-effect names (same as
@@ -161,6 +163,7 @@ validate_inla_vs_brms <- function(
   # ---- Setup ---------------------------------------------------------------
   if (is.null(inla_num_threads)) {
     n_cores <- parallel::detectCores()
+    if (!is.numeric(n_cores) || length(n_cores) != 1L || !is.finite(n_cores)) n_cores <- 1L
     inla_num_threads <- if (n_cores >= 4L) "4:1" else if (n_cores >= 2L) "2:1" else "1:1"
   }
 
@@ -180,13 +183,15 @@ validate_inla_vs_brms <- function(
     stopifnot(is.function(data_generator))
   }
 
-  tf       <- .brms_to_inla_formula2(formula)
-  inla_f   <- tf$inla_formula
-  re_specs <- tf$re_specs
   fam_inla <- .to_inla_family(family)$inla
   needs_N  <- fam_inla %in% c("binomial", "betabinomial")
   needs_E  <- fam_inla %in% c("poisson")
-  pmap     <- .map_brms_priors_to_inla(priors)
+  pmap     <- .map_brms_priors_to_inla(priors, inla_family = fam_inla)
+  tf       <- .brms_to_inla_formula2(formula, hyper_by_re = pmap$hyper_by_re)
+  inla_f   <- tf$inla_formula
+  re_specs <- tf$re_specs
+  pmap     <- .mark_unmatched_re_priors(pmap, tf$re_hyper_groups)
+  pmap     <- .audit_re_correlation_terms(pmap, re_specs)
 
   # Build the named effect vector for the data generator
   eff_val <- if (length(effect_value) >= length(effect_name)) {
@@ -222,6 +227,7 @@ validate_inla_vs_brms <- function(
       data              = dat,
       family            = fam_inla,
       control.fixed     = pmap$control_fixed %||% list(),
+      control.family    = pmap$control_family %||% list(),
       control.predictor = list(link = 1),
       num.threads       = inla_num_threads,
       verbose           = FALSE
@@ -344,7 +350,8 @@ validate_inla_vs_brms <- function(
       n_check      = n_check,
       brms_iter    = brms_iter,
       brms_chains  = brms_chains,
-      seed         = seed
+      seed         = seed,
+      prior_translation = pmap$prior_audit
     )
   )
 }

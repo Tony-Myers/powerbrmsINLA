@@ -86,7 +86,7 @@ test_that("Prior mapping works correctly", {
   # Test with NULL priors
   result <- .map_brms_priors_to_inla(NULL)
   expect_type(result, "list")
-  expect_named(result, c("control_fixed", "hyper_by_re"))
+  expect_true(all(c("control_fixed", "hyper_by_re", "prior_audit") %in% names(result)))
 
   # Test with normal prior
   normal_priors <- data.frame(

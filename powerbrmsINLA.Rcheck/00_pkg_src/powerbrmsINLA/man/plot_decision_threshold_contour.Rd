@@ -37,5 +37,5 @@ plot_decision_threshold_contour(
 ggplot2 object.
 }
 \description{
-Shows assurance as a function of decision threshold p* and one effect grid column, optionally faceted.
+Shows conditional Bayesian power as a function of decision threshold p* and one effect grid column, optionally faceted.
 }

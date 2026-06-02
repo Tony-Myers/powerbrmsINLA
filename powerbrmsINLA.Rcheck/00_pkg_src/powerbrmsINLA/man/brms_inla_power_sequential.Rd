@@ -117,7 +117,7 @@ Sequential Bayesian Assurance Simulation Engine (Modern, Multi-Effect Ready)
 Simulates assurance sequentially in batches, stopping early per cell based on Wilson confidence intervals.
 }
 \examples{
-\donttest{
+\dontrun{
 # Sequential design with automatic threading
 results <- brms_inla_power_sequential(
   formula = outcome ~ treatment,

@@ -11,7 +11,9 @@
 #' @param Ntrials Optional vector for binomial trials.
 #' @param E Optional vector for Poisson exposure.
 #' @param scale Optional vector scale parameter for INLA families.
-#' @param priors Optional brms::prior specification.
+#' @param priors Optional brms::prior specification. Supported analysis priors
+#'   are translated to INLA controls where possible and recorded in
+#'   `settings$prior_translation`.
 #' @param data_generator Optional function(n, effect) returning a dataset.
 #' @param effect_name Character vector of fixed effect names.
 #' @param effect_grid Vector/data.frame of effect values (supports multi-effect).
@@ -72,6 +74,21 @@
 #' the built-in automatic data generator.  When a custom `data_generator`
 #' function is supplied the drawn values are recorded but are **not** injected
 #' into the custom function.
+#'
+#' ## brms prior translation
+#'
+#' The `priors` argument is a convenience interface for selected brms-style
+#' analysis priors. Gaussian fixed-effect and intercept priors are translated
+#' directly to INLA `control.fixed`; `student_t()` fixed-effect priors use the
+#' package's existing Normal approximation. For Gaussian models,
+#' `prior(exponential(rate), class = "sigma")` and
+#' `prior(exponential(rate), class = "sd", group = "...")` are translated to
+#' INLA `pc.prec` priors with `P(sigma > u) = alpha`, where
+#' `u = -log(alpha) / rate` and `alpha = 0.05`. Direct `family_control`
+#' settings take precedence over translated sigma priors. Unsupported brms
+#' priors are reported in `settings$prior_translation` rather than silently
+#' translated. Data-generation controls such as `error_sd` and `group_sd` remain
+#' distinct from INLA analysis priors.
 #'
 #' @examples
 #' \dontrun{
@@ -231,6 +248,7 @@ brms_inla_power <- function(
   # ===== AUTO-DETECT INLA THREADS =====
   if (is.null(inla_num_threads)) {
     n_cores <- parallel::detectCores()
+    if (!is.numeric(n_cores) || length(n_cores) != 1L || !is.finite(n_cores)) n_cores <- 1L
     inla_num_threads <- if (n_cores >= 4) "4:1" else if (n_cores >= 2) "2:1" else "1:1"
   }
   
@@ -267,10 +285,16 @@ brms_inla_power <- function(
   }
   
   # ===== FORMULA + PRIORS MAP =====
-  tf_alt <- .brms_to_inla_formula2(formula)
+  prior_map <- .map_brms_priors_to_inla(
+    priors,
+    family_control_supplied = !is.null(family_control),
+    inla_family = fam_inla
+  )
+  tf_alt <- .brms_to_inla_formula2(formula, hyper_by_re = prior_map$hyper_by_re)
   inla_formula_alt <- tf_alt$inla_formula
   re_specs         <- tf_alt$re_specs
-  prior_map        <- .map_brms_priors_to_inla(priors)
+  prior_map        <- .mark_unmatched_re_priors(prior_map, tf_alt$re_hyper_groups)
+  prior_map        <- .audit_re_correlation_terms(prior_map, re_specs)
   
   # ===== GUARDS =====
   if (!is.null(rope_bounds) && length(rope_bounds) == 1) {
@@ -287,16 +311,22 @@ brms_inla_power <- function(
     NA_character_
   }
   get_prior_for_coef <- function(eff, prior_map_mean, prior_map_prec) {
-    if (!is.null(prior_map_mean[[eff]])) {
+    if (is.numeric(prior_map_mean) && length(prior_map_mean) == 1L) {
+      mean_val <- as.numeric(prior_map_mean)
+      sd_val <- if (is.numeric(prior_map_prec) && length(prior_map_prec) == 1L && prior_map_prec > 0)
+        sqrt(1 / as.numeric(prior_map_prec)) else NA_real_
+      return(list(mean = mean_val, sd = sd_val))
+    }
+    if (is.list(prior_map_mean) && !is.null(prior_map_mean[[eff]])) {
       mean_val <- prior_map_mean[[eff]]
-      sd_val <- if (!is.null(prior_map_prec[[eff]]) && prior_map_prec[[eff]] > 0)
+      sd_val <- if (is.list(prior_map_prec) && !is.null(prior_map_prec[[eff]]) && prior_map_prec[[eff]] > 0)
         sqrt(1 / prior_map_prec[[eff]]) else NA_real_
       return(list(mean = mean_val, sd = sd_val))
     }
     eff_base <- sub("^(.*?)[0-9]+$", "\\1", eff)
-    if (!is.null(prior_map_mean[[eff_base]])) {
+    if (is.list(prior_map_mean) && !is.null(prior_map_mean[[eff_base]])) {
       mean_val <- prior_map_mean[[eff_base]]
-      sd_val <- if (!is.null(prior_map_prec[[eff_base]]) && prior_map_prec[[eff_base]] > 0)
+      sd_val <- if (is.list(prior_map_prec) && !is.null(prior_map_prec[[eff_base]]) && prior_map_prec[[eff_base]] > 0)
         sqrt(1 / prior_map_prec[[eff_base]]) else NA_real_
       return(list(mean = mean_val, sd = sd_val))
     }
@@ -363,7 +393,7 @@ brms_inla_power <- function(
           family = fam_inla,
           control.fixed = prior_map$control_fixed %||% list(),
           control.predictor = list(link = 1),
-          control.family = family_control %||% list(),
+          control.family = family_control %||% prior_map$control_family %||% list(),
           num.threads = inla_num_threads,
           verbose = FALSE
         )
@@ -583,8 +613,9 @@ brms_inla_power <- function(
       prior_for_effect = list(
         mean = prior_map$control_fixed$mean,
         sd   = lapply(prior_map$control_fixed$prec, function(p)
-          if (is.numeric(p) && p > 0) sqrt(1/p) else NA_real_)
+          if (is.numeric(p) && length(p) == 1L && p > 0) sqrt(1/p) else NA_real_)
       ),
+      prior_translation = prior_map$prior_audit,
       error_sd = error_sd,
       group_sd = group_sd
     )

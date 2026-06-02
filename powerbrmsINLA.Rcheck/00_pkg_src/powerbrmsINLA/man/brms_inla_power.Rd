@@ -31,6 +31,8 @@ brms_inla_power(
   seed = 123,
   inla_hyper = NULL,
   compute_bayes_factor = FALSE,
+  bf_method = c("sd", "marglik"),
+  bf_cutoff = 10,
   inla_num_threads = NULL,
   progress = c("auto", "text", "none"),
   family_args = list()
@@ -75,9 +77,23 @@ data.frame with column names matching effect_name.}
 
 \item{rope_bounds}{Optional Region of Practical Equivalence bounds (length 2 vector).}
 
-\item{error_sd}{Gaussian residual standard deviation.}
+\item{error_sd}{Residual standard deviation for Gaussian-like families.
+Accepts either:
+\itemize{
+\item A positive numeric scalar (default \code{1}), or
+\item A named list specifying a distribution from which a fresh value is drawn
+at every simulation iteration:
+\itemize{
+\item \code{list(dist = "halfnormal", sd = X, location = Y)} — draws
+\verb{|Normal(location, sd)|}; \code{location} defaults to 0.
+\item \code{list(dist = "lognormal", meanlog = X, sdlog = Y)}
+\item \code{list(dist = "uniform", min = X, max = Y)} — requires \code{min >= 0}.
+See \code{\link[=validate_sd_spec]{validate_sd_spec()}} for validation details.
+}
+}}
 
-\item{group_sd}{Random effects standard deviation.}
+\item{group_sd}{Random-effects standard deviation.  Accepts the same scalar
+or distributional list formats as \code{error_sd}.}
 
 \item{obs_per_group}{Observations per group.}
 
@@ -91,6 +107,12 @@ data.frame with column names matching effect_name.}
 
 \item{compute_bayes_factor}{Logical, compute Bayes Factor if TRUE.}
 
+\item{bf_method}{Character. "sd" = Savage-Dickey at 0 (requires proper Normal prior on
+the tested coefficient); "marglik" = marginal-likelihood Bayes factor via INLA by
+comparing full vs reduced model (slower).}
+
+\item{bf_cutoff}{Numeric Bayes-factor threshold for declaring a "hit" (default 10).}
+
 \item{inla_num_threads}{Character string specifying INLA threading (e.g., "4:1"
 for 4 threads). If NULL (default), automatically detects optimal setting:
 "4:1" for 4+ cores, "2:1" for 2-3 cores, "1:1" otherwise.}
@@ -100,7 +122,7 @@ for 4 threads). If NULL (default), automatically detects optimal setting:
 \item{family_args}{List of arguments for family-specific data generators.}
 }
 \value{
-List with results, summary, and settings.
+List with results, summary, diagnostics, and settings.
 }
 \description{
 Provides Bayesian power analysis and assurance calculation using INLA
@@ -108,42 +130,41 @@ Provides Bayesian power analysis and assurance calculation using INLA
 Implements simulation-based power analysis for generalized linear mixed
 models with automatic threading optimization.
 }
-\examples{
-\donttest{
-# Basic usage with automatic INLA threading
-results <- brms_inla_power(
-  formula = outcome ~ treatment,
-  effect_name = "treatment",
-  effect_grid = c(0.2, 0.5, 0.8),
-  sample_sizes = c(50, 100, 200),
-  nsims = 3
-)
-print(results$summary)
+\details{
+\subsection{Variance uncertainty (distributional error_sd / group_sd)}{
 
-# Manual INLA threading control
-results <- brms_inla_power(
-  formula = outcome ~ treatment,
-  effect_name = "treatment",
-  effect_grid = c(0.2, 0.5, 0.8),
-  sample_sizes = c(50, 100, 200),
-  inla_num_threads = "8:1",  # Use 8 threads for faster computation
-  nsims = 3
-)
+When \code{error_sd} or \code{group_sd} is supplied as a distributional list, a fresh
+scalar value is drawn from the specified distribution at the start of
+\strong{each} simulation iteration.  The drawn value is used by the automatic
+data generator for that iteration and stored in the per-simulation results
+as \code{sampled_error_sd} or \code{sampled_group_sd}.  The per-cell summary then
+reports the mean and standard deviation of the drawn values.
 
-# Multi-effect design with threading
-effect_grid <- expand.grid(
-  treatment = c(0, 0.3, 0.6),
-  age_effect = c(0, 0.2)
-)
-results <- brms_inla_power(
-  formula = outcome ~ treatment + age_effect,
-  effect_name = c("treatment", "age_effect"),
-  effect_grid = effect_grid,
-  sample_sizes = c(100, 200, 400),
-  nsims = 3
-)
-print(results$summary)
+This corresponds to integrating power over variance uncertainty, analogous
+to the unconditional Bayesian assurance of O'Hagan & Stevens (2001) and
+the prior-predictive power framing of Chen et al. (2018).  It is
+particularly useful when the residual variance is itself uncertain (e.g.,
+estimated from a small pilot study).
+
+Note: distributional \code{error_sd} / \code{group_sd} specifications only affect
+the built-in automatic data generator.  When a custom \code{data_generator}
+function is supplied the drawn values are recorded but are \strong{not} injected
+into the custom function.
 }
-# Quick parameter check (runs instantly)
-formals(brms_inla_power)
+}
+\examples{
+\dontrun{
+# Integrate over uncertainty in the residual SD using a half-normal prior
+# centred at 1.0 with spread 0.3
+brms_inla_power(
+  formula      = y ~ treatment,
+  effect_name  = "treatment",
+  effect_grid  = 0.5,
+  sample_sizes = c(50, 100),
+  nsims        = 50,
+  error_sd     = list(dist = "halfnormal", sd = 0.3, location = 1.0),
+  seed         = 42
+)
+}
+
 }

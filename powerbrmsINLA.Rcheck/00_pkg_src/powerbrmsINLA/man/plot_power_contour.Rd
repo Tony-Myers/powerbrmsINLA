@@ -2,7 +2,8 @@
 % Please edit documentation in R/plotting-power.R
 \name{plot_power_contour}
 \alias{plot_power_contour}
-\title{Plot Bayesian Power / Assurance Contour (Multi-Effect Grid Friendly)}
+\title{Draw a filled contour plot of conditional Bayesian power for a chosen metric,
+as a function of two effect grid columns and sample size.}
 \usage{
 plot_power_contour(
   power_results,
@@ -19,7 +20,7 @@ plot_power_contour(
 \arguments{
 \item{power_results}{Output from a \code{brms_inla_power} function.}
 
-\item{power_metric}{Which metric to plot: \code{"direction"}, \code{"threshold"}, or \code{"rope"}.}
+\item{power_metric}{Which metric to plot: "direction", "threshold", or "rope".}
 
 \item{x_effect}{Name of effect grid column for x-axis (default = first effect).}
 
@@ -27,7 +28,8 @@ plot_power_contour(
 
 \item{facet_by}{Optional effect grid column(s) to facet by.}
 
-\item{power_threshold}{Optional contour line for assurance (default 0.8).}
+\item{power_threshold}{Optional reference contour line for conditional power
+(default 0.8).}
 
 \item{show_threshold_line}{Logical; add a red contour at \code{power_threshold}.}
 
@@ -37,6 +39,13 @@ plot_power_contour(
 A ggplot object.
 }
 \description{
-Draw a filled contour plot of assurance for a chosen metric,
-as a function of two effect grid columns and sample size.
+Plots the conditional Bayesian power — the probability of meeting the
+decision criterion at each fixed effect size and sample size — as a filled
+contour surface.
+}
+\details{
+These plots display \strong{conditional Bayesian power} — the probability of
+meeting the decision criterion at a fixed effect size.  For unconditional
+assurance (averaged over a design prior on effect size), see
+\code{\link[=plot_assurance_curve]{plot_assurance_curve()}}.
 }

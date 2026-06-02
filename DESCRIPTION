@@ -1,6 +1,6 @@
 Package: powerbrmsINLA
 Title: Bayesian Power Analysis Using 'brms' and 'INLA'
-Version: 1.1.1
+Version: 1.2.0
 Maintainer: Tony Myers <admyers@aol.com>
 Authors@R: person(given = "Tony",
                   family = "Myers", 

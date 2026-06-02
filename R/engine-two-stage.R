@@ -154,7 +154,8 @@ brms_inla_power_two_stage <- function(
       refine_metric = refine_metric,
       refine_target = refine_target,
       prob_threshold = prob_threshold,
-      effect_threshold = effect_threshold
+      effect_threshold = effect_threshold,
+      prior_translation = stage1$settings$prior_translation %||% NULL
     )
   )
   class(out) <- "brms_inla_power"

@@ -4,3 +4,11 @@
 ^\.github$
 ^LICENSE\.md$
 ^cran-comments\.md$
+^\.claude$
+^\.DS_Store$
+^.*\.DS_Store$
+^powerbrmsINLA\.Rcheck$
+^powerbrmsINLA.*\.tar\.gz$
+^\.Rhistory$
+^doc$
+^Meta$

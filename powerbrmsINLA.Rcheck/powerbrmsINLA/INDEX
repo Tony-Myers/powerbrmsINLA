@@ -1,43 +1,82 @@
+.plot_decision_assurance_curve_from_summary
+                        Plot decision/assurance curve across n
+add_decision_overlay    Add sample-size decision overlay to a
+                        conditional power contour
+assurance_prior_weights
+                        Create prior weights over an effect grid for
+                        use with compute_assurance()
 beta_binom_power        Analytic Assurance for Beta-Binomial Designs
 beta_weights_on_grid    Beta-Prior Weights Over an Effect Grid
 brms_inla_power         Core Bayesian Assurance / Power Simulation
                         (Modern, Multi-Effect Ready)
+brms_inla_power_design
+                        Design-based wrapper for Bayesian power /
+                        assurance
+brms_inla_power_parallel
+                        Parallel wrapper for fixed-design Bayesian
+                        power / assurance simulations
 brms_inla_power_sequential
                         Sequential Bayesian Assurance Simulation Engine
                         (Modern, Multi-Effect Ready)
 brms_inla_power_two_stage
                         Two-Stage Bayesian Assurance Simulation
                         (Multi-Effect, User-Friendly API)
+compute_assurance       Compute unconditional Bayesian assurance from
+                        simulation results
+decide_sample_size      Decide recommended sample size from
+                        power/assurance results
 hdi_of_icdf             Highest Density Interval from an Inverse CDF
 min_n_beta_binom        Minimum n for Target Assurance (Beta-Binomial)
+plot_assurance_curve    Plot Assurance Curve(s) vs Sample Size
 plot_assurance_with_robustness
-                        Plot Assurance with Robustness Ribbon
+                        Plot Conditional Power with Robustness Ribbon
                         (Multi-Effect Grid Friendly)
 plot_bf_assurance_curve
-                        Plot Bayes Factor Assurance Curve (Multi-Effect
-                        Grid Friendly)
+                        Bayes-factor conditional power curve
+                        (user-facing wrapper)
+plot_bf_assurance_curve_smooth
+                        Conditional Bayesian power curve for the Bayes
+                        factor criterion with Wilson CIs (multi-effect
+                        grid friendly)
 plot_bf_expected_evidence
                         Plot Expected Evidence (mean log10 BF10,
                         Multi-Effect Grid Friendly)
 plot_bf_heatmap         Plot Bayes Factor Heatmap (mean log10 BF10,
                         Multi-Effect Grid Friendly)
 plot_decision_assurance_curve
-                        Plot Decision Assurance Curve (Multi-Effect
-                        Grid Friendly)
+                        Plot Conditional Power Curve for a Decision
+                        Rule (Multi-Effect Grid Friendly)
 plot_decision_threshold_contour
                         Plot Decision Threshold Contour (Multi-Effect
                         Grid Friendly)
+plot_design_prior       Plot Design Prior Density over the Effect Grid
 plot_interaction_surface
-                        Plot Interaction Assurance
+                        Plot Interaction Conditional Power
                         Surface/Heatmap/Lines (Multi-Effect Grid
                         Friendly)
-plot_power_contour      Plot Bayesian Power / Assurance Contour
-                        (Multi-Effect Grid Friendly)
-plot_power_heatmap      Plot Bayesian Power / Assurance Heatmap
+plot_power_assurance_overlay
+                        Plot Conditional Power Curves with Assurance
+                        Overlay
+plot_power_contour      Draw a filled contour plot of conditional
+                        Bayesian power for a chosen metric, as a
+                        function of two effect grid columns and sample
+                        size.
+plot_power_heatmap      Plot Conditional Bayesian Power Heatmap
                         (Multi-Effect Grid Friendly)
 plot_precision_assurance_curve
-                        Plot Precision Assurance Curve (Multi-Effect
-                        Grid Friendly)
-plot_precision_fan_chart
-                        Plot Precision Assurance Fan Chart
+                        Plot Precision Conditional Power Curve
                         (Multi-Effect Grid Friendly)
+plot_precision_fan_chart
+                        Precision conditional power as a function of
+                        sample size
+print.brms_inla_power   Print method for brms_inla_power result objects
+print.powerbrmsINLA_assurance
+                        Print method for powerbrmsINLA_assurance
+                        objects
+print.powerbrmsINLA_sample_size
+                        Print method for powerbrmsINLA_sample_size
+                        objects
+validate_inla_vs_brms   Spot-check INLA posterior estimates against
+                        brms/Stan
+validate_sd_spec        Validate an SD Specification for error_sd or
+                        group_sd

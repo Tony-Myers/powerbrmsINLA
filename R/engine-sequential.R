@@ -12,7 +12,9 @@
 #' @param Ntrials Optional vector of binomial trial counts (for binomial families).
 #' @param E Optional vector of exposures (for Poisson families).
 #' @param scale Optional numeric vector for scale parameter in INLA.
-#' @param priors brms prior specification object.
+#' @param priors brms prior specification object. Supported priors are
+#'   translated to INLA controls where possible and audited in
+#'   `settings$prior_translation`.
 #' @param data_generator Optional function(n, effect) to simulate data.
 #' @param effect_name Character vector of fixed effects to assess.
 #' @param effect_grid Data frame or vector of effect values.
@@ -96,6 +98,7 @@ brms_inla_power_sequential <- function(
   # Auto-detect optimal INLA threads
   if (is.null(inla_num_threads)) {
     n_cores <- parallel::detectCores()
+    if (!is.numeric(n_cores) || length(n_cores) != 1L || !is.finite(n_cores)) n_cores <- 1L
     inla_num_threads <- if (n_cores >= 4) "4:1" else if (n_cores >= 2) "2:1" else "1:1"
   }
 
@@ -108,13 +111,19 @@ brms_inla_power_sequential <- function(
     )
   } else stopifnot(is.function(data_generator))
 
-  tf <- .brms_to_inla_formula2(formula)
+  prior_map <- .map_brms_priors_to_inla(
+    priors,
+    family_control_supplied = !is.null(family_control),
+    inla_family = .to_inla_family(family)$inla
+  )
+  tf <- .brms_to_inla_formula2(formula, hyper_by_re = prior_map$hyper_by_re)
   f_inla <- tf$inla_formula
   re_specs <- tf$re_specs
   fam_inla <- .to_inla_family(family)$inla
   needs_N <- fam_inla %in% c("binomial","betabinomial")
   needs_E <- fam_inla %in% c("poisson")
-  prior_map <- .map_brms_priors_to_inla(priors)
+  prior_map <- .mark_unmatched_re_priors(prior_map, tf$re_hyper_groups)
+  prior_map <- .audit_re_correlation_terms(prior_map, re_specs)
 
   # Multi-effect grid detection
   is_multi <- is.data.frame(effect_grid)
@@ -126,11 +135,20 @@ brms_inla_power_sequential <- function(
   eff_main <- effect_name[1]
   if (isTRUE(compute_bayes_factor) && metric == "bf"
       && !is.null(prior_map$control_fixed$mean)
-      && !is.null(prior_map$control_fixed$prec)
-      && !is.null(prior_map$control_fixed$mean[[eff_main]])
-      && !is.null(prior_map$control_fixed$prec[[eff_main]])) {
-    prior_mean <- as.numeric(prior_map$control_fixed$mean[[eff_main]])
-    prior_sd   <- sqrt(1 / as.numeric(prior_map$control_fixed$prec[[eff_main]]))
+      && !is.null(prior_map$control_fixed$prec)) {
+    if (is.numeric(prior_map$control_fixed$mean) &&
+        is.numeric(prior_map$control_fixed$prec) &&
+        length(prior_map$control_fixed$mean) == 1L &&
+        length(prior_map$control_fixed$prec) == 1L) {
+      prior_mean <- as.numeric(prior_map$control_fixed$mean)
+      prior_sd   <- sqrt(1 / as.numeric(prior_map$control_fixed$prec))
+    } else if (is.list(prior_map$control_fixed$mean) &&
+               is.list(prior_map$control_fixed$prec) &&
+               !is.null(prior_map$control_fixed$mean[[eff_main]]) &&
+               !is.null(prior_map$control_fixed$prec[[eff_main]])) {
+      prior_mean <- as.numeric(prior_map$control_fixed$mean[[eff_main]])
+      prior_sd   <- sqrt(1 / as.numeric(prior_map$control_fixed$prec[[eff_main]]))
+    }
   }
 
   if (progress) message("Sequential assurance over ", total_cells, " cells (\u2026)")
@@ -180,7 +198,7 @@ brms_inla_power_sequential <- function(
               data             = dat,
               family           = fam_inla,
               control.fixed    = prior_map$control_fixed %||% list(),
-              control.family   = family_control %||% list(),
+              control.family   = family_control %||% prior_map$control_family %||% list(),
               control.predictor= list(link=1),
               verbose          = FALSE,
               num.threads      = inla_num_threads
@@ -289,7 +307,8 @@ brms_inla_power_sequential <- function(
       effect_threshold = effect_threshold,
       rope_bounds    = rope_bounds,
       credible_level = credible_level,
-      compute_bayes_factor = compute_bayes_factor
+      compute_bayes_factor = compute_bayes_factor,
+      prior_translation = prior_map$prior_audit
     )
   )
 }

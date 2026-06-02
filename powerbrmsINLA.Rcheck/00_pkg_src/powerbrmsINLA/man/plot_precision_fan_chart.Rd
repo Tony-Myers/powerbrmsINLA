@@ -2,34 +2,30 @@
 % Please edit documentation in R/plotting-precision.R
 \name{plot_precision_fan_chart}
 \alias{plot_precision_fan_chart}
-\title{Plot Precision Assurance Fan Chart (Multi-Effect Grid Friendly)}
+\title{Precision conditional power as a function of sample size}
 \usage{
 plot_precision_fan_chart(
-  power_results_list,
+  power_results,
   ci_width_target,
-  x_effect = NULL,
-  facet_by = NULL,
-  effect_filters = NULL,
-  effect_weights = NULL,
-  show_individual_scenarios = FALSE,
+  effect_filter = NULL,
+  colour_by = NULL,
   title = NULL,
   subtitle = NULL
 )
 }
 \arguments{
-\item{power_results_list}{Named list of brms_inla_power results (for fan chart across scenarios) or a single object.}
+\item{power_results}{Output from a \verb{brms_inla_power*} function, or a
+data.frame with at least columns \code{n} and \code{ci_width}, plus any
+effect-grid columns (e.g. \code{treatment}, \code{age_effect}).}
 
-\item{ci_width_target}{Numeric; target credible interval width.}
+\item{ci_width_target}{Numeric, target width for the credible interval.
+Conditional power is defined as Pr(ci_width <= ci_width_target).}
 
-\item{x_effect}{Name of effect grid column for x-axis (default: first detected grid column).}
+\item{effect_filter}{Optional named list for filtering effect-grid
+columns, e.g. \code{list(treatment = 0.3)}.}
 
-\item{facet_by}{Optional grid column(s) for faceting.}
-
-\item{effect_filters}{Optional named list for filtering rows, e.g. list(treatment=0).}
-
-\item{effect_weights}{Optional named numeric vector for averaging over grid values.}
-
-\item{show_individual_scenarios}{Logical: overlay all scenario curves if TRUE.}
+\item{colour_by}{Optional name of an effect-grid column to colour
+separate curves by. If \code{NULL}, only n is used.}
 
 \item{title, subtitle}{Optional plot labels.}
 }
@@ -37,6 +33,17 @@ plot_precision_fan_chart(
 A ggplot object.
 }
 \description{
-Shows assurance (proportion of runs meeting CI width <= target) across sample size(s) and effect grid.
-Optionally overlays the range (fan/ribbon) across multiple scenarios.
+Plots the proportion of simulations in which the posterior credible
+interval width is less than or equal to a target, as a function of
+sample size n. Optionally colours separate curves by an effect-grid
+variable.
+}
+\details{
+This implementation works directly from the per-simulation results
+(column \code{ci_width}) and does not rely on the robustness engine.
+
+These plots display \strong{conditional Bayesian power} — the probability of
+achieving the precision criterion at a fixed effect size.  For unconditional
+assurance (averaged over a design prior on effect size), see
+\code{\link[=plot_assurance_curve]{plot_assurance_curve()}}.
 }

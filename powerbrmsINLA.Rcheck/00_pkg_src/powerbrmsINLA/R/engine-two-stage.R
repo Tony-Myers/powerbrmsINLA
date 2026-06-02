@@ -24,7 +24,7 @@
 #' @return A list with combined simulation results, summary, and stage parameters.
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' # Two-stage design with threading
 #' effect_grid <- expand.grid(
 #'   treatment = c(0.2, 0.5, 0.8),

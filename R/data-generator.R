@@ -148,6 +148,10 @@
       }
       y <- stats::rpois(n, lambda = lam)
     } else if (fam_inla == "nbinomial") {
+      if (!requireNamespace("MASS", quietly = TRUE)) {
+        stop("Package 'MASS' is required for negative binomial data generation. ",
+             "Install it with: install.packages('MASS')", call. = FALSE)
+      }
       mu <- exp(eta)
       y <- MASS::rnegbin(n, mu = mu, theta = nb_theta)
     } else if (fam_inla == "beta") {

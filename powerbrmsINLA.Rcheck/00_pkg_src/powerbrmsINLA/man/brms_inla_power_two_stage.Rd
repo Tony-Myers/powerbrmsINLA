@@ -70,7 +70,7 @@ A list with combined simulation results, summary, and stage parameters.
 Runs a two-stage Bayesian assurance simulation with formula-based multi-effect grids and adaptive refinement.
 }
 \examples{
-\donttest{
+\dontrun{
 # Two-stage design with threading
 effect_grid <- expand.grid(
   treatment = c(0.2, 0.5, 0.8),

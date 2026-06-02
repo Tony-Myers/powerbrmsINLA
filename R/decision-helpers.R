@@ -17,8 +17,8 @@
 #' In assurance mode the numeric value passed to `direction`, `threshold`,
 #' `rope_in`, or `bf10` is the **assurance target** for that metric.
 #' For example, `direction = 0.70` finds the smallest n where direction
-#' assurance ≥ 0.70, and `threshold = 0.60` finds the smallest n where
-#' threshold assurance ≥ 0.60.  Multiple metrics may be requested
+#' assurance >= 0.70, and `threshold = 0.60` finds the smallest n where
+#' threshold assurance >= 0.60.  Multiple metrics may be requested
 #' simultaneously, each with its own target.
 #'
 #' **Conditional mode** (backward compatible): when `prior_weights = NULL`, the
@@ -42,7 +42,7 @@
 #'   function looks for a column `bf_hit_<bf10>`; if absent it falls back to
 #'   per-simulation bf10 in `x$results`.
 #' @param bf_prop_min Numeric in \eqn{[0,1]}: minimum proportion of simulations
-#'   that must achieve BF ≥ `bf10` (default 0; conditional mode only).
+#'   that must achieve BF >= `bf10` (default 0; conditional mode only).
 #' @param targets Optional named list alternative to the direct arguments.
 #'   Ignored when any direct argument is non-`NULL`.
 #' @param prior_weights A design prior for assurance mode.  Accepts the same

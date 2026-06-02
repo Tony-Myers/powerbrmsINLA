@@ -42,7 +42,7 @@
 #' @return List containing summary per cell and simulation settings.
 #' 
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' # Sequential design with automatic threading
 #' results <- brms_inla_power_sequential(
 #'   formula = outcome ~ treatment,

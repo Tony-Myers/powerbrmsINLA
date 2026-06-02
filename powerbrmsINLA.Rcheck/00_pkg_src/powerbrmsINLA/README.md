@@ -15,9 +15,6 @@ multiple decision rules (`direction`, `threshold`, `rope`), sequential
 and two-stage designs, and visualisation helpers for power curves,
 precision, Bayes factors, and robustness.
 
-<!-- badges: start -->
-  [![R-CMD-check](https://github.com/Tony-Myers/powerbrmsINLA/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Tony-Myers/powerbrmsINLA/actions/workflows/R-CMD-check.yaml)
-  <!-- badges: end -->
 
 ## Installation
 
@@ -34,32 +31,22 @@ Here is a minimal example to get started. For speed in a README, the
 code is not evaluated on knit.
 
 ``` r
-library(brmsINLApower)
+library(powerbrmsINLA)
 
-set.seed(1)
-
-# Simple dataset generator using .auto_data_generator()
-gen_fun <- brmsINLApower:::.auto_data_generator(
-  formula     = y ~ x,
-  effect_name = "x",
-  family      = gaussian()
-)
-
-# Run Bayesian power analysis with reduced settings for speed
-res <- brms_inla_power(
-  formula        = y ~ x,
-  effect_name    = "x",
-  effect_grid    = 0.5,
-  sample_sizes   = c(20, 40),
-  nsims          = 5,
-  data_generator = gen_fun
+# Run Bayesian power analysis
+results <- brms_inla_power(
+  formula = outcome ~ treatment,
+  effect_name = "treatment", 
+  effect_grid = c(0.2, 0.5, 0.8),
+  sample_sizes = c(50, 100),
+  nsims = 5  # Reduced for speed
 )
 
 # Inspect summary results
-res$summary
+results$summary
 
-# Plot a power heatmap
-plot_power_heatmap(res)
+# Plot power heatmap  
+plot_power_heatmap(results)
 ```
 
 ## Model Complexity Considerations

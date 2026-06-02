@@ -1,36 +1,50 @@
-## powerbrmsINLA 1.1.0
+## powerbrmsINLA 1.2.0
 
 ### Summary of changes
 
-* Added `brms_inla_power_parallel()` to provide a parallel wrapper around existing simulation engines (fixed and sequential designs), preserving current behaviour while reducing wall-clock time.
-* Extended plotting functionality:
-  * `plot_bf_assurance_curve_smooth()` for Bayes factor assurance with Wilson intervals.
-  * `plot_bf_expected_evidence()` and `plot_bf_heatmap()` for expected log10 BF visualisation across effect grids and sample sizes.
-  * `plot_precision_fan_chart()` as a convenience wrapper for robustness/precision plots.
-  * `add_decision_overlay()` to overlay sample-size decisions on assurance / power plots.
-* Refined `decide_sample_size()` to allow flexible Bayes factor cutoffs and clearer rationales.
-* Minor internal clean-up of plotting helpers and decision helpers; no breaking changes to existing exported interfaces.
+* New `compute_assurance()` function for unconditional Bayesian assurance
+  (O'Hagan & Stevens, 2001) computed as a weighted average of conditional
+  power over a design prior on the effect size.
+* New `assurance_prior_weights()` convenience wrapper for constructing
+  normalised design-prior weights.
+* New `decide_sample_size()` with both assurance-mode (design prior) and
+  conditional mode for recommending sample sizes from simulation output.
+* New `validate_inla_vs_brms()` for spot-checking INLA posterior estimates
+  against brms/Stan.
+* `brms_inla_power()` now supports multi-effect grids, brms-to-INLA prior
+  translation with full audit trail, marginal-likelihood Bayes factors, and
+  automatic INLA thread detection.
+* `error_sd` and `group_sd` accept distributional specifications
+  (`halfnormal`, `lognormal`, `uniform`) for variance-uncertainty integration.
+* 15 new plotting functions for assurance, Bayes factor, decision-rule,
+  precision, and multi-effect visualisation.
+* Print methods for `brms_inla_power`, `powerbrmsINLA_assurance`, and
+  `powerbrmsINLA_sample_size` objects.
+
+### Downstream dependencies
+
+None (checked via `revdepcheck`).
 
 ### R CMD check results
 
-* Local (macOS Sequoia 15.4.1, R 4.5.0):
+* Local (macOS, R 4.5.x):
 
-  * `R CMD check --as-cran` via `devtools::check()`:  
+  * `R CMD check --as-cran` via `devtools::check()`:
     `0 errors | 0 warnings | 0 notes`
 
 * Windows (R-devel) via win-builder:
 
-  * R Under development (unstable) (2025-11-14 r89021 ucrt):  
-    `0 errors | 0 warnings | 0 notes`
+  * R Under development (unstable) (2026-06-01 r90092 ucrt):
+    `0 errors | 0 warnings | 1 note`
+  * The single NOTE is the expected "Suggests or Enhances not in mainstream
+    repositories: INLA, bayesassurance" (see below).
 
-### R-hub
+* INLA is listed in `Suggests` (not `Imports`) and is available via the
+  `Additional_repositories` field in DESCRIPTION.  All INLA-dependent code
+  paths are guarded by `requireNamespace(“INLA”, quietly = TRUE)`.
 
-* R-hub v2 GitHub Actions workflow was run on:
-  * linux (R-devel), macos-arm64 (R-devel), windows (R-devel).
+### Note on bayesassurance
 
-* These jobs failed during dependency resolution because `INLA (>= 22.05.07)` is not on CRAN and the default pak configuration could not see the additional INLA repository:
-
-  * “Could not solve package dependencies: Can't install dependency INLA (>= 22.05.07); INLA: Can't find package called INLA.”
-
-* On win-builder and local checks, `INLA` is correctly found via the `Additional_repositories` field in `DESCRIPTION`, and R CMD check completes without issues.
-* Resubmission of 1.1.0 as 1.1.1: excludes .github, LICENSE.md, and cran-comments.md from build per CRAN feedback; no code changes.
+`bayesassurance` is listed in `Suggests` for an optional validation vignette
+only.  It is not required by any exported function.  The package was not
+available on the check platform but this does not affect results.

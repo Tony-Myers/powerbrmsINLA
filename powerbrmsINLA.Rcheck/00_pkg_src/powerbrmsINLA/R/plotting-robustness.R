@@ -1,10 +1,11 @@
-#' Plot Assurance with Robustness Ribbon (Multi-Effect Grid Friendly)
+#' Plot Conditional Power with Robustness Ribbon (Multi-Effect Grid Friendly)
 #'
-#' Compares assurance results from multiple scenarios by showing the range
-#' ("ribbon") of values across scenarios for each sample size and effect grid variable.
+#' Compares conditional Bayesian power results from multiple scenarios by showing
+#' the range ("ribbon") of values across scenarios for each sample size and
+#' effect grid variable.
 #'
 #' @param power_results_list Named list of results objects from `brms_inla_power` or sequential/two-stage variants.
-#' @param metric Which assurance metric to compute: "precision", "direction", "threshold", or "bf".
+#' @param metric Which conditional power metric to compute: "precision", "direction", "threshold", or "bf".
 #' @param x_effect Name of effect grid column for x-axis (default: first detected grid column).
 #' @param facet_by Optional effect grid column(s) to facet by.
 #' @param precision_target CI width target if metric="precision".
@@ -87,7 +88,13 @@ plot_assurance_with_robustness <- function(
     tmp
   }) %>% dplyr::bind_rows()
   # Ribbon: min-max assurance across scenarios per sample size/ grouping
-  group_syms <- c("n", x_effect %||% names(per_scen)[1], intersect(facet_by, colnames(per_scen)))
+  group_syms <- unique(
+    c(
+      "n",
+      x_effect %||% names(per_scen)[1],
+      intersect(facet_by, colnames(per_scen))
+    )
+  )
   ribbon <- per_scen %>%
     dplyr::group_by(!!!rlang::syms(group_syms)) %>%
     dplyr::summarise(
@@ -119,17 +126,17 @@ plot_assurance_with_robustness <- function(
   }
   # Y label according to metric
   y_lab <- switch(metric,
-                  precision = "Assurance P(width <= target)",
-                  direction = paste0("Assurance P{ post-prob >= ", p_star, " }"),
-                  threshold = paste0("Assurance P{ post-prob >=", p_star, " }"),
-                  bf = paste0("Assurance P{ BF10 >= ", bf_threshold, " }")
+                  precision = "Conditional power: P(width <= target)",
+                  direction = paste0("Conditional power: P(post-prob >= ", p_star, ")"),
+                  threshold = paste0("Conditional power: P(post-prob >= ", p_star, ")"),
+                  bf = paste0("Conditional power: P(BF10 >= ", bf_threshold, ")")
   )
   p <- p +
     ggplot2::scale_y_continuous(limits = c(0,1), labels = scales::percent_format(accuracy = 1)) +
     ggplot2::labs(
       x = x_effect %||% names(per_scen)[1],
       y = y_lab,
-      title = title %||% "Assurance with robustness ribbon across scenarios",
+      title = title %||% "Conditional power with robustness ribbon across scenarios",
       subtitle = subtitle
     ) +
     ggplot2::theme_minimal()

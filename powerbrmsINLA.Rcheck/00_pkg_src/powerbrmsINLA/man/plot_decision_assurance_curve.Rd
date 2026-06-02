@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotting-decision.R
 \name{plot_decision_assurance_curve}
 \alias{plot_decision_assurance_curve}
-\title{Plot Decision Assurance Curve (Multi-Effect Grid Friendly)}
+\title{Plot Conditional Power Curve for a Decision Rule (Multi-Effect Grid Friendly)}
 \usage{
 plot_decision_assurance_curve(
   power_results,
@@ -37,8 +37,14 @@ plot_decision_assurance_curve(
 A ggplot object.
 }
 \description{
-Plots the assurance (proportion of simulation runs meeting a
+Plots the conditional Bayesian power (proportion of simulation runs meeting a
 posterior probability decision rule) versus an effect grid variable,
 for a given metric ("direction", "threshold", or "rope") at a fixed
 decision probability threshold p_star.
+}
+\details{
+These plots display \strong{conditional Bayesian power} — the probability of
+meeting the decision criterion at a fixed effect size.  For unconditional
+assurance (averaged over a design prior on effect size), see
+\code{\link[=plot_assurance_curve]{plot_assurance_curve()}}.
 }
