@@ -22,6 +22,15 @@ jobs:
         with:
           use-public-rspm: true
 
+      # Register the INLA repository so pak can resolve it
+      - name: Add INLA repository
+        run: |
+          writeLines(
+            'options(repos = c(INLA = "https://inla.r-inla-download.org/R/stable", getOption("repos")))',
+            file.path(Sys.getenv("R_PROFILE_USER", "~/.Rprofile"))
+          )
+        shell: Rscript {0}
+
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::rcmdcheck
