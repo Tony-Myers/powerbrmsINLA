@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">powerbrmsINLA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -25,6 +25,16 @@
       <ul class="nav navbar-nav"><li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Articles
+
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/validation.html">Validation against classical power and Bayesian assurance</a>
+    </li>
+  </ul></li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
@@ -48,10 +58,54 @@
     </div>
 
     <div class="section level2">
+<h2 class="page-header" data-toc-text="1.2.0" id="powerbrmsinla-120">powerbrmsINLA 1.2.0<small>2026-06-02</small><a class="anchor" aria-label="anchor" href="#powerbrmsinla-120"></a></h2>
+<div class="section level3">
+<h3 id="major-additions-1-2-0">Major additions<a class="anchor" aria-label="anchor" href="#major-additions-1-2-0"></a></h3>
+<ul><li>New <code>compute_assurance()</code> function for unconditional Bayesian assurance (O’Hagan &amp; Stevens, 2001) computed as a weighted average of conditional power over a design prior on the effect size.</li>
+<li>New <code>assurance_prior_weights()</code> convenience wrapper for constructing normalised design-prior weights (normal, uniform, beta) over an effect grid.</li>
+<li>New <code>decide_sample_size()</code> function with both assurance mode (design prior) and conditional mode for recommending sample sizes from simulation output.</li>
+<li>New <code>validate_inla_vs_brms()</code> function for spot-checking INLA posterior estimates against brms/Stan.</li>
+<li>Print methods for <code>brms_inla_power</code>, <code>powerbrmsINLA_assurance</code>, and <code>powerbrmsINLA_sample_size</code> objects.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="plotting-1-2-0">Plotting<a class="anchor" aria-label="anchor" href="#plotting-1-2-0"></a></h3>
+<ul><li>Added <code>plot_assurance_curve()</code> and <code>plot_assurance_with_robustness()</code> for unconditional assurance visualisation.</li>
+<li>Added <code>plot_bf_assurance_curve_smooth()</code>, <code>plot_bf_assurance_curve()</code>, <code>plot_bf_expected_evidence()</code>, and <code>plot_bf_heatmap()</code> for Bayes factor visualisation.</li>
+<li>Added <code>plot_decision_assurance_curve()</code>, <code>plot_decision_threshold_contour()</code>, and <code>add_decision_overlay()</code> for decision-rule visualisation.</li>
+<li>Added <code>plot_design_prior()</code> for visualising design priors.</li>
+<li>Added <code>plot_interaction_surface()</code> for multi-effect grid visualisation.</li>
+<li>Added <code>plot_power_contour()</code>, <code>plot_power_heatmap()</code>, and <code>plot_power_assurance_overlay()</code> for conditional power visualisation.</li>
+<li>Added <code>plot_precision_assurance_curve()</code> and <code>plot_precision_fan_chart()</code>.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="engine-improvements-1-2-0">Engine improvements<a class="anchor" aria-label="anchor" href="#engine-improvements-1-2-0"></a></h3>
+<ul><li>
+<code>brms_inla_power()</code> now supports multi-effect grids (data.frame <code>effect_grid</code>), brms-to-INLA prior translation with full audit trail, marginal-likelihood Bayes factors (<code>bf_method = "marglik"</code>), and automatic INLA thread detection.</li>
+<li>
+<code>brms_inla_power_sequential()</code> rewritten with multi-effect support and prior translation.</li>
+<li>
+<code>brms_inla_power_two_stage()</code> now uses the modernised engine internally.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-and-housekeeping-1-2-0">Bug fixes and housekeeping<a class="anchor" aria-label="anchor" href="#bug-fixes-and-housekeeping-1-2-0"></a></h3>
+<ul><li>Removed duplicate internal function definitions (<code>.to_inla_family()</code>, <code>.scale_fill_viridis_discrete()</code>).</li>
+<li>Added <code><a href="http://www.stats.ox.ac.uk/pub/MASS4/" class="external-link">requireNamespace("MASS")</a></code> guard for negative binomial data generation.</li>
+<li>Expanded <code>.Rbuildignore</code> to exclude <code>.claude/</code>, <code>.DS_Store</code>, <code>.Rcheck/</code>, and <code>.tar.gz</code> artefacts.</li>
+<li>New test suites for assurance computation, decision helpers, prior bridge, and plotting functions.</li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="page-header" data-toc-text="1.1.0" id="powerbrmsinla-110">powerbrmsINLA 1.1.0<a class="anchor" aria-label="anchor" href="#powerbrmsinla-110"></a></h2>
 <ul><li>Added <code>brms_inla_power_parallel()</code> for parallel simulations.</li>
 <li>Added <code>decide_sample_size()</code> and <code>add_decision_overlay()</code> helpers.</li>
 <li>Added new Bayes factor and precision assurance plotting functions.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.1.1" id="powerbrmsinla-111">powerbrmsINLA 1.1.1<small>2025-11-16</small><a class="anchor" aria-label="anchor" href="#powerbrmsinla-111"></a></h2>
+<ul><li>
+<code>error_sd</code> and <code>group_sd</code> now accept distributional specifications (<code>halfnormal</code>, <code>lognormal</code>, <code>uniform</code>) for variance-uncertainty integration; new <code>validate_sd_spec()</code> helper exported.</li>
+<li>Added validation test suite (<code>test-validation-classical.R</code>, <code>test-validation-bayesassurance.R</code>) and accompanying vignette benchmarking against <code><a href="https://rdrr.io/r/stats/power.t.test.html" class="external-link">power.t.test()</a></code> and <code>bayesassurance::assurance_nd_na()</code>.</li>
+<li>CRAN housekeeping: exclude <code>.github</code>, <code>LICENSE.md</code>, and <code>cran-comments.md</code> from the source tarball via <code>.Rbuildignore</code>.</li>
 </ul></div>
   </div>
 
