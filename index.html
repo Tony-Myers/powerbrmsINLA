@@ -80,41 +80,92 @@
 <div class="section level1">
 <div class="page-header"><h1 id="powerbrmsinla">powerbrmsINLA<a class="anchor" aria-label="anchor" href="#powerbrmsinla"></a>
 </h1></div>
+<!-- badges: start -->
+
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
 <p><strong>powerbrmsINLA</strong> provides tools for <strong>Bayesian power analysis</strong> and <strong>assurance calculations</strong> using the statistical frameworks of <a href="https://cran.r-project.org/package=brms" class="external-link"><code>brms</code></a> and <a href="https://www.r-inla.org/" class="external-link"><code>INLA</code></a>.</p>
-<p>It includes simulation-based and analytical approaches, support for multiple decision rules (<code>direction</code>, <code>threshold</code>, <code>rope</code>), sequential and two-stage designs, and visualisation helpers for power curves, precision, Bayes factors, and robustness.</p>
+<p>It includes simulation-based approaches, support for multiple decision rules (direction, threshold, ROPE, Bayes factors, precision), sequential and two-stage adaptive designs, and a comprehensive suite of visualisation functions.</p>
+</div>
+<div class="section level2">
+<h2 id="whats-new-in-120">What’s New in 1.2.0<a class="anchor" aria-label="anchor" href="#whats-new-in-120"></a>
+</h2>
+<ul>
+<li>
+<strong>Unconditional Bayesian assurance</strong> via <code>compute_assurance()</code> — averages conditional power over a design prior on the effect size (O’Hagan &amp; Stevens, 2001).</li>
+<li>
+<strong><code>assurance_prior_weights()</code></strong> for constructing normalised design-prior weights (normal, uniform, beta) over an effect grid.</li>
+<li>
+<strong><code>decide_sample_size()</code></strong> with both assurance mode (design prior) and conditional mode for recommending sample sizes from simulation output.</li>
+<li>
+<strong><code>validate_inla_vs_brms()</code></strong> for spot-checking INLA posterior estimates against brms/Stan.</li>
+<li>
+<strong>brms-to-INLA prior translation</strong> with full audit trail — specify analysis priors using <code><a href="https://paulbuerkner.com/brms/reference/set_prior.html" class="external-link">brms::prior()</a></code> syntax.</li>
+<li>
+<strong>Variance uncertainty integration</strong> — <code>error_sd</code> and <code>group_sd</code> now accept distributional specifications (<code>halfnormal</code>, <code>lognormal</code>, <code>uniform</code>) so that power is integrated over variance uncertainty.</li>
+<li>
+<strong>Marginal-likelihood Bayes factors</strong> (<code>bf_method = "marglik"</code>) alongside the existing Savage-Dickey method.</li>
+<li>
+<strong>Automatic INLA thread detection</strong> when <code>inla_num_threads = NULL</code>.</li>
+<li>
+<strong>15 new plotting functions</strong> for assurance, Bayes factor, decision-rule, precision, and multi-effect visualisation.</li>
+<li>Print methods for <code>brms_inla_power</code>, <code>powerbrmsINLA_assurance</code>, and <code>powerbrmsINLA_sample_size</code> objects.</li>
+</ul>
+<p>See <code>NEWS.md</code> for the full changelog.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version from GitHub:</p>
+<p>Install from CRAN:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"powerbrmsINLA"</span><span class="op">)</span></span></code></pre></div>
+<p>INLA is listed under <code>Suggests</code> and must be installed separately:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"INLA"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span></span>
+<span>    <span class="st">"INLA"</span>,</span>
+<span>    repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"repos"</span><span class="op">)</span>,</span>
+<span>              INLA <span class="op">=</span> <span class="st">"https://inla.r-inla-download.org/R/stable"</span><span class="op">)</span>,</span>
+<span>    dep <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p>To install the development version from GitHub:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"https://github.com/Tony-Myers/powerbrmsINLA"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"Tony-Myers/powerbrmsINLA"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+<h2 id="quick-example">Quick Example<a class="anchor" aria-label="anchor" href="#quick-example"></a>
 </h2>
-<p>Here is a minimal example to get started. For speed in a README, the code is not evaluated on knit.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Tony-Myers/powerbrmsINLA" class="external-link">powerbrmsINLA</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Run Bayesian power analysis</span></span>
+<span><span class="co"># Step 1: Conditional power simulation</span></span>
 <span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu">brms_inla_power</span><span class="op">(</span></span>
-<span>  formula <span class="op">=</span> <span class="va">outcome</span> <span class="op">~</span> <span class="va">treatment</span>,</span>
-<span>  effect_name <span class="op">=</span> <span class="st">"treatment"</span>, </span>
-<span>  effect_grid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.5</span>, <span class="fl">0.8</span><span class="op">)</span>,</span>
+<span>  formula      <span class="op">=</span> <span class="va">y</span> <span class="op">~</span> <span class="va">treatment</span>,</span>
+<span>  effect_name  <span class="op">=</span> <span class="st">"treatment"</span>,</span>
+<span>  effect_grid  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.5</span>, <span class="fl">0.8</span><span class="op">)</span>,</span>
 <span>  sample_sizes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">100</span><span class="op">)</span>,</span>
-<span>  nsims <span class="op">=</span> <span class="fl">5</span>  <span class="co"># Reduced for speed</span></span>
+<span>  nsims        <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  seed         <span class="op">=</span> <span class="fl">123</span></span>
 <span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Inspect summary results</span></span>
 <span><span class="va">results</span><span class="op">$</span><span class="va">summary</span></span>
 <span></span>
-<span><span class="co"># Plot power heatmap  </span></span>
-<span><span class="fu">plot_power_heatmap</span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># Step 2: Unconditional assurance (new in 1.2.0)</span></span>
+<span><span class="va">assurance</span> <span class="op">&lt;-</span> <span class="fu">compute_assurance</span><span class="op">(</span></span>
+<span>  <span class="va">results</span>,</span>
+<span>  prior_weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="st">"normal"</span>, mean <span class="op">=</span> <span class="fl">0.5</span>, sd <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span>,</span>
+<span>  metric <span class="op">=</span> <span class="st">"direction"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">assurance</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Step 3: Sample size recommendation</span></span>
+<span><span class="fu">decide_sample_size</span><span class="op">(</span></span>
+<span>  <span class="va">results</span>,</span>
+<span>  direction <span class="op">=</span> <span class="fl">0.80</span>,</span>
+<span>  prior_weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="st">"normal"</span>, mean <span class="op">=</span> <span class="fl">0.5</span>, sd <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="model-complexity-considerations">Model Complexity Considerations<a class="anchor" aria-label="anchor" href="#model-complexity-considerations"></a>
@@ -122,28 +173,25 @@
 <p>For optimal performance:</p>
 <ul>
 <li>
-<strong>Simple to moderate models</strong>: All sample sizes supported</li>
+<strong>Simple to moderate models</strong>: All sample sizes supported.</li>
 <li>
-<strong>Complex random effects</strong> (e.g., <code>(1 + time | subject)</code>): Recommend n ≥ 50 subjects</li>
+<strong>Complex random effects</strong> (e.g., <code>(1 + time | subject)</code>): Recommend n &gt;= 50 subjects.</li>
 <li>
-<strong>Large effect grids</strong>: Consider starting with fewer simulations (nsims = 50-100) for initial exploration</li>
+<strong>Large effect grids</strong>: Consider starting with fewer simulations (nsims = 50-100) for initial exploration, or use the sequential/two-stage engines.</li>
 </ul>
-<p>The package handles the vast majority of Bayesian power analysis scenarios. For computationally demanding models, standard Bayesian modeling best practices apply (adequate sample sizes, model complexity appropriate to data).</p>
 </div>
 <div class="section level2">
-<h2 id="package-documentation">Package documentation<a class="anchor" aria-label="anchor" href="#package-documentation"></a>
+<h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h2>
-<p>If you use <a href="https://pkgdown.r-lib.org/" class="external-link"><code>pkgdown</code></a> you can build a website:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_pkgdown.html" class="external-link">use_pkgdown</a></span><span class="op">(</span><span class="op">)</span>           <span class="co"># once, to set up pkgdown</span></span>
-<span><span class="fu">pkgdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgdown.r-lib.org/reference/build_site.html" class="external-link">build_site</a></span><span class="op">(</span><span class="op">)</span>            <span class="co"># build the site locally</span></span>
-<span><span class="co"># usethis::use_pkgdown_github_pages()  # set up GitHub Pages</span></span></code></pre></div>
+<p>If you use powerbrmsINLA in published work, please cite:</p>
+<blockquote>
+<p>Myers, T. (2026). powerbrmsINLA: Bayesian Power Analysis Using ‘brms’ and ‘INLA’. R package version 1.2.0. <a href="https://cran.r-project.org/package=powerbrmsINLA" class="external-link uri">https://cran.r-project.org/package=powerbrmsINLA</a></p>
+</blockquote>
 </div>
 <div class="section level2">
 <h2 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
 </h2>
-<p>This package is released under the MIT License.<br>
-See the <a href="LICENSE">LICENSE</a> file for details.</p>
+<p>This package is released under the MIT License. See the <a href="LICENSE">LICENSE</a> file for details.</p>
 </div>
 </div>
   </div>
@@ -181,7 +229,12 @@ See the <a href="LICENSE">LICENSE</a> file for details.</p>
 </ul>
 </div>
 
-
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://cran.r-project.org/package=powerbrmsINLA" class="external-link"><img src="https://www.r-pkg.org/badges/version/powerbrmsINLA" alt="CRAN status"></a></li>
+</ul>
+</div>
 
   </div>
 </div>
