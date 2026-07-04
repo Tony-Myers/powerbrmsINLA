@@ -148,8 +148,10 @@
 #' @return ggplot2 layer for points.
 #' @keywords internal
 .geom_point_lw <- function(mapping = NULL, data = NULL, ..., width = 1.5) {
-  arg <- .gg_line_arg()
-  args <- c(list(mapping = mapping, data = data, ...), setNames(list(width), arg))
+  # geom_point() sizes points with `size` in ALL ggplot2 versions;
+  # `linewidth` (ggplot2 >= 3.4) applies to lines, not points, and was
+  # silently ignored here, leaving points at their default size.
+  args <- c(list(mapping = mapping, data = data, ...), list(size = width))
   do.call(ggplot2::geom_point, args)
 }
 

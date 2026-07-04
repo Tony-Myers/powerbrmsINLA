@@ -208,6 +208,45 @@ brms_inla_power <- function(
   error_sd_is_dist <- is.list(error_sd)
   group_sd_is_dist <- is.list(group_sd)
 
+  # ===== FORMULA / EFFECT-NAME VALIDATION =====
+  # Done before the INLA dependency check so that a misspecified effect_name is
+  # reported regardless of whether INLA is installed.
+  # When the automatic data generator is in use, an effect_name that does not
+  # match a formula-level term is silently ignored while building the linear
+  # predictor (see .auto_data_generator()): the requested effect is never
+  # applied to the simulated data, even though the grid value is still recorded.
+  # In that case fail fast rather than return misleading results. When the user
+  # supplies their own data_generator we cannot know their naming convention, so
+  # we downgrade to a warning.
+  formula_terms <- attr(terms(formula), "term.labels")
+  formula_fixed <- formula_terms[!grepl("\\|", formula_terms)]
+  using_auto_generator_chk <- is.null(data_generator)
+  for (eff in effect_name) {
+    if (!any(grepl(paste0("\\b", eff, "\\b"),
+                   c(formula_fixed, attr(terms(formula), "term.labels"))))) {
+      msg <- paste0(
+        "effect_name '", eff, "' must match a formula-level fixed-effect term.\n",
+        "Formula fixed-effect terms are: ",
+        if (length(formula_fixed)) paste(formula_fixed, collapse = ", ") else "<none>",
+        ".\nNote: for a factor predictor such as 'Condition', use the formula ",
+        "term (effect_name = \"Condition\"), not a fitted coefficient level such ",
+        "as \"Condition1\"."
+      )
+      if (using_auto_generator_chk) {
+        stop(msg, call. = FALSE)
+      } else {
+        warning(msg, "\nA custom data_generator was supplied, so this may be ",
+                "intentional; proceeding.", call. = FALSE)
+      }
+    }
+  }
+
+  if (!requireNamespace("INLA", quietly = TRUE)) {
+    stop("Package 'INLA' is required for brms_inla_power(). ",
+         "See https://www.r-inla.org for installation instructions.",
+         call. = FALSE)
+  }
+
   # ===== EFFECT GRID VALIDATION =====
   if (is.data.frame(effect_grid)) {
     grid_names <- colnames(effect_grid)
@@ -232,17 +271,6 @@ brms_inla_power <- function(
     }
     if (!is.numeric(effect_grid)) stop("effect_grid must be numeric when given as a vector.")
     message("Single effect analysis for '", effect_name, "' with ", length(effect_grid), " values")
-  }
-  
-  # ===== FORMULA VALIDATION =====
-  formula_terms <- attr(terms(formula), "term.labels")
-  formula_fixed <- formula_terms[!grepl("\\|", formula_terms)]
-  for (eff in effect_name) {
-    if (!any(grepl(paste0("\\b", eff, "\\b"),
-                   c(formula_fixed, attr(terms(formula), "term.labels"))))) {
-      warning("Effect name '", eff, "' not found in fixed-effects terms of the formula. ",
-              "This may cause issues in data generation or model fitting.")
-    }
   }
   
   # ===== AUTO-DETECT INLA THREADS =====

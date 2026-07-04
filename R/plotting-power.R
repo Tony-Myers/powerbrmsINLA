@@ -54,7 +54,8 @@ plot_power_contour <- function(power_results,
       "ciw_q05", "ciw_q25", "ciw_q50", "ciw_q75", "ciw_q95",
       "avg_post_prob_direction", "avg_post_prob_threshold", "avg_post_prob_rope",
       "bf_hit_3", "bf_hit_10",
-      "mean_log10_bf", "nsims_ok"
+      "mean_log10_bf", "nsims_ok",
+      "assurance", "conditional_power", "sims_used"
     )
   )
   
@@ -167,7 +168,8 @@ plot_power_heatmap <- function(power_results,
                                            "avg_ci_width", "ci_coverage", "ciw_q05", "ciw_q25",
                                            "ciw_q50", "ciw_q75", "ciw_q95",
                                            "avg_post_prob_direction", "avg_post_prob_threshold", "avg_post_prob_rope",
-                                           "bf_hit_3", "bf_hit_10", "mean_log10_bf", "nsims_ok"))
+                                           "bf_hit_3", "bf_hit_10", "mean_log10_bf", "nsims_ok",
+                                           "assurance", "conditional_power", "sims_used"))
   x_effect <- x_effect %||% (effect_names[1] %||% "n")
   y_effect <- y_effect %||% "n"
   stopifnot(x_effect %in% colnames(dat), y_effect %in% colnames(dat))

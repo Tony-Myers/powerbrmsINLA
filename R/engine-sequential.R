@@ -20,7 +20,7 @@
 #' @param effect_grid Data frame or vector of effect values.
 #' @param sample_sizes Vector of sample sizes.
 #' @param metric Character; one of "direction", "threshold", "rope", or "bf" for Bayesian decision metric.
-#' @param target Target assurance value for stopping.
+#' @param target Target conditional power for the stopping rule (0-1).
 #' @param prob_threshold Posterior probability threshold for decision metrics.
 #' @param effect_threshold Effect-size threshold.
 #' @param rope_bounds Numeric length-2 vector defining ROPE.
@@ -41,7 +41,11 @@
 #'   If NULL (default), automatically detects optimal setting based on CPU cores.
 #' @param family_args List of family-specific args passed to data generator.
 #' @param progress Logical; if TRUE, show progress messages.
-#' @return List containing summary per cell and simulation settings.
+#' @return A list of class "brms_inla_power" with a per-cell summary (including
+#'   the conditional_power column, the Monte Carlo estimate at each fixed
+#'   effect value) and simulation settings. Note this is conditional power at
+#'   each grid value, not unconditional assurance; pass the result to
+#'   [compute_assurance()] for the latter.
 #' 
 #' @examples
 #' \dontrun{
@@ -82,7 +86,7 @@ brms_inla_power_sequential <- function(
     obs_per_group = 10,
     predictor_means = NULL,
     predictor_sds = NULL,
-    seed = 1,
+    seed = 123,
     batch_size = 20,
     min_sims = 40,
     max_sims = 600,
@@ -92,8 +96,17 @@ brms_inla_power_sequential <- function(
     family_args = list(),
     progress = TRUE
 ) {
-  set.seed(seed)
   metric <- match.arg(metric)
+  stopifnot(is.character(effect_name), length(effect_name) >= 1L,
+            nchar(effect_name[1]) > 0)
+  stopifnot(is.numeric(target), length(target) == 1L,
+            is.finite(target), target > 0, target < 1)
+  if (!requireNamespace("INLA", quietly = TRUE)) {
+    stop("Package 'INLA' is required for brms_inla_power_sequential(). ",
+         "See https://www.r-inla.org for installation instructions.",
+         call. = FALSE)
+  }
+  set.seed(seed)
 
   # Auto-detect optimal INLA threads
   if (is.null(inla_num_threads)) {
@@ -266,7 +279,7 @@ brms_inla_power_sequential <- function(
       row_summary <- c(
         n = n,
         sims_used = sims_used,
-        assurance = if (trials > 0) hits / trials else NA_real_,
+        conditional_power = if (trials > 0) hits / trials else NA_real_,
         effect_val = eff_val_main,
         if (is_multi) effects_named_vec else NULL
       )
@@ -281,18 +294,18 @@ brms_inla_power_sequential <- function(
   # multi-grid support: group/column names
   effect_cols <- if (is_multi) names(effect_grid) else "effect_val"
   summ <- res %>%
-    dplyr::mutate(power_direction = if (metric == "direction") assurance else NA_real_,
-                  power_threshold = if (metric == "threshold") assurance else NA_real_,
-                  power_rope      = if (metric == "rope")      assurance else NA_real_,
-                  bf_hit_10       = if (metric == "bf")         assurance else NA_real_) %>%
+    dplyr::mutate(power_direction = if (metric == "direction") conditional_power else NA_real_,
+                  power_threshold = if (metric == "threshold") conditional_power else NA_real_,
+                  power_rope      = if (metric == "rope")      conditional_power else NA_real_,
+                  bf_hit_10       = if (metric == "bf")         conditional_power else NA_real_) %>%
     dplyr::mutate(nsims_ok = sims_used) %>%
     dplyr::select(
       n, !!!effect_cols,
       power_direction, power_threshold, power_rope, bf_hit_10, nsims_ok,
-      assurance, sims_used
+      conditional_power, sims_used
     )
 
-  list(
+  out_seq <- list(
     results  = NULL,
     summary  = summ,
     settings = list(
@@ -311,4 +324,6 @@ brms_inla_power_sequential <- function(
       prior_translation = prior_map$prior_audit
     )
   )
+  class(out_seq) <- "brms_inla_power"
+  out_seq
 }

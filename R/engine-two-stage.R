@@ -56,8 +56,8 @@ brms_inla_power_two_stage <- function(
     refine_target = 0.80,
     prob_threshold = 0.95,
     effect_threshold = 0.0,
-    obs_per_group = NULL,
-    error_sd = NULL,
+    obs_per_group = 10,
+    error_sd = 1,
     group_sd = 0.5,
     band = 0.06,
     expand = 1L,
@@ -66,6 +66,11 @@ brms_inla_power_two_stage <- function(
 ) {
   refine_metric <- match.arg(refine_metric)
   stopifnot(is.data.frame(effect_grid), all(effect_name %in% colnames(effect_grid)))
+  if (!requireNamespace("INLA", quietly = TRUE)) {
+    stop("Package 'INLA' is required for brms_inla_power_two_stage(). ",
+         "See https://www.r-inla.org for installation instructions.",
+         call. = FALSE)
+  }
   n_range <- sort(n_range)
   n1 <- unique(round(seq(n_range[1], n_range[2], length.out = stage1_k_n)))
   metric_col <- paste0("power_", refine_metric)

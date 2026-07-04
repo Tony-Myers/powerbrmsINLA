@@ -313,7 +313,7 @@ compute_assurance <- function(
     "avg_ci_width", "ci_coverage", "ci_width",
     "ciw_q05", "ciw_q25", "ciw_q50", "ciw_q75", "ciw_q95",
     "bf_hit_3", "bf_hit_10", "mean_log10_bf", "nsims_ok",
-    "sims_used", "assurance", "effect_val"
+    "sims_used", "assurance", "conditional_power", "effect_val"
   )
   eff_cols <- setdiff(names(s), non_eff_cols)
 

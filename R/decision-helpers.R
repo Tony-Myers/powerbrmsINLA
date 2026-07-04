@@ -249,11 +249,26 @@ decide_sample_size <- function(
   if (nrow(s) == 0L) {
     stop("Summary data has 0 rows; cannot decide sample size.", call. = FALSE)
   }
+
+  # Require at least one decision criterion. Without one, every row would
+  # trivially satisfy the (empty) set of targets and an arbitrary smallest n
+  # would be recommended for each effect-size group.
+  if (length(intersect(names(targets),
+                       c("direction", "threshold", "rope_in", "bf10"))) == 0L) {
+    stop(
+      "No decision target supplied. Provide at least one of: ",
+      "direction, threshold, rope_in, or bf10.",
+      call. = FALSE
+    )
+  }
+
   s <- as.data.frame(s)
   s <- s[order(s$n), , drop = FALSE]
 
   # Identify effect columns; exclude sampled-SD columns so they are not
-  # treated as design factors
+  # treated as design factors. The per-cell summary stores distributional-SD
+  # draws as `sampled_*` and their per-cell moments as `mean_sampled_*` /
+  # `sd_sampled_*`; all three must be excluded from effect-grid detection.
   non_eff <- unique(c(
     "n",
     "power_direction", "power_threshold", "power_rope",
@@ -262,7 +277,7 @@ decide_sample_size <- function(
     grep("^bf_hit_",  names(s), value = TRUE),
     grep("^mean_log", names(s), value = TRUE),
     "bf_median", "bf_min", "bf_max", "mean_log10_bf", "nsims_ok",
-    grep("^sampled_", names(s), value = TRUE)
+    grep("^(sampled_|mean_sampled_|sd_sampled_)", names(s), value = TRUE)
   ))
   eff_cols <- setdiff(names(s), non_eff)
 
@@ -548,11 +563,11 @@ print.powerbrmsINLA_sample_size <- function(x, digits = 4L, ...) {
 #' @param effect_filter Named list for exact-match filtering (e.g., list(treatment=0.5)).
 #' @param first_n_label If TRUE, annotate first n reaching target.
 #' @return ggplot object.
-#' @export
+#' @keywords internal
 # Internal helper used for quick decision/assurance plots from a summary table
 .plot_decision_assurance_curve_from_summary <- function(
     x,
-    y_metric       = c("assurance","power_direction","power_threshold","power_rope","bf_hit_10"),
+    y_metric       = c("assurance","conditional_power","power_direction","power_threshold","power_rope","bf_hit_10"),
     target         = NULL,
     effect_filter  = NULL,
     first_n_label  = TRUE

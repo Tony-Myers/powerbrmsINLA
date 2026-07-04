@@ -1,5 +1,5 @@
 
-# Test setup file for brmsINLApower package
+# Test setup file for powerbrmsINLA package
 
 # Set up testing environment
 library(testthat)

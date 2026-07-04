@@ -16,6 +16,31 @@ rules (direction, threshold, ROPE, Bayes factors, precision), sequential
 and two-stage adaptive designs, and a comprehensive suite of
 visualisation functions.
 
+## What's New in 1.3.0
+
+- **Sequential Bayesian analysis module**: `sequential_design()` for
+  prespecifying a sequential analysis (with an MD5 fingerprint of all
+  decision-relevant fields for preregistration), `sequential_analysis()`
+  for interim monitoring of real accumulating data with an auditable
+  decision trail, `plot_sequential_monitor()` for trajectory plots, and
+  `brms_inla_sequential_trial()` for simulating a sequential design's
+  operating characteristics (stopping probabilities, expected sample size,
+  early-stop exaggeration).
+- **Validation hardening**: `brms_inla_power()` now raises an error when
+  `effect_name` does not match a formula-level fixed-effect term and the
+  built-in data generator is in use (previously such a name was silently
+  ignored).
+- `decide_sample_size()` in conditional mode now requires at least one
+  decision target, and no longer mistakes the per-cell SD-moment summary
+  columns for effect-grid columns.
+- **Breaking change**: in `brms_inla_power_sequential()` summaries, the
+  column previously named `assurance` is now `conditional_power` (the old
+  name was statistically misleading).
+- Bug fix: `brms_inla_power_two_stage()` no longer errors when called with
+  default `error_sd` / `obs_per_group`.
+- All engines now fail early with an informative message when INLA is
+  absent.
+
 ## What's New in 1.2.0
 
 - **Unconditional Bayesian assurance** via `compute_assurance()` — averages
