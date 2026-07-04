@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">powerbrmsINLA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.0</span>
       </span>
     </div>
 
@@ -57,6 +57,47 @@
       <small>Source: <a href="https://github.com/Tony-Myers/powerbrmsINLA/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.3.0" id="powerbrmsinla-130">powerbrmsINLA 1.3.0<small>2026-07-02</small><a class="anchor" aria-label="anchor" href="#powerbrmsinla-130"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-and-validation-1-3-0">Bug fixes and validation<a class="anchor" aria-label="anchor" href="#bug-fixes-and-validation-1-3-0"></a></h3>
+<ul><li>
+<code>brms_inla_power()</code> now raises a hard error (rather than a warning) when <code>effect_name</code> does not match a formula-level fixed-effect term and the automatic data generator is in use. Previously such a name was silently ignored when building the linear predictor, so the requested effect was never applied to the simulated data even though its grid value was recorded. The error message clarifies that the formula term should be used (e.g. <code>effect_name = "Condition"</code>), not a fitted coefficient level (e.g. <code>"Condition1"</code>). When a custom <code>data_generator</code> is supplied the check is downgraded to a warning, since the naming convention is then under user control. This validation now runs before the INLA dependency check.</li>
+<li>
+<code>decide_sample_size()</code> in conditional mode now requires at least one decision target (<code>direction</code>, <code>threshold</code>, <code>rope_in</code>, or <code>bf10</code>); supplying none previously produced an arbitrary smallest-n recommendation. Assurance mode already enforced this.</li>
+<li>
+<code>decide_sample_size()</code> no longer mistakes the per-cell SD-moment summary columns (<code>mean_sampled_error_sd</code>, <code>sd_sampled_error_sd</code>, <code>mean_sampled_group_sd</code>, <code>sd_sampled_group_sd</code>) for effect-grid/design columns. Only <code>sampled_*</code> was excluded previously, which left the <code>mean_sampled_*</code> / <code>sd_sampled_*</code> columns to fragment the effect grouping.</li>
+<li>Added INLA-independent regression tests covering all three fixes.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="sequential-bayesian-analysis-new-1-3-0">Sequential Bayesian analysis (new)<a class="anchor" aria-label="anchor" href="#sequential-bayesian-analysis-new-1-3-0"></a></h3>
+<ul><li>New <code>sequential_design()</code> for prespecifying a sequential Bayesian analysis: model, analysis priors, monitored effect, decision metric (direction / threshold / ROPE), per-look success and futility thresholds, and the planned look schedule. The object carries an MD5 fingerprint of all decision-relevant fields for quotation in preregistrations; any change to the rules changes the fingerprint.</li>
+<li>New <code>sequential_analysis()</code> for monitoring a real study as data accumulate: fits the prespecified model with INLA at each interim look, applies the prespecified stopping rule, and records an auditable trajectory (estimates, credible intervals, monitored probabilities, decisions, and any protocol deviations). Refuses to continue after a recorded stop unless explicitly overridden, in which case the continuation is logged as a deviation.</li>
+<li>New <code>plot_sequential_monitor()</code> for trajectory plots of the monitored posterior probability against the prespecified stopping boundaries, or of the effect estimate with its credible interval across looks.</li>
+<li>New <code>brms_inla_sequential_trial()</code> simulates the operating characteristics of a sequential design before data collection: probabilities of stopping for success / futility / equivalence, expected sample size, the per-look stopping distribution, and the exaggeration of effect estimates at early stops. True effects may be fixed scenarios or drawn from a design prior (sequential assurance). Accepts <code>sequential_design()</code> objects so the simulated design is exactly the design that is later monitored.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="breaking-changes-1-3-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-1-3-0"></a></h3>
+<ul><li>In <code>brms_inla_power_sequential()</code> summaries, the column previously named <code>assurance</code> is now <code>conditional_power</code>. The old name was misleading: the quantity is conditional power at a fixed effect-grid value, not unconditional assurance (which <code>compute_assurance()</code> provides).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-1-3-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-3-0"></a></h3>
+<ul><li>
+<code>brms_inla_power_two_stage()</code> no longer errors when called with default arguments (<code>error_sd</code> and <code>obs_per_group</code> previously defaulted to <code>NULL</code>, which the input validator rejects); defaults are now 1 and 10, matching <code>brms_inla_power()</code>.</li>
+<li>
+<code>brms_inla_power_sequential()</code> now returns an object of class <code>"brms_inla_power"</code>, so the print method applies; it also validates <code>effect_name</code> and <code>target</code> on entry.</li>
+<li>Two test files (<code>sequencial-test.R</code>, <code>set-up.R</code>) did not match testthat’s file-name conventions and were silently never executed; they have been renamed (<code>test-sequential-stopping.R</code>, <code>setup.R</code>), updated, and now run.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="other-improvements-1-3-0">Other improvements<a class="anchor" aria-label="anchor" href="#other-improvements-1-3-0"></a></h3>
+<ul><li>All simulation engines now fail early with an informative message when INLA is not installed, instead of failing inside the simulation loop.</li>
+<li>
+<code>.plot_decision_assurance_curve_from_summary()</code> is no longer exported (it is an internal helper).</li>
+<li>The sequential engine’s default seed is now 123, matching the other engines.</li>
+<li>Fixed the internal <code>.geom_point_lw()</code> helper, which passed <code>linewidth</code> to <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">ggplot2::geom_point()</a></code> on ggplot2 &gt;= 3.4; the parameter was silently ignored (“Ignoring unknown parameters” warning) and points rendered at their default size. Point sizing now uses <code>size</code>, as geom_point expects.</li>
+<li>Removed duplicated internal plotting helpers (single copies retained in <code>utils-helpers.R</code>); pruned stray <code>globalVariables</code> entries; large PNG/PDF artefacts at the package root are excluded from builds via <code>.Rbuildignore</code>.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.2.0" id="powerbrmsinla-120">powerbrmsINLA 1.2.0<small>2026-06-02</small><a class="anchor" aria-label="anchor" href="#powerbrmsinla-120"></a></h2>
 <div class="section level3">

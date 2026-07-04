@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">powerbrmsINLA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.0</span>
       </span>
     </div>
 
@@ -87,6 +87,22 @@
 </h2>
 <p><strong>powerbrmsINLA</strong> provides tools for <strong>Bayesian power analysis</strong> and <strong>assurance calculations</strong> using the statistical frameworks of <a href="https://cran.r-project.org/package=brms" class="external-link"><code>brms</code></a> and <a href="https://www.r-inla.org/" class="external-link"><code>INLA</code></a>.</p>
 <p>It includes simulation-based approaches, support for multiple decision rules (direction, threshold, ROPE, Bayes factors, precision), sequential and two-stage adaptive designs, and a comprehensive suite of visualisation functions.</p>
+</div>
+<div class="section level2">
+<h2 id="whats-new-in-130">What’s New in 1.3.0<a class="anchor" aria-label="anchor" href="#whats-new-in-130"></a>
+</h2>
+<ul>
+<li>
+<strong>Sequential Bayesian analysis module</strong>: <code>sequential_design()</code> for prespecifying a sequential analysis (with an MD5 fingerprint of all decision-relevant fields for preregistration), <code>sequential_analysis()</code> for interim monitoring of real accumulating data with an auditable decision trail, <code>plot_sequential_monitor()</code> for trajectory plots, and <code>brms_inla_sequential_trial()</code> for simulating a sequential design’s operating characteristics (stopping probabilities, expected sample size, early-stop exaggeration).</li>
+<li>
+<strong>Validation hardening</strong>: <code>brms_inla_power()</code> now raises an error when <code>effect_name</code> does not match a formula-level fixed-effect term and the built-in data generator is in use (previously such a name was silently ignored).</li>
+<li>
+<code>decide_sample_size()</code> in conditional mode now requires at least one decision target, and no longer mistakes the per-cell SD-moment summary columns for effect-grid columns.</li>
+<li>
+<strong>Breaking change</strong>: in <code>brms_inla_power_sequential()</code> summaries, the column previously named <code>assurance</code> is now <code>conditional_power</code> (the old name was statistically misleading).</li>
+<li>Bug fix: <code>brms_inla_power_two_stage()</code> no longer errors when called with default <code>error_sd</code> / <code>obs_per_group</code>.</li>
+<li>All engines now fail early with an informative message when INLA is absent.</li>
+</ul>
 </div>
 <div class="section level2">
 <h2 id="whats-new-in-120">What’s New in 1.2.0<a class="anchor" aria-label="anchor" href="#whats-new-in-120"></a>
